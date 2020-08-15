@@ -1,6 +1,9 @@
 .App {
+  /* 화면 전체를 이용하기 위해 */
+  position: absolute;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;

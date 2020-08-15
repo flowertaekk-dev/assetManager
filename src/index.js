@@ -3,12 +3,15 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom'
 
-import App from './App';
+import App from './components/App/App';
+import Header from './components/Header/Header'
 import './index.css';
 
 const Index = () => {
   return (
     <BrowserRouter>
+      <Header />
+
       <Route exact path="/" component={App} />
       <Redirect path="*" to="/" />
     </BrowserRouter>
