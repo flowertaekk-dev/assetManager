@@ -20,3 +20,10 @@
 * 유저가 광고를 직접 넣기를 원하는 경우가 있을까?
   * 있다면 이것도 대응하고 싶지만 우선은 보류.
 
+### 개발환경
+
+1. [구글 클라우드 콘솔](https://console.cloud.google.com/)에 들어가기
+2. [사용자 인증 정보] 화면 들어가기
+3. API 키 만들기
+4. OAuth2.0 클라이언트 ID 만들기
+5. [샘플 코드](https://developers.google.com/drive/api/v3/quickstart/js)
