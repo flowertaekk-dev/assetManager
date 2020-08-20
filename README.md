@@ -7,11 +7,14 @@
 ### 구조
 
 1. 유저는 web을 통해서 로그인한다.
-  * assetManager는 웹서비스!
-2. 로그인할 때 유저는 sqLite3(아마도) 파일을 Google drive에 업로드 되도록 Googld drive url 설정.
-  * 이미 사용 중인 유저는 기존 Google drive의 url로 설정한다.
-3. assetManager는 유저가 설정한 SqLite3 테이블로부터 데이터를 불러와서 설정하고 갱신한다.
-  * 따로 DB 서버가 필요없기 때문에 서버비용 절감이 가능할 것이라는 생각.
+    * assetManager는 웹서비스!
+2. ~~로그인할 때 유저는 sqLite3(아마도) 파일을 Google drive에 업로드 되도록 Googld drive url 설정.~~
+    * ~~이미 사용 중인 유저는 기존 Google drive의 url로 설정한다.~~
+    1. 실패다. sqLite는 브라우저에서 지원하는게 제한적이고, Google drive에 파일을 계속 업데이트하면서 정보를 유지한다는게 좋은 생각이 아니었다.
+    2. 그럼? Firebase를 유저가 직접 설정하도록 유도해볼까?
+3. ~~assetManager는 유저가 설정한 SqLite3 테이블로부터 데이터를 불러와서 설정하고 갱신한다.~~
+    * ~~따로 DB 서버가 필요없기 때문에 서버비용 절감이 가능할 것이라는 생각.~~
+    1. Firebase로 한다면, 유저는 딱 DB유지비용만을 지불하면 된다. (일반적으로 이런 서비스에 얼마정도씩 지출을 하나?)
 
 ### 이익구조
 
@@ -22,8 +25,8 @@
 
 ### 개발환경
 
-1. [구글 클라우드 콘솔](https://console.cloud.google.com/)에 들어가기
-2. [사용자 인증 정보] 화면 들어가기
-3. API 키 만들기
-4. OAuth2.0 클라이언트 ID 만들기
-5. [샘플 코드](https://developers.google.com/drive/api/v3/quickstart/js)
+1. ~~[구글 클라우드 콘솔](https://console.cloud.google.com/)에 들어가기~~
+2. ~~[사용자 인증 정보] 화면 들어가기~~
+3. ~~API 키 만들기~~
+4. ~~OAuth2.0 클라이언트 ID 만들기~~
+5. ~~[샘플 코드](https://developers.google.com/drive/api/v3/quickstart/js)~~
