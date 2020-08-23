@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/api/v1")
 public class HelloWorldController {
 
-    @PostMapping("/ip")
-    public ResponseEntity<String> ip (HttpServletRequest request) {
-        return ResponseEntity.ok(request.getRemoteAddr());
+    @PostMapping("/healthcheck")
+    public ResponseEntity<String> heathcheck (HttpServletRequest request) {
+        return ResponseEntity.ok("Good!");
     }
 
 }

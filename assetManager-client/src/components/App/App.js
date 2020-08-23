@@ -10,7 +10,7 @@ const App = (props) => {
   const [ip, setIp] = useState('')
 
   useEffect(() => {
-    customAxios('/ip', (data) => {
+    customAxios('/healthcheck', (data) => {
       setIp(data)
     })
   }, [])
