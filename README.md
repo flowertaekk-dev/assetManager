@@ -7,11 +7,9 @@
 ### 구조
 
 1. 유저는 web을 통해서 로그인한다.
-  * assetManager는 웹서비스!
-2. 로그인할 때 유저는 sqLite3(아마도) 파일을 Google drive에 업로드 되도록 Googld drive url 설정.
-  * 이미 사용 중인 유저는 기존 Google drive의 url로 설정한다.
-3. assetManager는 유저가 설정한 SqLite3 테이블로부터 데이터를 불러와서 설정하고 갱신한다.
-  * 따로 DB 서버가 필요없기 때문에 서버비용 절감이 가능할 것이라는 생각.
+    * assetManager는 웹서비스!
+2. Firebase를 유저가 직접 설정하도록 유도
+3. Firebase로 한다면, 유저는 딱 DB유지비용만을 지불하면 된다. (일반적으로 이런 서비스에 얼마정도씩 지출을 하나?)
 
 ### 이익구조
 
@@ -20,10 +18,67 @@
 * 유저가 광고를 직접 넣기를 원하는 경우가 있을까?
   * 있다면 이것도 대응하고 싶지만 우선은 보류.
 
+### 사용자 환경설정 (개발자가 아닌 사람도 쉽게 이해 가능하도록 설명할 방법을 찾아야 한다)
+
+1. [FireBase 콘솔에 접속](https://console.firebase.google.com/)
+2. [프로젝트 만들기] 클릭
+3. 프로젝트 이름 설정
+    * 자유롭게!
+4. [계속] 버튼 클릭
+5. [Firebase 프로젝트를 위한 Google 애널리틱스] 화면에서 [이 프로젝트에서 Google 애널리틱스 사용 설정]을 OFF로 설정
+6. [프로젝트 만들기] 클릭
+7. [새 프로젝트가 준비되었습니다.] 화면에서 [계속] 클릭
+8. </> 아이콘 클릭
+9. [웹 앱에 Firebase 추가] 앱 닉네임 등록
+    * 자유롭게!
+    * Firebase 호스팅 설정은 하지 말 것!
+10. `$npm install firebase`
+11. 다음과 같이 코드 설정 (src/firebase.js)
+      ```
+      import firebase from 'firebase'
+
+      const firebaseConfig = {
+          apiKey: "",
+          authDomain: "",
+          databaseURL: "",
+          projectId: "",
+          storageBucket: "",
+          messagingSenderId: "",
+          appId: "
+      }
+
+      let database;
+      export const fire = () => {
+          if (!firebase.apps.length) {
+              firebase.initializeApp(firebaseConfig)
+          }
+          database = firebase.database()
+      }
+
+      export const fireDB = () => {
+          return database.ref('/').once('value')
+      }
+      ```
+12. App.js
+      ```
+        import {fire, fireDB} from '../../firebase'
+      
+        useEffect(() => {
+          fire()
+        }, [])
+
+        const test = () => {
+          fireDB()
+            .then(res => {
+              console.log(res.val())
+            })
+        }
+      ```
+
 ### 개발환경
 
-1. [구글 클라우드 콘솔](https://console.cloud.google.com/)에 들어가기
-2. [사용자 인증 정보] 화면 들어가기
-3. API 키 만들기
-4. OAuth2.0 클라이언트 ID 만들기
-5. [샘플 코드](https://developers.google.com/drive/api/v3/quickstart/js)
+1. ~~[구글 클라우드 콘솔](https://console.cloud.google.com/)에 들어가기~~
+2. ~~[사용자 인증 정보] 화면 들어가기~~
+3. ~~API 키 만들기~~
+4. ~~OAuth2.0 클라이언트 ID 만들기~~
+5. ~~[샘플 코드](https://developers.google.com/drive/api/v3/quickstart/js)~~
