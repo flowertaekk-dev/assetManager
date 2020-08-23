@@ -6,10 +6,12 @@
     z-index: 1;
 }
 
-.Header .Header__login__text {
+.Header .Header__login__text a {
     font-size: 2vh;
     color: #000;
+    text-decoration: none;
 }
+
 .Header .Header__login__text:after {
     display:block;
     content: '';

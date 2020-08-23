@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom'
 
-import App from './components/App/App';
-import Header from './components/Header/Header'
+import App from './App/App';
+import Header from './Header/Header'
+import Login from './Login/Login'
+
 import './index.css';
 
 const Index = () => {
@@ -13,6 +15,7 @@ const Index = () => {
       <Header />
 
       <Route exact path="/" component={App} />
+      <Route path="/login" component={Login}/>
       <Redirect path="*" to="/" />
     </BrowserRouter>
   )
