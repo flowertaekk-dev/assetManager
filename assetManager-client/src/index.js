@@ -16,7 +16,8 @@ const Index = () => {
 
       <Route exact path="/" component={App} />
       <Route path="/login" component={Login}/>
-      <Redirect path="*" to="/" />
+      {/* 개발할 때는 주석처리 */}
+      {/* <Redirect path="*" to="/" /> */}
     </BrowserRouter>
   )
 }

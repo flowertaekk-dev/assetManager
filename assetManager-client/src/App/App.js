@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import customAxios from '../customAxios'
 
@@ -7,11 +7,10 @@ import './App.css';
 
 const App = (props) => {
 
-  const [ip, setIp] = useState('')
 
   useEffect(() => {
     customAxios('/healthcheck', (data) => {
-      setIp(data)
+      console.log('healthcheck', data)
     })
   }, [])
 
