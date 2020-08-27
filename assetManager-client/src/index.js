@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter, Route } from 'react-router-dom'
 
 import App from './App/App';
 import Header from './Header/Header'
 import Login from './Login/Login'
+import Signup from './Login/Signup/Signup'
 
 import './index.css';
 
@@ -16,6 +17,8 @@ const Index = () => {
 
       <Route exact path="/" component={App} />
       <Route path="/login" component={Login}/>
+      <Route path="/signup" component={Signup}/>
+
       {/* 개발할 때는 주석처리 */}
       {/* <Redirect path="*" to="/" /> */}
     </BrowserRouter>
