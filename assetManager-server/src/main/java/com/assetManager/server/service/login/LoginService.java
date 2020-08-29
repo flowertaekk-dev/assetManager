@@ -1,6 +1,6 @@
 package com.assetManager.server.service.login;
 
-import com.assetManager.server.api.login.dto.LoginRequestDto;
+import com.assetManager.server.controller.login.dto.LoginRequestDto;
 import com.assetManager.server.domain.user.User;
 import com.assetManager.server.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +26,6 @@ public class LoginService {
                 loginRequestDto.getPassword())
                 .orElse(null);
 
-        return Objects.nonNull(loginUser) ? LOG_IN_SUCCESS : LOG_IN_FAILURE;
+        return Objects.nonNull(loginUser) ? LOG_IN_SUCCESS : LOG_IN_FAILURE; // "SUCCESS" : "FAILURE";
     }
 }

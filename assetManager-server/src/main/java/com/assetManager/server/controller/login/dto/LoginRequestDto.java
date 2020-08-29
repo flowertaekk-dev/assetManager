@@ -1,4 +1,4 @@
-package com.assetManager.server.api.login.dto;
+package com.assetManager.server.controller.login.dto;
 
 import com.assetManager.server.domain.user.User;
 import lombok.Builder;
