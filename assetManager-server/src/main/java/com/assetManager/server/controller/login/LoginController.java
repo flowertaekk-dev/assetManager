@@ -1,6 +1,6 @@
-package com.assetManager.server.api.login;
+package com.assetManager.server.controller.login;
 
-import com.assetManager.server.api.login.dto.LoginRequestDto;
+import com.assetManager.server.controller.login.dto.LoginRequestDto;
 import com.assetManager.server.service.login.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

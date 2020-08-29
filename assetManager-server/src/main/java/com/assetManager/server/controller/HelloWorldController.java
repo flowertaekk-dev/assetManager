@@ -1,4 +1,4 @@
-package com.assetManager.server.api;
+package com.assetManager.server.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
