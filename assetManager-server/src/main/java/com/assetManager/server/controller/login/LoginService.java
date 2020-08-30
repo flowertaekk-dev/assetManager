@@ -26,6 +26,15 @@ public class LoginService {
                 loginRequestDto.getPassword())
                 .orElse(null);
 
-        return Objects.nonNull(loginUser) ? SUCCESS.name() : FAILURE.name();
+        if (Objects.isNull(loginUser)) {
+            return FAILURE.name();
+        }
+
+        // UserStatus가 '사용중'이 아니면 로그인 불가
+        if (loginUser.getStatus() != User.UserStatus.USING) {
+            return FAILURE.name();
+        }
+
+        return SUCCESS.name();
     }
 }

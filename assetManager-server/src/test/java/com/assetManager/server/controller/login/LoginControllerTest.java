@@ -34,6 +34,10 @@ public class LoginControllerTest {
 
     private MockMvc mvc;
 
+    private String id = "test";
+    private String password = "test";
+    private String email = "test@test.com";
+
     @BeforeEach
     public void setup() {
         this.mvc = MockMvcBuilders.webAppContextSetup(context)
@@ -48,39 +52,61 @@ public class LoginControllerTest {
     @Test
     public void can_log_in() throws Exception {
         // given
-        String id = "test";
-        String password = "test";
-        String email = "test@test.com";
+        createUserAs(User.UserStatus.USING);
 
         String url = "/api/v1/login";
 
-        userRepository.save(
-                User.builder()
-                        .id(id)
-                        .password(password)
-                        .email(email)
-                        .status(User.UserStatus.USING)
-                        .build());
         // when
-        String content = objectMapper.writeValueAsString(
-                LoginRequestDto.builder()
-                        .id(id)
-                        .password(password)
-                        .email(email)
-                        .build());
-
         ResultActions action = mvc.perform(
                 post(url)
-                        .content(content)
+                        .content(getLoginContent(id, password, email))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
-
 
         // then
         action
                 .andExpect(status().isOk())
                 .andExpect(content().string("SUCCESS"))
                 .andDo(print());
+    }
+
+    @Test public void cannot_log_in_when_userStatus_is_APPLIED() throws Exception {
+        // given
+        createUserAs(User.UserStatus.APPLIED);
+
+        String url = "/api/v1/login";
+
+        // when
+        ResultActions action = mvc.perform(
+                post(url)
+                        .content(getLoginContent(id, password, email))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
+
+        // then
+        action
+                .andExpect(status().isOk())
+                .andExpect(content().string("FAILURE"))
+                .andDo(print());
+    }
+
+    private void createUserAs(User.UserStatus userStatus) {
+        userRepository.save(
+                User.builder()
+                        .id(id)
+                        .password(password)
+                        .email(email)
+                        .status(userStatus)
+                        .build());
+    }
+
+    private String getLoginContent(String id, String password, String email) throws Exception {
+        return objectMapper.writeValueAsString(
+                LoginRequestDto.builder()
+                        .id(id)
+                        .password(password)
+                        .email(email)
+                        .build());
     }
 
 }

@@ -20,12 +20,12 @@ public class UserRepositoryTest {
         userRepository.deleteAll();
     }
 
-    @Test
-    public void can_save_user() {
+    private String id = "test";
+    private String password = "test";
+    private String email = "test@test.com";
+
+    @Test public void can_save_user() {
         // given
-        String id = "test";
-        String password = "test";
-        String email = "test@test.com";
 
         // when
         userRepository.save(
@@ -46,13 +46,8 @@ public class UserRepositoryTest {
         assertThat(targetUser.getEmail()).isEqualTo(email);
     }
 
-    @Test
-    public void can_log_in_with_correct_id_and_password() {
+    @Test public void can_log_in_with_correct_id_and_password() {
         // given
-        String id = "test";
-        String password = "test";
-        String email = "test@test.com";
-
         userRepository.save(
                 User.builder()
                         .id(id)
@@ -72,13 +67,8 @@ public class UserRepositoryTest {
         assertThat(loginUser.getEmail()).isEqualTo(email);
     }
 
-    @Test
-    public void can_log_in_with_wrong_id_and_password() {
+    @Test public void can_log_in_with_wrong_id_and_password() {
         // given
-        String id = "test";
-        String password = "test";
-        String email = "test@test.com";
-
         userRepository.save(
                 User.builder()
                         .id(id)
@@ -96,7 +86,5 @@ public class UserRepositoryTest {
         // then
         assertThat(loginUser).isNull();
     }
-
-    // TODO UserStatus가 APPLIED일 때에는 로그인 불가능한 테스트 추가하기
 
 }
