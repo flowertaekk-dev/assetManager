@@ -1,4 +1,7 @@
-package com.assetManager.server.service.login;
+package com.assetManager.server.controller.login;
+
+import static com.assetManager.server.controller.CommonResponseResult.SUCCESS;
+import static com.assetManager.server.controller.CommonResponseResult.FAILURE;
 
 import com.assetManager.server.controller.login.dto.LoginRequestDto;
 import com.assetManager.server.domain.user.User;
@@ -12,20 +15,17 @@ import java.util.Objects;
 @Service
 public class LoginService {
 
-    public static final String LOG_IN_SUCCESS = "SUCCESS";
-    public static final String LOG_IN_FAILURE = "FAILURE";
-
     private final UserRepository userRepository;
 
     /***
      * 로그인에 성공하면 true, 아니면 false
      */
-    public String login(LoginRequestDto loginRequestDto) {
+    protected String login(LoginRequestDto loginRequestDto) {
         User loginUser = userRepository.findByIdAndPassword(
                 loginRequestDto.getId(),
                 loginRequestDto.getPassword())
                 .orElse(null);
 
-        return Objects.nonNull(loginUser) ? LOG_IN_SUCCESS : LOG_IN_FAILURE; // "SUCCESS" : "FAILURE";
+        return Objects.nonNull(loginUser) ? SUCCESS.name() : FAILURE.name();
     }
 }

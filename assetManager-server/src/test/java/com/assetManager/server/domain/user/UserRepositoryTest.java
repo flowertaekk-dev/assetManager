@@ -33,6 +33,7 @@ public class UserRepositoryTest {
                         .id(id)
                         .password(password)
                         .email(email)
+                        .status(User.UserStatus.APPLIED)
                         .build());
 
         // then
@@ -57,6 +58,7 @@ public class UserRepositoryTest {
                         .id(id)
                         .password(password)
                         .email(email)
+                        .status(User.UserStatus.USING)
                         .build());
 
         // when
@@ -82,6 +84,7 @@ public class UserRepositoryTest {
                         .id(id)
                         .password(password)
                         .email(email)
+                        .status(User.UserStatus.USING)
                         .build());
 
         // when
@@ -94,4 +97,6 @@ public class UserRepositoryTest {
         assertThat(loginUser).isNull();
     }
 
-    }
+    // TODO UserStatus가 APPLIED일 때에는 로그인 불가능한 테스트 추가하기
+
+}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import Button from '../../components/Button/Button'
+import customAxios from '../../customAxios'
 
 import './Signup.css'
 
@@ -86,6 +87,13 @@ const Signup = () => {
         // send request
         if (result.length === 3) {
             // TODO code here
+            customAxios('/signup', (data) => {
+                console.log(data)
+            }, {
+                id,
+                password,
+                email
+            })
         }
 
 

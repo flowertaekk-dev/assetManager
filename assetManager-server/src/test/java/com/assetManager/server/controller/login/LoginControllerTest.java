@@ -59,6 +59,7 @@ public class LoginControllerTest {
                         .id(id)
                         .password(password)
                         .email(email)
+                        .status(User.UserStatus.USING)
                         .build());
         // when
         String content = objectMapper.writeValueAsString(
