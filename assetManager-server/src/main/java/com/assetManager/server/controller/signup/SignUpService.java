@@ -4,11 +4,14 @@ import static com.assetManager.server.controller.CommonResponseResult.SUCCESS;
 import static com.assetManager.server.controller.CommonResponseResult.FAILURE;
 
 import com.assetManager.server.controller.signup.dto.SignUpRequestDto;
+import com.assetManager.server.controller.signup.dto.SignUpResponseDto;
+import com.assetManager.server.domain.user.User;
 import com.assetManager.server.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -16,16 +19,29 @@ public class SignUpService {
 
     private final UserRepository userRepository;
 
-    protected String signUp(SignUpRequestDto signUpRequestDto) {
+    protected SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
 
         if (Objects.isNull(signUpRequestDto))
-            return FAILURE.name();
+            return SignUpResponseDto.builder()
+                    .resultStatus(FAILURE)
+                    .reason("잘못된 입력이에요.")
+                    .build();
 
-        // TODO 이미 사용중인 ID, EMAIL인지 확인하는 로직 필요!
+        // 동일한 이메일로는 회원가입 불가!
+        Optional<User> emailCheckResult = userRepository.findByEmail(signUpRequestDto.getEmail());
+        if (emailCheckResult.isPresent()) {
+            return SignUpResponseDto.builder()
+                    .resultStatus(FAILURE)
+                    .reason("이미 동일한 이메일로 가입되어 있습니다.")
+                    .build();
+        }
 
         // 여기까지 왔으면 무조건 성공?
         userRepository.save(signUpRequestDto.toUserEntity());
-        return SUCCESS.name();
+        return SignUpResponseDto.builder()
+                .resultStatus(SUCCESS)
+                .reason(null)
+                .build();
     }
 
 }

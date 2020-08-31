@@ -86,9 +86,11 @@ const Signup = () => {
 
         // send request
         if (result.length === 3) {
-            // TODO code here
             customAxios('/signup', (data) => {
+                // TODO 성공하면 로그인 페이지로?
+                // TODO 실패하면 실패메세지 띄우기
                 console.log(data)
+                console.log(data.resultStatus)
             }, {
                 id,
                 password,
@@ -96,8 +98,6 @@ const Signup = () => {
             })
         }
 
-
-        //return result.length === 3
     }
 
     // ---------------------------------------------------------
