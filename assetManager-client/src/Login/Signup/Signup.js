@@ -123,6 +123,8 @@ const Signup = () => {
                         onChange={(event) => onChangeHandler(event)}/>
                 </div>
 
+                {/* TODO password double check! */}
+
                 <div className="Signup__item">
                     <label htmlFor="signupEmail">E-MAIL</label>
                     <input type="email"
@@ -132,6 +134,8 @@ const Signup = () => {
                          onChange={(event) => onChangeHandler(event)}/>
                 </div>
             </div>
+
+            {/* TODO e-mail 인증! */}
 
             <div>
                 <Button name="OK" clickHandler={okButtonClickHandler}/>
