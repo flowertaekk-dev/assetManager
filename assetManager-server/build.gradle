@@ -33,7 +33,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 	// devTool
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+ 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// in-memory
 	implementation 'com.h2database:h2'
