@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class EmailResponseDto {
+public class EmailAuthResponseDto {
 
     private CommonResponseResult resultStatus;
     private String reason;
 
     @Builder
     @JsonCreator
-    public EmailResponseDto(CommonResponseResult resultStatus, String reason) {
+    public EmailAuthResponseDto(CommonResponseResult resultStatus, String reason) {
         this.resultStatus = resultStatus;
         this.reason = reason;
     }

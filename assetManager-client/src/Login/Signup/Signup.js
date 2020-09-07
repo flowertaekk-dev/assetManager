@@ -57,6 +57,9 @@ const Signup = () => {
     // ---------------------------------------------------------
     // Handlers
 
+    /**
+     * Input 변경 핸들러
+     */
     const onChangeHandler = (event) => {
         let valueId = event.target.id
         let value = event.target.value
@@ -80,6 +83,9 @@ const Signup = () => {
         }
     }
 
+    /**
+     * OK 버튼 클릭 핸들러
+     */
     const okButtonClickHandler = () => {
         let result = [idStatus, passwordStatus, emailStatus]
             .filter(status => status === VALIDATE_OK)
@@ -98,6 +104,20 @@ const Signup = () => {
             })
         }
 
+    }
+
+    const authEmailClickHandler = () => {
+        if ( emailStatus !== VALIDATE_OK ) {
+            alert('먼저 E-mail을 입력해주세요!')
+            return
+        }
+
+        customAxios('/auth/email', (data) => {
+            console.log(data)
+            console.log(data.resultStatus)
+        }, {
+            addressTo: email
+        })
     }
 
     // ---------------------------------------------------------
@@ -133,11 +153,18 @@ const Signup = () => {
                          value={email}
                          onChange={(event) => onChangeHandler(event)}/>
                 </div>
+
+                <div className="Signup__item">
+                    <label htmlFor="signupEmailAuth">E-MAIL</label>
+                    <div className="auth__container">
+                        <input type="text" id="signupEmailAuth" name="signupEmailAuth" placeholder="이메일 인증코드" />
+                        <p className="auth__request__button" onClick={authEmailClickHandler}>인증코드 요청</p>
+                    </div>
+
+                </div>
             </div>
 
-            {/* TODO e-mail 인증! */}
-
-            <div>
+            <div className="btn__container">
                 <Button name="OK" clickHandler={okButtonClickHandler}/>
                 <Button name="Cancel" />
             </div>

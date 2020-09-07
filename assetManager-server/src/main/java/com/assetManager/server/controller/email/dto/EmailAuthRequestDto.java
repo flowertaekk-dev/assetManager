@@ -9,14 +9,12 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor
-public class EmailRequestDto {
+public class EmailAuthRequestDto {
 
     private String addressTo;
-    private String message;
 
     @Builder
-    public EmailRequestDto(String addressTo, String message) {
+    public EmailAuthRequestDto(String addressTo) {
         this.addressTo = addressTo;
-        this.message = message;
     }
 }
