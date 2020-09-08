@@ -17,16 +17,20 @@ public class EmailAuth {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long seq;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private String authCode;
 
     @Convert(converter = EmailAuthStatusConverter.class)
     @Column(nullable = false)
     private EmailAuthStatus status;
 
     @Builder
-    public EmailAuth(String email, EmailAuthStatus status) {
+    public EmailAuth(String email, String authCode, EmailAuthStatus status) {
         this.email = email;
+        this.authCode = authCode;
         this.status = status;
     }
 
@@ -47,6 +51,23 @@ public class EmailAuth {
                     .findAny()
                     .orElseThrow(() -> new IllegalArgumentException(String.format("존재하지 않는 코드입니다 : %s", status)));
         }
+    }
+
+    // -----------------------------------------------------------------------------------
+    // util method
+
+    /**
+     * Email AuthCode를 갱신한다
+     */
+    public void updateAuthCode(String newAuthCode) {
+        this.authCode = newAuthCode;
+    }
+
+    /**
+     * EmailAuthStatus를 갱신한다
+     */
+    public void updateStatus(EmailAuthStatus status) {
+        this.status = status;
     }
 
 }
