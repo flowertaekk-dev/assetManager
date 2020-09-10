@@ -33,7 +33,7 @@ public class UserRepositoryTest {
                         .id(id)
                         .password(password)
                         .email(email)
-                        .status(User.UserStatus.APPLIED)
+                        .status(User.UserStatus.USING)
                         .build());
 
         // then

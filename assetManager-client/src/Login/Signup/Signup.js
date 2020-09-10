@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
+import { withRouter } from 'react-router-dom'
 
 import Button from '../../components/Button/Button'
 import customAxios from '../../customAxios'
 
 import './Signup.css'
 
-const Signup = () => {
+const Signup = (props) => {
 
     const [id, setId] = useState('')
     const [idStatus, setIdStatus] = useState('')
@@ -15,6 +16,8 @@ const Signup = () => {
 
     const [email, setEmail] = useState('')
     const [emailStatus, setEmailStatus] = useState('')
+
+    const [emailAuthCode, setEmailAuthCode] = useState('')
 
     // ---------------------------------------------------------
     // Validators
@@ -77,6 +80,9 @@ const Signup = () => {
                 setEmailStatus(validateEmail(value))
                 setEmail(value)
                 break;
+            case 'signupEmailAuth':
+                setEmailAuthCode(value)
+                break;
             default:
                 // it should be an error..
                 break;
@@ -95,12 +101,21 @@ const Signup = () => {
             customAxios('/signup', (data) => {
                 // TODO 성공하면 로그인 페이지로?
                 // TODO 실패하면 실패메세지 띄우기
+
+                if (data.resultStatus === 'SUCCESS') {
+                    props.history.goBack()
+                    // props.history.replace('/login')
+                } else {
+                    alert(data.reason)
+                }
+
                 console.log(data)
                 console.log(data.resultStatus)
             }, {
                 id,
                 password,
-                email
+                email,
+                emailAuthCode
             })
         }
 
@@ -112,7 +127,7 @@ const Signup = () => {
             return
         }
 
-        customAxios('/auth/email', (data) => {
+        customAxios('/email/requestCode', (data) => {
             console.log(data)
             console.log(data.resultStatus)
         }, {
@@ -155,9 +170,11 @@ const Signup = () => {
                 </div>
 
                 <div className="Signup__item">
-                    <label htmlFor="signupEmailAuth">E-MAIL</label>
+                    <label htmlFor="signupEmailAuth">Email 인증코드</label>
                     <div className="auth__container">
-                        <input type="text" id="signupEmailAuth" name="signupEmailAuth" placeholder="이메일 인증코드" />
+                        <input type="text" id="signupEmailAuth" name="signupEmailAuth" placeholder="이메일 인증코드"
+                            value={emailAuthCode}
+                            onChange={(event) => onChangeHandler(event)}/>
                         <p className="auth__request__button" onClick={authEmailClickHandler}>인증코드 요청</p>
                     </div>
 
@@ -172,4 +189,4 @@ const Signup = () => {
     )
 }
 
-export default Signup
+export default withRouter(Signup)

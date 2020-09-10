@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
+import { withRouter } from 'react-router-dom'
 
 import Button from '../components/Button/Button'
 import customAxios from '../customAxios'
 
 import './Login.css'
 
-const Login = () => {
+const Login = (props) => {
 
     const [id, setId] = useState('')
     const [password, setPassword] = useState('')
@@ -13,6 +14,13 @@ const Login = () => {
     const loginClickHandler = () => {
         customAxios('/login', (data) => {
             // TODO 로그인 실패했을 때 로직 처리!
+
+            if (data.resultStatus === 'SUCCESS') {
+                props.history.goBack()
+            } else {
+                alert(data.reason)
+            }
+
             console.log('login', data)
         }, {
             id: id,
@@ -53,4 +61,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default withRouter(Login)

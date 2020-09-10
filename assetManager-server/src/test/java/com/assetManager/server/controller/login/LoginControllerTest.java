@@ -1,15 +1,16 @@
 package com.assetManager.server.controller.login;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.assetManager.server.controller.login.dto.LoginRequestDto;
 import com.assetManager.server.domain.user.User;
 import com.assetManager.server.domain.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ public class LoginControllerTest {
 
     private String id = "test";
     private String password = "test";
-    private String email = "test@test.com";
+    private String email = "flowertaekk.dev@gmail.com";
 
     @BeforeEach
     public void setup() {
@@ -66,27 +67,8 @@ public class LoginControllerTest {
         // then
         action
                 .andExpect(status().isOk())
-                .andExpect(content().string("SUCCESS"))
-                .andDo(print());
-    }
-
-    @Test public void cannot_log_in_when_userStatus_is_APPLIED() throws Exception {
-        // given
-        createUserAs(User.UserStatus.APPLIED);
-
-        String url = "/api/v1/login";
-
-        // when
-        ResultActions action = mvc.perform(
-                post(url)
-                        .content(getLoginContent(id, password, email))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON));
-
-        // then
-        action
-                .andExpect(status().isOk())
-                .andExpect(content().string("FAILURE"))
+                .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
+                .andExpect(jsonPath("$.reason", nullValue()))
                 .andDo(print());
     }
 

@@ -1,6 +1,7 @@
 package com.assetManager.server.controller.login;
 
 import com.assetManager.server.controller.login.dto.LoginRequestDto;
+import com.assetManager.server.controller.login.dto.LoginResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
         return ResponseEntity.ok(loginService.login(loginRequestDto));
     }
 

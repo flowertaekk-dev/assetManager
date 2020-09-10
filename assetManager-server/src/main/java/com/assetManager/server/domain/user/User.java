@@ -40,7 +40,6 @@ public class User {
 
     @Getter
     public enum UserStatus {
-        APPLIED("신청완료"),
         USING("사용중"),
         REMOVED("종료"),
         ;

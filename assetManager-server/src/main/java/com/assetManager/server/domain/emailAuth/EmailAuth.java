@@ -64,10 +64,9 @@ public class EmailAuth {
     }
 
     /**
-     * EmailAuthStatus를 갱신한다
+     * EmailAuthStatus를 COMPLETED로 갱신한다
      */
-    public void updateStatus(EmailAuthStatus status) {
-        this.status = status;
+    public void updateStatusToCompleted() {
+        this.status = EmailAuthStatus.COMPLETED;
     }
-
 }

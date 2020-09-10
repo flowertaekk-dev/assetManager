@@ -13,7 +13,6 @@ import com.assetManager.server.domain.emailAuth.EmailAuth;
 import com.assetManager.server.domain.emailAuth.EmailAuthRepository;
 import com.assetManager.server.domain.user.User;
 import com.assetManager.server.domain.user.UserRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +38,7 @@ public class EmailAuthControllerTest {
     private MockMvc mvc;
 
     private final String email = "test@test.com";
-    private final String url = "/api/v1/auth/email";
+    private final String url = "/api/v1/email/requestCode";
 
     @BeforeEach
     public void setup() {
@@ -90,7 +89,7 @@ public class EmailAuthControllerTest {
                         .id("test")
                         .password("test")
                         .email(this.email)
-                        .status(User.UserStatus.APPLIED)
+                        .status(User.UserStatus.USING)
                         .build());
 
         // when

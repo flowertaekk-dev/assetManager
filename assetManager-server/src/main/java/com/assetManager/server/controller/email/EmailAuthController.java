@@ -20,7 +20,7 @@ public class EmailAuthController {
 
     private final EmailAuthService emailAuthService;
 
-    @PostMapping("/auth/email")
+    @PostMapping("/email/requestCode")
     public ResponseEntity<EmailAuthResponseDto> emailConfirm(@RequestBody EmailAuthRequestDto email) {
         logger.info(String.format("Email to send: %s", email));
 

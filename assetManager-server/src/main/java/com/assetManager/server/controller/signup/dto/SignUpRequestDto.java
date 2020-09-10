@@ -14,12 +14,14 @@ public class SignUpRequestDto {
     private String id;
     private String password;
     private String email;
+    private String emailAuthCode;
 
     @Builder
-    public SignUpRequestDto(String id, String password, String email) {
+    public SignUpRequestDto(String id, String password, String email, String emailAuthCode) {
         this.id = id;
         this.password = password;
         this.email = email;
+        this.emailAuthCode = emailAuthCode;
     }
 
     public User toUserEntity() {
@@ -27,7 +29,7 @@ public class SignUpRequestDto {
                 .id(this.id)
                 .password(this.password)
                 .email(this.email)
-                .status(User.UserStatus.APPLIED)
+                .status(User.UserStatus.USING)
                 .build();
     }
 }

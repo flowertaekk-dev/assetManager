@@ -5,10 +5,13 @@ import static com.assetManager.server.controller.CommonResponseResult.FAILURE;
 
 import com.assetManager.server.controller.signup.dto.SignUpRequestDto;
 import com.assetManager.server.controller.signup.dto.SignUpResponseDto;
+import com.assetManager.server.domain.emailAuth.EmailAuth;
+import com.assetManager.server.domain.emailAuth.EmailAuthRepository;
 import com.assetManager.server.domain.user.User;
 import com.assetManager.server.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -18,7 +21,9 @@ import java.util.Optional;
 public class SignUpService {
 
     private final UserRepository userRepository;
+    private final EmailAuthRepository emailAuthRepository;
 
+    @Transactional
     protected SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
 
         if (Objects.isNull(signUpRequestDto))
@@ -36,8 +41,19 @@ public class SignUpService {
                     .build();
         }
 
+        // 올바른 인증코드를 입력 받았는지 확인
+        EmailAuth emailAuth = emailAuthRepository.findByAuthCode(signUpRequestDto.getEmailAuthCode());
+        if (emailAuth == null) {
+            return SignUpResponseDto.builder()
+                    .resultStatus(FAILURE)
+                    .reason("틀린 이메일 인증코드입니다.")
+                    .build();
+        }
+
         // 여기까지 왔으면 무조건 성공?
+        emailAuth.updateStatusToCompleted();
         userRepository.save(signUpRequestDto.toUserEntity());
+
         return SignUpResponseDto.builder()
                 .resultStatus(SUCCESS)
                 .reason(null)

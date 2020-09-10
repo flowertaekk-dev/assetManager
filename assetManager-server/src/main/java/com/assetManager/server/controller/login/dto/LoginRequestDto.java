@@ -1,6 +1,7 @@
 package com.assetManager.server.controller.login.dto;
 
 import com.assetManager.server.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
