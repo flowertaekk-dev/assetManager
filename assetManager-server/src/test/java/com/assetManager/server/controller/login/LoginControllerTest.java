@@ -2,6 +2,7 @@ package com.assetManager.server.controller.login;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -16,13 +17,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
 
 @SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class LoginControllerTest {
@@ -33,16 +39,20 @@ public class LoginControllerTest {
     @Autowired private WebApplicationContext context;
     @Autowired private ObjectMapper objectMapper;
 
+    @MockBean private JavaMailSender mockMailSender;
+
     private MockMvc mvc;
 
     private String id = "test";
     private String password = "test";
-    private String email = "flowertaekk.dev@gmail.com";
+    private String email = "test@email.com";
 
     @BeforeEach
     public void setup() {
-        this.mvc = MockMvcBuilders.webAppContextSetup(context)
-                .build();
+        this.mvc = MockMvcBuilders.webAppContextSetup(context).build();
+
+        // mock javaMailSender
+        when(mockMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
     }
 
     @AfterEach

@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.mockito.Mockito.when;
 
 import com.assetManager.server.controller.email.dto.EmailAuthRequestDto;
 import com.assetManager.server.domain.emailAuth.EmailAuth;
@@ -19,12 +20,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
 import java.util.List;
 
 @SpringBootTest
@@ -35,14 +40,19 @@ public class EmailAuthControllerTest {
     @Autowired private EmailAuthRepository emailAuthRepository;
     @Autowired private UserRepository userRepository;
 
+    @MockBean private JavaMailSender mockMailSender;
+
     private MockMvc mvc;
 
-    private final String email = "test@test.com";
+    private final String email = "test@email.com";
     private final String url = "/api/v1/email/requestCode";
 
     @BeforeEach
     public void setup() {
         this.mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+        // mock javaMailSender
+        when(mockMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
     }
 
     @AfterEach
@@ -57,15 +67,7 @@ public class EmailAuthControllerTest {
         // given
 
         // when
-        ResultActions action = mvc.perform(
-                post(this.url)
-                        .content(
-                                objectMapper.writeValueAsString(
-                                    EmailAuthRequestDto.builder()
-                                        .addressTo(this.email)
-                                        .build()))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON));
+        ResultActions action = sendRequest();
 
         // then
         action
@@ -93,15 +95,7 @@ public class EmailAuthControllerTest {
                         .build());
 
         // when
-        ResultActions action = mvc.perform(
-                post(this.url)
-                        .content(
-                                objectMapper.writeValueAsString(
-                                        EmailAuthRequestDto.builder()
-                                                .addressTo(this.email)
-                                                .build()))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON));
+        ResultActions action = sendRequest();
 
         // then
         action
@@ -122,15 +116,7 @@ public class EmailAuthControllerTest {
         // when
 
         // 첫 리퀘스트
-        mvc.perform(
-                post(this.url)
-                        .content(
-                                objectMapper.writeValueAsString(
-                                        EmailAuthRequestDto.builder()
-                                                .addressTo(this.email)
-                                                .build()))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON));
+        sendRequest();
 
         String firstAuthCode =
                 emailAuthRepository.findByEmail(this.email)
@@ -138,15 +124,7 @@ public class EmailAuthControllerTest {
                     .getAuthCode();
 
         // 두 번째 리퀘스트
-        ResultActions action = mvc.perform(
-                post(this.url)
-                        .content(
-                                objectMapper.writeValueAsString(
-                                        EmailAuthRequestDto.builder()
-                                                .addressTo(this.email)
-                                                .build()))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON));
+        ResultActions action = sendRequest();
 
         action
                 .andExpect(status().isOk())
@@ -161,5 +139,20 @@ public class EmailAuthControllerTest {
 
         // then
         assertThat(firstAuthCode).isNotEqualTo(secondAuthCode);
+    }
+
+    // ---------------------------------------------------------------------------
+    // utils
+
+    protected ResultActions sendRequest() throws Exception {
+        return mvc.perform(
+                post(this.url)
+                        .content(
+                                objectMapper.writeValueAsString(
+                                        EmailAuthRequestDto.builder()
+                                                .addressTo(this.email)
+                                                .build()))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
     }
 }
