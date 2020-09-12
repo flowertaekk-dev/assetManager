@@ -13,7 +13,6 @@ const Login = (props) => {
 
     const loginClickHandler = () => {
         customAxios('/login', (data) => {
-            // TODO 로그인 실패했을 때 로직 처리!
 
             if (data.resultStatus === 'SUCCESS') {
                 props.history.goBack()

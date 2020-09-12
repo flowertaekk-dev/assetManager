@@ -17,6 +17,9 @@ const Signup = (props) => {
     const [email, setEmail] = useState('')
     const [emailStatus, setEmailStatus] = useState('')
 
+    const [doubleCheckEmail, setDoubldCheckEmail] = useState('')
+    const [doubleCheckEmailStatus, setDoubleCheckEmailStatus] = useState('')
+
     const [emailAuthCode, setEmailAuthCode] = useState('')
 
     // ---------------------------------------------------------
@@ -56,6 +59,16 @@ const Signup = (props) => {
 
         return VALIDATE_OK
     }
+
+    const validateDoubleCheckEmail = (doubleCheckEmail) => {
+        if ( !doubleCheckEmail.length )
+            return ''
+
+        if ( email !== doubleCheckEmail)
+            return VALIDATE_NOT_OK
+
+        return VALIDATE_OK
+    }
  
     // ---------------------------------------------------------
     // Handlers
@@ -80,6 +93,10 @@ const Signup = (props) => {
                 setEmailStatus(validateEmail(value))
                 setEmail(value)
                 break;
+            case 'doubleCheckEmail':
+                setDoubleCheckEmailStatus(validateDoubleCheckEmail(value))
+                setDoubldCheckEmail(value)
+                break;
             case 'signupEmailAuth':
                 setEmailAuthCode(value)
                 break;
@@ -93,14 +110,12 @@ const Signup = (props) => {
      * OK 버튼 클릭 핸들러
      */
     const okButtonClickHandler = () => {
-        let result = [idStatus, passwordStatus, emailStatus]
-            .filter(status => status === VALIDATE_OK)
+        let result = [idStatus, passwordStatus, emailStatus, doubleCheckEmailStatus]
+            .filter(status => status !== VALIDATE_OK)
 
         // send request
-        if (result.length === 3) {
+        if (!result.length) {
             customAxios('/signup', (data) => {
-                // TODO 성공하면 로그인 페이지로?
-                // TODO 실패하면 실패메세지 띄우기
 
                 if (data.resultStatus === 'SUCCESS') {
                     props.history.goBack()
@@ -109,14 +124,14 @@ const Signup = (props) => {
                     alert(data.reason)
                 }
 
-                console.log(data)
-                console.log(data.resultStatus)
             }, {
                 id,
                 password,
                 email,
                 emailAuthCode
             })
+        } else {
+            alert('틀린 항목이 없는지 확인해주세요!')
         }
 
     }
@@ -158,14 +173,22 @@ const Signup = (props) => {
                         onChange={(event) => onChangeHandler(event)}/>
                 </div>
 
-                {/* TODO password double check! */}
-
                 <div className="Signup__item">
                     <label htmlFor="signupEmail">E-MAIL</label>
                     <input type="email"
                          id="signupEmail" name="signupEmail" placeholder="E-MAIL"
                          className={emailStatus}
                          value={email}
+                         onChange={(event) => onChangeHandler(event)}/>
+                </div>
+
+                {/* TODO password double check! */}
+                <div className="Signup__item">
+                    <label htmlFor="doubleCheckEmail">E-MAIL</label>
+                    <input type="email"
+                         id="doubleCheckEmail" name="doubleCheckEmail" placeholder="E-MAIL 확인"
+                         className={doubleCheckEmailStatus}
+                         value={doubleCheckEmail}
                          onChange={(event) => onChangeHandler(event)}/>
                 </div>
 
