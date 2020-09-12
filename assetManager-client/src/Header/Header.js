@@ -7,6 +7,7 @@ const Header = props => {
 
     const [currentPage, setCurrentPage] = useState('')
     const [menus, setMenus] = useState(<Link to="/login">Log in</Link>)
+    const [title, setTitle] = useState('')
 
     props.history.listen((location, action) => {
         setCurrentPage(props.history.location.pathname)
@@ -14,6 +15,7 @@ const Header = props => {
 
     useEffect(() => {
         setMenus(shownMenu(currentPage))
+        setTitle(showTitle(currentPage))
     }, [currentPage])
 
     const shownMenu = (path) => {
@@ -32,10 +34,23 @@ const Header = props => {
         return menu
     }
 
+    /**
+     * index 페이지에서는 title을 보여주지 않는다 
+     */
+    const showTitle = (path) => {
+        let title = '';
+
+        if (path && path !== '/') {
+            title = <Link to="/">AssetManager</Link>
+        }
+
+        return title;
+    }
+
     return (
         <header className="Header">
             <div className="Header__home">
-                <Link to="/">AssetManager</Link>
+                {title}
             </div>
             
             <p className="Header__login__text">

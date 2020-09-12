@@ -17,8 +17,8 @@ const Signup = (props) => {
     const [email, setEmail] = useState('')
     const [emailStatus, setEmailStatus] = useState('')
 
-    const [doubleCheckEmail, setDoubldCheckEmail] = useState('')
-    const [doubleCheckEmailStatus, setDoubleCheckEmailStatus] = useState('')
+    const [doubleCheckPassword, setDoubldCheckEmail] = useState('')
+    const [doubleCheckPasswordStatus, setDoubleCheckPasswordStatus] = useState('')
 
     const [emailAuthCode, setEmailAuthCode] = useState('')
 
@@ -60,11 +60,11 @@ const Signup = (props) => {
         return VALIDATE_OK
     }
 
-    const validateDoubleCheckEmail = (doubleCheckEmail) => {
-        if ( !doubleCheckEmail.length )
+    const validateDoubleCheckPassword = (doubleCheckPassword) => {
+        if ( !doubleCheckPassword.length )
             return ''
 
-        if ( email !== doubleCheckEmail)
+        if ( password !== doubleCheckPassword)
             return VALIDATE_NOT_OK
 
         return VALIDATE_OK
@@ -93,8 +93,8 @@ const Signup = (props) => {
                 setEmailStatus(validateEmail(value))
                 setEmail(value)
                 break;
-            case 'doubleCheckEmail':
-                setDoubleCheckEmailStatus(validateDoubleCheckEmail(value))
+            case 'doubleCheckPassword':
+                setDoubleCheckPasswordStatus(validateDoubleCheckPassword(value))
                 setDoubldCheckEmail(value)
                 break;
             case 'signupEmailAuth':
@@ -110,7 +110,7 @@ const Signup = (props) => {
      * OK 버튼 클릭 핸들러
      */
     const okButtonClickHandler = () => {
-        let result = [idStatus, passwordStatus, emailStatus, doubleCheckEmailStatus]
+        let result = [idStatus, passwordStatus, emailStatus, doubleCheckPasswordStatus]
             .filter(status => status !== VALIDATE_OK)
 
         // send request
@@ -174,21 +174,20 @@ const Signup = (props) => {
                 </div>
 
                 <div className="Signup__item">
+                    <label htmlFor="doubleCheckPassword">E-MAIL</label>
+                    <input type="password"
+                         id="doubleCheckPassword" name="doubleCheckPassword" placeholder="Password 확인"
+                         className={doubleCheckPasswordStatus}
+                         value={doubleCheckPassword}
+                         onChange={(event) => onChangeHandler(event)}/>
+                </div>
+
+                <div className="Signup__item">
                     <label htmlFor="signupEmail">E-MAIL</label>
                     <input type="email"
                          id="signupEmail" name="signupEmail" placeholder="E-MAIL"
                          className={emailStatus}
                          value={email}
-                         onChange={(event) => onChangeHandler(event)}/>
-                </div>
-
-                {/* TODO password double check! */}
-                <div className="Signup__item">
-                    <label htmlFor="doubleCheckEmail">E-MAIL</label>
-                    <input type="email"
-                         id="doubleCheckEmail" name="doubleCheckEmail" placeholder="E-MAIL 확인"
-                         className={doubleCheckEmailStatus}
-                         value={doubleCheckEmail}
                          onChange={(event) => onChangeHandler(event)}/>
                 </div>
 
