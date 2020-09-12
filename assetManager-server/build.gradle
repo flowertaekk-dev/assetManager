@@ -28,6 +28,9 @@ dependencies {
 	// java email
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+	// mariadb
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
 	// lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -36,7 +39,7 @@ dependencies {
  	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// in-memory
-	implementation 'com.h2database:h2'
+	testRuntimeOnly 'com.h2database:h2'
 
 	// Guava
 	compile group: 'com.google.guava', name: 'guava', version: '29.0-jre'
