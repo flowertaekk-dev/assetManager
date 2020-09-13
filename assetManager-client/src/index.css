@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Poor+Story&display=swap');
+
 #root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+
+  /* 폰트: Poor Story */
+  font-family: 'Poor Story', cursive;
 }
 
 body {
