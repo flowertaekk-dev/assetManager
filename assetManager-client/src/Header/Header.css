@@ -14,10 +14,12 @@
     margin-left: 24px;
 }
 
-.Header .Header__login__text a {
+.Header .Header__login__text a,
+.Header .Header__login__text span {
     font-size: 2vh;
     color: #000;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .Header .Header__login__text:after {

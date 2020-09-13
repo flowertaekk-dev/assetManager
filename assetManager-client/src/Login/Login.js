@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
+import { useObserver } from 'mobx-react'
 
 import Button from '../components/Button/Button'
 import customAxios from '../customAxios'
+import useStore from '../mobx/useStore'
 
 import './Login.css'
 
 const Login = (props) => {
+
+    const { loginUser } = useStore()
 
     const [id, setId] = useState('')
     const [password, setPassword] = useState('')
@@ -15,19 +19,21 @@ const Login = (props) => {
         customAxios('/login', (data) => {
 
             if (data.resultStatus === 'SUCCESS') {
+                loginUser.updateLoginUser(id)
+                window.localStorage.setItem('loginUser', id)
+                // TODO 로그인 후 메인화면으로 이동하도록!
                 props.history.goBack()
             } else {
                 alert(data.reason)
             }
 
-            console.log('login', data)
         }, {
             id: id,
             password: password
         })
     }
 
-    return (
+    return useObserver(() => (
         <section className="Login">
             <div className="Login__field">
                 <div className="Login__item">
@@ -46,10 +52,6 @@ const Login = (props) => {
                         onChange={(event) => setPassword(event.target.value)}/>
                 </div>
 
-                {/* <div className="Login__item">
-                    <label htmlFor="loginEmail">E-MAIL</label>
-                    <input type="email" id="loginEmail" name="loginEmail" placeholder="E-MAIL"/>
-                </div> */}
             </div>
 
             <div>
@@ -57,7 +59,7 @@ const Login = (props) => {
                 <Button name="Cancel" />
             </div>
         </section>
-    )
+    ))
 }
 
 export default withRouter(Login)
