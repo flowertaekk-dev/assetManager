@@ -4,6 +4,7 @@
     align-items: center;
     justify-content: space-between;
     z-index: 1;
+    background-color: white;
 }
 
 .Header div.Header__home a {
