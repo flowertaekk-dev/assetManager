@@ -10,6 +10,7 @@ import Header from './Header/Header'
 import Login from './Login/Login'
 import Signup from './Login/Signup/Signup'
 import TableMap from './TableMap/TableMap'
+import Setting from './Setting/Setting'
 
 import './index.css';
 
@@ -28,6 +29,7 @@ const Index = () => {
       <Route path="/login" component={Login}/>
       <Route path="/signup" component={Signup}/>
       <Route path="/tableMap" component={TableMap} />
+      <Route path="/setting" component={Setting} />
 
       
 

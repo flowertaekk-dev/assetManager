@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Redirect, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { useObserver } from 'mobx-react'
 
 import Button from '../components/Button/Button'
@@ -19,9 +19,11 @@ const Login = (props) => {
         customAxios('/login', (data) => {
 
             if (data.resultStatus === 'SUCCESS') {
+                // store에 저장
                 loginUser.updateLoginUser(id)
+                // session에 저장
                 window.localStorage.setItem('loginUser', id)
-                // TODO 로그인 후 메인화면으로 이동하도록!
+                // 메인 테이블화면으로 이동
                 props.history.push('/tableMap')
             } else {
                 alert(data.reason)

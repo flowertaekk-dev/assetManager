@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, withRouter, useLocation } from 'react-router-dom'
 import { useObserver } from 'mobx-react'
 
 import useStore from '../mobx/useStore'
@@ -9,43 +9,45 @@ import './Header.css'
 const Header = (props) => {
 
     const { loginUser } = useStore()
+    let location = useLocation()
 
     const [currentPage, setCurrentPage] = useState('')
-    const [menus, setMenus] = useState(<Link to="/login">Log in</Link>)
+    const [menus, setMenus] = useState([<Link to="/login">Log in</Link>])
     const [title, setTitle] = useState('')
 
     props.history.listen((location, action) => {
-        setCurrentPage(props.history.location.pathname)
+        setCurrentPage(location.pathname)
     })
 
     useEffect(() => {
-        setMenus(shownMenu(currentPage))
-        setTitle(showTitle(currentPage))
+        // refresh 에서 생각대로 안 움직여서 우선은 DRY 위반.. 사실은 currentPage를 쓰고 싶었다.
+        setMenus(shownMenu(location.pathname))
+        setTitle(showTitle(location.pathname))
     }, [currentPage, loginUser.loginUserId])
 
     /**
      * Header의 메뉴 설정
      */
     const shownMenu = (path) => {
-        let menu;
+        const menus = [];
 
         switch (path) {
             case "":
             case "/":
 
-                if (loginUser.loginUserId) {
-                    menu = <span onClick={logoutHandler}>Log out</span>
-                } else {
-                    menu = <Link to="/login">Log in</Link>
+                if (!loginUser.loginUserId) {
+                    menus.push(<Link to="/login">로그인</Link>)                   
                 }
-                
+
                 break;
             case "/login": 
-                menu = <Link to="/signup">Sign up</Link>
+                menus.push(<Link to="/signup">회원가입</Link>)
                 break;
-
             case "/tableMap":
-                menu = <span onClick={logoutHandler}>Log out</span>
+                menus.push(<Link to="/setting">설정</Link>)
+                break;
+            
+            case "setting":
                 break;
 
             default:
@@ -53,7 +55,11 @@ const Header = (props) => {
                 break;
         }
 
-        return menu
+        if (loginUser.loginUserId) {
+            menus.push(<span onClick={logoutHandler}>로그아웃</span>)
+        }
+
+        return menus
     }
 
     /**
@@ -89,7 +95,7 @@ const Header = (props) => {
             </div>
 
             <ul className="Header__list">
-                {menus}
+                { menus.map((menu, i) => (<li key={i}>{menu}</li>)) }
             </ul>
         </header>
     ))

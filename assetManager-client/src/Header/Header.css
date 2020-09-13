@@ -15,15 +15,24 @@
     margin-left: 24px;
 }
 
-.Header .Header__list a,
-.Header .Header__list span {
+.Header .Header__list {
+    display: flex;
+    flex-direction: row;
+}
+.Header .Header__list li {
+    list-style-type: none;
+    color: #000;
+    margin-left: 12px;
+}
+.Header .Header__list li a,
+.Header .Header__list {
     font-size: 2vh;
     color: #000;
     text-decoration: none;
     cursor: pointer;
 }
 
-.Header .Header__list:after {
+.Header .Header__list li:after {
     display:block;
     content: '';
     border-bottom: solid 3px #61A3FF;  
@@ -31,7 +40,7 @@
     transition: transform 250ms ease-in-out;
     transform-origin:  0% 50%;
 }
-.Header .Header__list:hover:after {
+.Header .Header__list li:hover:after {
     transform: scaleX(1);
 }
 
