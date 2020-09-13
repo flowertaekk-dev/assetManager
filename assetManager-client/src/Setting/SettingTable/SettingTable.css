@@ -1,0 +1,9 @@
+.SettingTable {
+    width: 95%;
+}
+
+.SettingTable h1 {
+    padding: 12px 0;
+    font-size: 1.5em;
+    border-bottom: 2px solid #ddd;
+}
