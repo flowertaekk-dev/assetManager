@@ -6,7 +6,7 @@ const loginUser = observable({
         this.loginUserId = id
     },
     deleteLoginUser() {
-        this.loginUserId = ''
+        this.loginUserId = undefined
     },
 })
 

@@ -14,15 +14,15 @@
     margin-left: 24px;
 }
 
-.Header .Header__login__text a,
-.Header .Header__login__text span {
+.Header .Header__list a,
+.Header .Header__list span {
     font-size: 2vh;
     color: #000;
     text-decoration: none;
     cursor: pointer;
 }
 
-.Header .Header__login__text:after {
+.Header .Header__list:after {
     display:block;
     content: '';
     border-bottom: solid 3px #61A3FF;  
@@ -30,7 +30,7 @@
     transition: transform 250ms ease-in-out;
     transform-origin:  0% 50%;
 }
-.Header .Header__login__text:hover:after {
+.Header .Header__list:hover:after {
     transform: scaleX(1);
 }
 
@@ -42,7 +42,7 @@
         font-size: 2.3vw;
     }
 
-    .Header .Header__login__text {
+    .Header .Header__list {
         margin-right: 24px;
     }
 }
@@ -54,7 +54,7 @@
         font-size: 2.6vw;
     }
 
-    .Header .Header__login__text {
+    .Header .Header__list {
         margin-right: 24px;
     }
 }
@@ -66,7 +66,7 @@
         font-size: 3vw;
     }
 
-    .Header .Header__login__text {
+    .Header .Header__list {
         margin-right: 24px;
     }
 }

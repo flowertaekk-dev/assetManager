@@ -32,9 +32,8 @@ const Header = (props) => {
         switch (path) {
             case "":
             case "/":
-                let loginUser = window.localStorage.getItem('loginUser')
 
-                if (loginUser) {
+                if (loginUser.loginUserId) {
                     menu = <span onClick={logoutHandler}>Log out</span>
                 } else {
                     menu = <Link to="/login">Log in</Link>
@@ -43,6 +42,10 @@ const Header = (props) => {
                 break;
             case "/login": 
                 menu = <Link to="/signup">Sign up</Link>
+                break;
+
+            case "/tableMap":
+                menu = <span onClick={logoutHandler}>Log out</span>
                 break;
 
             default:
@@ -72,7 +75,7 @@ const Header = (props) => {
     const showTitle = (path) => {
         let title = '';
 
-        if (path && path !== '/') {
+         if (path || path !== '/') {
             title = <Link to="/">AssetManager</Link>
         }
 
@@ -85,11 +88,9 @@ const Header = (props) => {
                 {title}
             </div>
 
-            <p>{window.localStorage.getItem('loginUser')}</p>
-            
-            <p className="Header__login__text">
+            <ul className="Header__list">
                 {menus}
-            </p>
+            </ul>
         </header>
     ))
 }

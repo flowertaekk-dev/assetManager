@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { withRouter } from 'react-router-dom'
+import { Redirect, withRouter } from 'react-router-dom'
 import { useObserver } from 'mobx-react'
 
 import Button from '../components/Button/Button'
@@ -22,7 +22,7 @@ const Login = (props) => {
                 loginUser.updateLoginUser(id)
                 window.localStorage.setItem('loginUser', id)
                 // TODO 로그인 후 메인화면으로 이동하도록!
-                props.history.goBack()
+                props.history.push('/tableMap')
             } else {
                 alert(data.reason)
             }

@@ -143,8 +143,9 @@ const Signup = (props) => {
         }
 
         customAxios('/email/requestCode', (data) => {
-            console.log(data)
-            console.log(data.resultStatus)
+            // console.log(data)
+            // console.log(data.resultStatus)
+            // do nothing
         }, {
             addressTo: email
         })
