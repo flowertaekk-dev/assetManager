@@ -2,8 +2,47 @@
     width: 95%;
 }
 
-.SettingItem h1 {
-    padding: 12px 0;
+.SettingItem .SettingItem__header {
+    margin: 12px 0;
     font-size: 1.5em;
     border-bottom: 2px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.SettingItem .SettingItem__header h1 {
+    margin: 0;
+    padding-bottom: 12px;
+}
+.SettingItem .SettingItem__header button {
+    width: 100px;
+    font-size: 1.3vw;
+    letter-spacing: 0.5px;
+    margin: 12px;
+}
+
+.SettingItem .SettingItem__list ul {
+    list-style: none;
+}
+.SettingItem .SettingItem__list ul li {
+    margin-bottom: 12px;
+    padding: 12px;
+    font-size: 1.3em;
+    cursor: pointer;
+    border: 1px solid #48C5F0;
+    border-radius: 4px;
+}
+.SettingItem .SettingItem__list ul li:hover {
+    background-color: #48C5F0;
+}
+
+.SettingItem .SettingItem__list .SettingItem__list__item {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-around; */
+}
+.SettingItem .SettingItem__list ul li p {
+    margin: 0;
+    margin-left: 12px;
+    padding: 0;
 }

@@ -1,11 +1,35 @@
 import React from 'react'
 
+import Button from '../../components/Button/Button'
+
 import './SettingItem.css'
 
 const SettingItem = () => {
     return (
         <section className='SettingItem'>
-            <h1>Setting Item</h1>
+            
+            <div className='SettingItem__header'>
+                <h1>메뉴 설정</h1>
+                <Button>ADD</Button>
+            </div>
+            
+            <div className='SettingItem__list'>
+                <ul>
+                    <li className='SettingItem__list__item'>
+                        <p>삼겹살</p>
+                        <p>5000원</p>
+                    </li>
+                    <li className='SettingItem__list__item'>
+                        <p>육회</p>
+                        <p>12000원</p>
+                    </li>
+                    <li className='SettingItem__list__item'>
+                        <p>함흥냉면</p>
+                        <p>9000원</p>
+                    </li>
+                </ul>
+            </div>
+
         </section>
     )
 }

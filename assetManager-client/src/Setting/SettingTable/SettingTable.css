@@ -2,8 +2,37 @@
     width: 95%;
 }
 
-.SettingTable h1 {
+.SettingTable .SettingTable__header {
     padding: 12px 0;
     font-size: 1.5em;
     border-bottom: 2px solid #ddd;
+}
+.SettingTable .SettingTable__header h1 {
+    margin: 0;
+    padding-bottom: 12px;
+}
+
+.SettingTable .SettingTable__list ul {
+    list-style: none;
+}
+.SettingTable .SettingTable__list ul li {
+    margin-bottom: 12px;
+    padding: 12px;
+    font-size: 1.3em;
+    border: 1px solid #48C5F0;
+    border-radius: 4px;
+}
+.SettingTable .SettingTable__list ul li p {
+    margin: 0;
+    padding: 0;
+}
+
+.SettingTable .SettingTable__list .SettingTable__list__item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.SettingTable .SettingTable__list ul li p {
+    margin: 0;
+    padding: 0;
 }
