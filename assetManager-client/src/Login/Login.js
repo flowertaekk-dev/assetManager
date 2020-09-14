@@ -57,8 +57,8 @@ const Login = (props) => {
             </div>
 
             <div>
-                <Button name="Sign in" clickHandler={loginClickHandler} />
-                <Button name="Cancel" />
+                <Button clickHandler={loginClickHandler}>Sign in</Button>
+                <Button>Cancel</Button>
             </div>
         </section>
     ))

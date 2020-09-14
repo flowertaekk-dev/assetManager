@@ -205,8 +205,8 @@ const Signup = (props) => {
             </div>
 
             <div className="btn__container">
-                <Button name="OK" clickHandler={okButtonClickHandler}/>
-                <Button name="Cancel" />
+                <Button clickHandler={okButtonClickHandler}>OK</Button>
+                <Button>Cancel</Button>
             </div>
         </section>
     )
