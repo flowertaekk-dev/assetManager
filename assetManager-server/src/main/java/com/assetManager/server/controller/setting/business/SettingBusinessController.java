@@ -41,4 +41,10 @@ public class SettingBusinessController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/readAll")
+    public ResponseEntity<ReadAllBusinessResponseDto> readAllBusinessName(@RequestBody ReadAllBusinessRequestDto request) {
+        ReadAllBusinessResponseDto response = settingBusinessService.readAll(request);
+        return ResponseEntity.ok(response);
+    }
+
 }

@@ -1,16 +1,14 @@
 package com.assetManager.server.controller.setting.business;
 
 import com.assetManager.server.controller.CommonResponseResult;
-import com.assetManager.server.controller.setting.business.dto.AddBusinessRequestDto;
-import com.assetManager.server.controller.setting.business.dto.CommonBusinessResponseDto;
-import com.assetManager.server.controller.setting.business.dto.DeleteBusinessRequestDto;
-import com.assetManager.server.controller.setting.business.dto.UpdateBusinessRequestDto;
+import com.assetManager.server.controller.setting.business.dto.*;
 import com.assetManager.server.domain.business.Business;
 import com.assetManager.server.domain.business.BusinessRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -71,6 +69,16 @@ public class SettingBusinessService {
         businessRepository.delete(business.get());
 
         return makeSuccessResponse();
+    }
+
+    protected ReadAllBusinessResponseDto readAll(ReadAllBusinessRequestDto request) {
+
+        List<Business> businessNames = businessRepository.findByUserId(request.getUserId());
+
+        return ReadAllBusinessResponseDto.builder()
+                .resultStatus(CommonResponseResult.SUCCESS)
+                .businessNames(businessNames)
+                .build();
     }
 
     // -------------------------------------------------------------------
