@@ -33,7 +33,7 @@ public class Business {
     /**
      * 상호명을 변경
      */
-    public void updateBusinessName(String newBusinessName) {
-        this.businessName = newBusinessName;
+    public void updateBusinessName(String businessName) {
+        this.businessName = businessName;
     }
 }

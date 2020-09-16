@@ -8,4 +8,6 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
 
     Optional<Business> findByBusinessName(String businessName);
 
+    Optional<Business> findByUserIdAndBusinessName(String userId, String businessName);
+
 }

@@ -66,6 +66,7 @@ public class EmailAuthService {
             saveEmailAuth(emailToSend, authCode);
         }
 
+        emailAuthRepository.flush();
         return EmailAuthResponseDto.builder()
                 .resultStatus(CommonResponseResult.SUCCESS)
                 .build();

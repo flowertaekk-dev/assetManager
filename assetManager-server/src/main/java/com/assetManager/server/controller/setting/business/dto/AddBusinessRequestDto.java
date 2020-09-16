@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class SettingBusinessRequestDto {
+public class AddBusinessRequestDto {
 
     private String userId;
     private String businessName;
 
     @Builder
-    public SettingBusinessRequestDto(String userId, String businessName) {
+    public AddBusinessRequestDto(String userId, String businessName) {
         this.userId = userId;
         this.businessName = businessName;
     }
