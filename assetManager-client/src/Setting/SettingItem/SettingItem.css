@@ -20,6 +20,9 @@
     letter-spacing: 0.5px;
     margin: 12px;
 }
+.SettingItem .SettingItem__header .CustomModal .CustomModal__toggleButton {
+    font-size: 1.3vw;
+}
 
 .SettingItem .SettingItem__list ul {
     list-style: none;
@@ -45,4 +48,26 @@
     margin: 0;
     margin-left: 12px;
     padding: 0;
+}
+
+/* TABLET */
+@media screen and (min-width: 768px) and (max-width: 1025px) {
+    .SettingItem .SettingItem__header button {
+        font-size: 1.8vw;
+    }
+
+    .SettingItem .SettingItem__header .CustomModal .CustomModal__toggleButton {
+        font-size: 1.8vw;
+    }
+}
+
+/* MOBILE */
+@media screen and (max-width: 767px) {
+    .SettingItem .SettingItem__header button {
+        font-size: 2.4vw;
+    }
+
+    .SettingItem .SettingItem__header .CustomModal .CustomModal__toggleButton {
+        font-size: 2.4vw;
+    }
 }

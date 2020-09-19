@@ -20,6 +20,9 @@
     letter-spacing: 0.5px;
     margin: 12px;
 }
+.SettingBusiness .SettingBusiness__header .CustomModal .CustomModal__toggleButton {
+    font-size: 1.3vw;
+}
 
 .SettingBusiness .SettingBusiness__list ul {
     list-style: none;
@@ -51,11 +54,19 @@
     .SettingBusiness .SettingBusiness__header button {
         font-size: 1.8vw;
     }
+
+    .SettingBusiness .SettingBusiness__header .CustomModal .CustomModal__toggleButton {
+        font-size: 1.8vw;
+    }
 }
 
 /* MOBILE */
 @media screen and (max-width: 767px) {
     .SettingBusiness .SettingBusiness__header button {
+        font-size: 2.4vw;
+    }
+
+    .SettingBusiness .SettingBusiness__header .CustomModal .CustomModal__toggleButton {
         font-size: 2.4vw;
     }
 }
