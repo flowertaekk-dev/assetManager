@@ -23,11 +23,9 @@ const CustomModal = (props) => {
 
   return (
       <div className='CustomModal'>
-        <button
-          onClick={openModal}
-          className='CustomModal__toggleButton'>
-            {props.toggleButtonText}
-        </button>
+        <span onClick={openModal}>
+          {props.toggleButton}
+        </span>
 
         <Modal
           isOpen={isOpen}

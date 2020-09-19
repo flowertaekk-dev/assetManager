@@ -45,6 +45,9 @@
     margin: 0;
     padding: 0;
 }
+.SettingBusiness .SettingBusiness__list ul li .SettingBusiness__list__buttons button {
+    margin-left: 12px;
+}
 
 /* MODAL */
 .SettingBusiness .SettingBusiness__header .CustomModal .CustomModal__toggleButton {

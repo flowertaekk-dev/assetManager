@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import Button from '../../components/Button/Button'
 import CustomModal from '../../components/Modal/CustomModal'
@@ -6,13 +6,40 @@ import CustomModal from '../../components/Modal/CustomModal'
 import './SettingItem.css'
 
 const SettingItem = () => {
+
+    const [ addButtonHoverStatus, setAddButtonHoverStatus ] = useState(false)
+
     return (
         <section className='SettingItem'>
             
             <div className='SettingItem__header'>
                 <h1>메뉴 설정</h1>
                 <CustomModal
-                    toggleButtonText='ADD'>
+                    modalTitle='메뉴 추가'
+                    toggleButton={
+                        (<button
+                            onMouseEnter={() => setAddButtonHoverStatus(true)}
+                            onMouseLeave={() => setAddButtonHoverStatus(false)}
+                            style={{
+                                "backgroundColor": "white",
+                                "border": "2px solid #008CBA",
+                                "color": "black",
+                                "padding": "8px 24px",
+                                "textAlign": "center",
+                                "textDecoration": "none",
+                                "display": "inline-block",
+                                "fontSize": "1.3vw",
+                                "margin": "4px 2px",
+                                "WebkitTransitionDuration": "0.4s",
+                                "cursor": "pointer",
+                                ...( addButtonHoverStatus && {
+                                        "backgroundColor": "#008CBA",
+                                        "color": "white"} )
+                            }}>
+                                ADD
+                        </button>)
+                    }
+                    okButtonClickedHandler={() => console.log('dummy')} >
                 </CustomModal>
             </div>
             
