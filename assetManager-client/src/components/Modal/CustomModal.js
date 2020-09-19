@@ -9,28 +9,44 @@ const CustomModal = (props) => {
 
   const [isOpen, setIsOpen] = useState(false)
 
-  const toggleModal = () => {
-    setIsOpen(!isOpen)
-  }    
+  const openModal = () => {
+    setIsOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsOpen(false)
+  }
+
+  const okButtonClickedHandler = () => {
+    props.okButtonClickedHandler(() => setIsOpen(false))
+  }
 
   return (
       <div className='CustomModal'>
         <button
-          onClick={toggleModal}
+          onClick={openModal}
           className='CustomModal__toggleButton'>
             {props.toggleButtonText}
         </button>
 
         <Modal
           isOpen={isOpen}
-          onRequestClose={toggleModal}
+          onRequestClose={closeModal}
           contentLabel={'Hello Modal!'}
           className='CustomModal__modal'
           overlayClassName='CustomModal__overlay'
           closeTimeoutMS={500}
         >
-          <div>My modal dialog.</div>
-          <button onClick={toggleModal}>Close modal</button>
+          <h1 className='modal__title'>{props.modalTitle}</h1>
+
+          <div className="modal__body">
+            {props.children}
+          </div>
+
+          <div className='modal__buttons'>
+            <button className='modal__ok__btn' onClick={okButtonClickedHandler}>OK</button>
+            <button className='modal__cancel__btn' onClick={closeModal}>CANCEL</button>
+          </div>
         </Modal>
 
       </div>

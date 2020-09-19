@@ -1,9 +1,21 @@
+@import url('https://fonts.googleapis.com/css?family=Poor+Story&display=swap');
+
+* {
+    /* 폰트: Poor Story */
+    font-family: 'Poor Story', cursive;
+}
+
 /* MODAL */
 .ReactModal__Content {
     position: fixed;
     top: 50%;
     left: 50%;
+    width: 70%;
+    height: auto;
     transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: column;
   
     border: 1px solid #ccc;
     background: #fff;
@@ -30,8 +42,23 @@
     opacity: 0;
 }
 
-/* BUTTON */
-.CustomModal .CustomModal__toggleButton {
+/* TITLE */
+
+.ReactModal__Content .modal__title {
+    font-size: 1.5em;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* BODY */
+
+.ReactModal__Content .modal__body {
+    margin-top: 12px;
+}
+
+/* BUTTONS */
+.CustomModal .CustomModal__toggleButton,
+.ReactModal__Content .modal__buttons button {
     background-color: white;
     border: 2px solid #008CBA;
     color: black;
@@ -47,5 +74,24 @@
 }
 .CustomModal .CustomModal__toggleButton:hover {
     background-color: #008CBA;
+    color: white;
+}
+
+.ReactModal__Content .modal__buttons {
+    margin-top: 18px;
+    align-self: center;
+}
+.ReactModal__Content .modal__buttons button.modal__ok__btn {
+    border: 2px solid #008CBA;
+}
+.ReactModal__Content .modal__buttons button.modal__ok__btn:hover {
+    background-color: #008CBA;
+    color: white;
+}
+.ReactModal__Content .modal__buttons button.modal__cancel__btn {
+    border: 2px solid #f44336;
+}
+.ReactModal__Content .modal__buttons button.modal__cancel__btn:hover {
+    background-color: #f44336;
     color: white;
 }

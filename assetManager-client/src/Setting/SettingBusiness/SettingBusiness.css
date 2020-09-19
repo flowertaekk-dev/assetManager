@@ -20,9 +20,6 @@
     letter-spacing: 0.5px;
     margin: 12px;
 }
-.SettingBusiness .SettingBusiness__header .CustomModal .CustomModal__toggleButton {
-    font-size: 1.3vw;
-}
 
 .SettingBusiness .SettingBusiness__list ul {
     list-style: none;
@@ -47,6 +44,11 @@
 .SettingBusiness .SettingBusiness__list ul li p {
     margin: 0;
     padding: 0;
+}
+
+/* MODAL */
+.SettingBusiness .SettingBusiness__header .CustomModal .CustomModal__toggleButton {
+    font-size: 1.3vw;
 }
 
 /* TABLET */
