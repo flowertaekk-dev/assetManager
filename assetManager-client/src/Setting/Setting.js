@@ -12,29 +12,11 @@ import './Setting.css'
 
 const Setting = () => {
 
-    const { loginUser } = useStore()
-
-    const [ businessNames, setBusinessNames ] = useState({})
-
-    useEffect(() => {
-
-        customAxios("/business/readAll", (response) => {
-            if (response.resultStatus === 'SUCCESS') {
-                setBusinessNames(response.businessNames)
-            } else {
-                alert('ERROR', response.reason)
-            }
-        }, {
-            userId: loginUser.loginUserId
-        })
-
-    }, [])
-
     return (
         <section className='Setting'>
 
             {/* 상호명 설정 및 선택 */}
-            <SettingBusiness businessNames={businessNames} />
+            <SettingBusiness />
             
             {/* Table 개수 설정 */}
             <SettingTable />

@@ -15,8 +15,23 @@ const SettingBusiness = (props) => {
     const [ newBusinessName, setNewBusinessName ] = useState('')
 
     useEffect(() => {
-        setBusinessNames(_.isEmpty(props.businessNames) ? [] : props.businessNames)
-    }, [props.businessNames, businessNames])
+        retrieveAllBusinessNames()
+    }, [])
+
+    /**
+     * 소유한 상호명(닉네임)을 전부 불러온다
+     */
+    const retrieveAllBusinessNames = () =>{
+        customAxios("/business/readAll", (response) => {
+            if (response.resultStatus === 'SUCCESS') {
+                setBusinessNames(response.businessNames)
+            } else {
+                alert('ERROR', response.reason)
+            }
+        }, {
+            userId: loginUser.loginUserId
+        })
+    }
 
     /**
      * 상호명 리스트를 랜더링한다
@@ -40,6 +55,7 @@ const SettingBusiness = (props) => {
     const addBusinessNameHandler = (callback) => {
         customAxios("/business/add", (response) => {
             if (response.resultStatus === 'SUCCESS') {
+                retrieveAllBusinessNames()
                 callback()
             } else {
                 alert(response.reason)
