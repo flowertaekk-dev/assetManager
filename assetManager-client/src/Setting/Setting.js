@@ -14,15 +14,13 @@ const Setting = () => {
 
     const { loginUser } = useStore()
 
-    const [ businessName, setBusinessName ] = useState([])
+    const [ businessNames, setBusinessNames ] = useState({})
 
     useEffect(() => {
 
         customAxios("/business/readAll", (response) => {
             if (response.resultStatus === 'SUCCESS') {
-                setBusinessName(response.businessNames)
-                // TODO 확인할 것! 아직은 데이터가 없어서 확인 못 했다.
-                console.log(businessName)
+                setBusinessNames(response.businessNames)
             } else {
                 alert('ERROR', response.reason)
             }
@@ -36,7 +34,7 @@ const Setting = () => {
         <section className='Setting'>
 
             {/* 상호명 설정 및 선택 */}
-            <SettingBusiness />
+            <SettingBusiness businessNames={businessNames} />
             
             {/* Table 개수 설정 */}
             <SettingTable />

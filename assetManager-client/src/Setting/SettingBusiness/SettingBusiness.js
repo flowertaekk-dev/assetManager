@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import _ from 'lodash'
 
 import CustomModal from '../../components/Modal/CustomModal'
 import customAxios from '../../customAxios'
@@ -6,13 +7,33 @@ import useStore from '../../mobx/useStore'
 
 import './SettingBusiness.css'
 
-const SettingBusiness = () => {
+const SettingBusiness = (props) => {
 
     const { loginUser } = useStore()
 
-    const [newBusinessName, setNewBusinessName] = useState('')
+    const [ businessNames, setBusinessNames ] = useState([])
+    const [ newBusinessName, setNewBusinessName ] = useState('')
+
+    useEffect(() => {
+        setBusinessNames(_.isEmpty(props.businessNames) ? [] : props.businessNames)
+    }, [props.businessNames, businessNames])
 
     /**
+     * 상호명 리스트를 랜더링한다
+     */
+    const renderBusinessNames = () => {
+        return businessNames.map(businessNameJson => (
+            <li
+                key={businessNameJson.seq}
+                className='SettingBusiness__list__item'>
+                    <p>{businessNameJson.businessName}</p>
+                    <button>Edit</button>
+            </li>
+        ))
+    }
+
+    /**
+     * 상호명 추가 쿼리
      * 
      * @param callback Modal를 닫는 콜백
      */
@@ -65,18 +86,7 @@ const SettingBusiness = () => {
             
             <div className='SettingBusiness__list'>
                 <ul>
-                    <li className='SettingBusiness__list__item'>
-                        <p>하용이네 삼겹살</p>
-                        <button>Edit</button>
-                    </li>
-                    <li className='SettingBusiness__list__item'>
-                        <p>하용이네 육회</p>
-                        <button>Edit</button>
-                    </li>
-                    <li className='SettingBusiness__list__item'>
-                        <p>하용이네 함흥냉면</p>
-                        <button>Edit</button>
-                    </li>
+                    { renderBusinessNames() }
                 </ul>
             </div>
         </section>
