@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Button from '../../components/Button/Button'
+import CustomModal from '../../components/Modal/CustomModal'
 
 import './SettingItem.css'
 
@@ -10,7 +11,9 @@ const SettingItem = () => {
             
             <div className='SettingItem__header'>
                 <h1>메뉴 설정</h1>
-                <Button>ADD</Button>
+                <CustomModal
+                    toggleButtonText='ADD'>
+                </CustomModal>
             </div>
             
             <div className='SettingItem__list'>

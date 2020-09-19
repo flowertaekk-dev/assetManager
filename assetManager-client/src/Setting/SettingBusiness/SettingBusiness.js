@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Button from '../../components/Button/Button'
+import CustomModal from '../../components/Modal/CustomModal'
 
 import './SettingBusiness.css'
 
@@ -9,7 +9,10 @@ const SettingBusiness = () => {
         <section className='SettingBusiness'>
             <div className='SettingBusiness__header'>
                 <h1>상호명(닉네임) 설정</h1>
-                <Button>ADD</Button>
+                <CustomModal
+                    toggleButtonText='ADD'>
+                </CustomModal>
+                
             </div>
             
             <div className='SettingBusiness__list'>
