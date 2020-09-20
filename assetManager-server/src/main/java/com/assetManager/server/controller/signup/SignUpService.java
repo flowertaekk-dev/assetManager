@@ -54,6 +54,8 @@ public class SignUpService {
         emailAuth.updateStatusToCompleted();
         userRepository.save(signUpRequestDto.toUserEntity());
 
+        emailAuthRepository.flush();
+
         return SignUpResponseDto.builder()
                 .resultStatus(SUCCESS)
                 .reason(null)

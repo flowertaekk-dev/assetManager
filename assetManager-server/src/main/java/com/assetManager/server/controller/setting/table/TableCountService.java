@@ -40,6 +40,7 @@ public class TableCountService {
             tableCountRepository.save(request.toTableCountEntity());
         }
 
+        businessRepository.flush();
         // 실패하는 케이스는 없을까?
         return UpsertTableCountResponseDto.makeSuccessResponse();
     }
