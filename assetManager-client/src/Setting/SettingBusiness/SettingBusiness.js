@@ -255,6 +255,8 @@ const SettingBusiness = (props) => {
             </div>
             
             <div className='SettingBusiness__list'>
+                { businessNames.length === 0 && <h3>상호명을 등록해주세요!</h3>}
+
                 <ul>
                     { renderBusinessNames() }
                 </ul>
