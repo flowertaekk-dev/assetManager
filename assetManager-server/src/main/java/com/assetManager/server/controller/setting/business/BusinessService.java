@@ -14,7 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 @Service
-public class SettingBusinessService {
+public class BusinessService {
 
     private final BusinessRepository businessRepository;
 

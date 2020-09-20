@@ -14,36 +14,37 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/business")
-public class SettingBusinessController {
-    private static Logger logger = LoggerFactory.getLogger(SettingBusinessController.class);
+public class BusinessController {
+    private static Logger logger = LoggerFactory.getLogger(BusinessController.class);
 
-    private final SettingBusinessService settingBusinessService;
+    private final BusinessService businessService;
     private final BusinessRepository repo;
 
     @PostMapping("/add")
     public ResponseEntity<CommonBusinessResponseDto> addNewBusinessName(@RequestBody AddBusinessRequestDto request) {
         logger.info(String.format("addNewBusinessName: ID: %s, BusinessName: %s", request.getUserId(), request.getBusinessName()));
-        CommonBusinessResponseDto response = settingBusinessService.addNewBusinessName(request);
+        CommonBusinessResponseDto response = businessService.addNewBusinessName(request);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/update")
     public ResponseEntity<CommonBusinessResponseDto> updateBusinessName(@RequestBody UpdateBusinessRequestDto request) {
         logger.info(String.format("updateBusinessName: ID: %s, BusinessName: %s, newBusinessName: %s", request.getUserId(), request.getExistingBusinessName(), request.getNewBusinessName()));
-        CommonBusinessResponseDto response = settingBusinessService.updateBusinessName(request);
+        CommonBusinessResponseDto response = businessService.updateBusinessName(request);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/delete")
     public ResponseEntity<CommonBusinessResponseDto> deleteBusinessName(@RequestBody DeleteBusinessRequestDto request) {
         logger.info(String.format("deleteBusinessName: ID: %s, businessName: %s", request.getUserId(), request.getBusinessName()));
-        CommonBusinessResponseDto response = settingBusinessService.deleteBusinessName(request);
+        CommonBusinessResponseDto response = businessService.deleteBusinessName(request);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/readAll")
     public ResponseEntity<ReadAllBusinessResponseDto> readAllBusinessName(@RequestBody ReadAllBusinessRequestDto request) {
-        ReadAllBusinessResponseDto response = settingBusinessService.readAll(request);
+        logger.info(String.format("readAllBusinessName: ID: %s", request.getUserId()));
+        ReadAllBusinessResponseDto response = businessService.readAll(request);
         return ResponseEntity.ok(response);
     }
 

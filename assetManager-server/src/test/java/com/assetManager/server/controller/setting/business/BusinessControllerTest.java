@@ -7,16 +7,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.Matchers.*;
 
-
-import com.assetManager.server.controller.setting.business.dto.AddBusinessRequestDto;
 import com.assetManager.server.controller.setting.business.dto.DeleteBusinessRequestDto;
 import com.assetManager.server.controller.setting.business.dto.ReadAllBusinessRequestDto;
 import com.assetManager.server.controller.setting.business.dto.UpdateBusinessRequestDto;
+import com.assetManager.server.controller.signup.UserTestUtil;
 import com.assetManager.server.domain.business.Business;
 import com.assetManager.server.domain.business.BusinessRepository;
-import com.assetManager.server.domain.user.User;
 import com.assetManager.server.domain.user.UserRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,13 +26,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
-public class SettingBusinessControllerTest {
+public class BusinessControllerTest {
 
     @Autowired private WebApplicationContext context;
     @Autowired private ObjectMapper objectMapper;
@@ -55,7 +49,7 @@ public class SettingBusinessControllerTest {
         this.mvc = MockMvcBuilders.webAppContextSetup(context).build();
 
         // 유저 데이터 초기화
-        insertUser();
+        UserTestUtil.insertUser();
     }
 
     @AfterEach
@@ -73,7 +67,7 @@ public class SettingBusinessControllerTest {
 
         // when
 
-        ResultActions action = insertBusinessName(businessName);
+        ResultActions action = BusinessTestUtil.insertBusinessName(mvc, businessName);
 
         // then
 
@@ -93,7 +87,7 @@ public class SettingBusinessControllerTest {
         String newBusinessName = "newName";
 
         // 상호명 추가
-        insertBusinessName(originalBusinessName);
+        BusinessTestUtil.insertBusinessName(mvc, originalBusinessName);
 
         String businessName = businessRepository.findByUserIdAndBusinessName(this.id, originalBusinessName)
                 .orElseThrow()
@@ -138,7 +132,7 @@ public class SettingBusinessControllerTest {
         String businessName = "businessName";
 
         {
-            ResultActions action = insertBusinessName(businessName);
+            ResultActions action = BusinessTestUtil.insertBusinessName(mvc, businessName);
             action.andExpect(status().isOk());
         }
 
@@ -169,7 +163,7 @@ public class SettingBusinessControllerTest {
 
     }
 
-    // TODO case: 유저 아이디에 연결된 상호명 전부를 불러올 수 있다.
+    // case: 유저 아이디에 연결된 상호명 전부를 불러올 수 있다.
     @Test
     public void test_can_retrieve_all_business_name_by_userId() throws Exception {
         // given
@@ -178,9 +172,9 @@ public class SettingBusinessControllerTest {
         String secondBusinessName = "secondBusinessName";
         String thirdBusinessName = "thirdBusinessName";
 
-        insertBusinessName(firstBusinessName);
-        insertBusinessName(secondBusinessName);
-        insertBusinessName(thirdBusinessName);
+        BusinessTestUtil.insertBusinessName(mvc, firstBusinessName);
+        BusinessTestUtil.insertBusinessName(mvc, secondBusinessName);
+        BusinessTestUtil.insertBusinessName(mvc, thirdBusinessName);
 
         // when
 
@@ -205,33 +199,6 @@ public class SettingBusinessControllerTest {
                 .andExpect(jsonPath("$.businessNames[2].businessName", is(thirdBusinessName)))
                 .andDo(print());
 
-    }
-
-    // --------------------------------------------------------------------
-    // utils
-
-    private void insertUser() {
-        userRepository.save(
-                User.builder()
-                        .id(this.id)
-                        .password(this.password)
-                        .email(this.email)
-                        .status(User.UserStatus.USING)
-                        .build());
-    }
-
-    private ResultActions insertBusinessName(String businessName) throws Exception {
-        String content = objectMapper.writeValueAsString(
-                AddBusinessRequestDto.builder()
-                        .userId(this.id)
-                        .businessName(businessName)
-                        .build());
-
-        return mvc.perform(
-                post(url + "/add")
-                        .content(content)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON));
     }
 
 }

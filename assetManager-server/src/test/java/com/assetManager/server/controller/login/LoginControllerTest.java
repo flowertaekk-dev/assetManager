@@ -8,18 +8,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.assetManager.server.controller.login.dto.LoginRequestDto;
-import com.assetManager.server.domain.user.User;
+import com.assetManager.server.controller.signup.UserTestUtil;
 import com.assetManager.server.domain.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.core.Is;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,8 +30,8 @@ import javax.mail.internet.MimeMessage;
 @SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class LoginControllerTest {
 
-    @LocalServerPort private int port;
-    @Autowired private TestRestTemplate restTemplate;
+    // @LocalServerPort private int port;
+    // @Autowired private TestRestTemplate restTemplate;
     @Autowired private UserRepository userRepository;
     @Autowired private WebApplicationContext context;
     @Autowired private ObjectMapper objectMapper;
@@ -63,7 +60,7 @@ public class LoginControllerTest {
     @Test
     public void can_log_in() throws Exception {
         // given
-        createUserAs(User.UserStatus.USING);
+        UserTestUtil.insertUser();
 
         String url = "/api/v1/login";
 
@@ -82,15 +79,8 @@ public class LoginControllerTest {
                 .andDo(print());
     }
 
-    private void createUserAs(User.UserStatus userStatus) {
-        userRepository.save(
-                User.builder()
-                        .id(id)
-                        .password(password)
-                        .email(email)
-                        .status(userStatus)
-                        .build());
-    }
+    // --------------------------------------------------------
+    // utils
 
     private String getLoginContent(String id, String password, String email) throws Exception {
         return objectMapper.writeValueAsString(
