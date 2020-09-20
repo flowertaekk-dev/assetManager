@@ -7,4 +7,5 @@ public class TestDataUtil {
 
     public static final String loginControllerUrl = "/api/v1/login";
     public static final String businessControllerUrl = "/api/v1/business";
+    public static final String tableCountControllerUrl = "/api/v1/table";
 }

@@ -19,4 +19,6 @@ public class LoginResponseDto {
         this.resultStatus = resultStatus;
         this.reason = reason;
     }
+
+    // TODO 이 클래스 안에서 SUCCESS/FAILURE response를 생성해서 반환하는 메소드 만들기 ( 다른 곳도.. )
 }

@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1")
 public class SignUpController {
+    private static Logger logger = LoggerFactory.getLogger(SignUpController.class);
 
     private final SignUpService signUpService;
-    private static Logger logger = LoggerFactory.getLogger(SignUpController.class);
 
     @PostMapping("/signup")
     public ResponseEntity<SignUpResponseDto> signUp(@RequestBody SignUpRequestDto signUpRequestDto) {

@@ -11,6 +11,7 @@ import com.assetManager.server.controller.setting.business.dto.DeleteBusinessReq
 import com.assetManager.server.controller.setting.business.dto.ReadAllBusinessRequestDto;
 import com.assetManager.server.controller.setting.business.dto.UpdateBusinessRequestDto;
 import com.assetManager.server.controller.signup.UserTestUtil;
+import com.assetManager.server.controller.utils.TestDataUtil;
 import com.assetManager.server.domain.business.Business;
 import com.assetManager.server.domain.business.BusinessRepository;
 import com.assetManager.server.domain.user.UserRepository;
@@ -37,12 +38,6 @@ public class BusinessControllerTest {
     @Autowired private BusinessRepository businessRepository;
 
     private MockMvc mvc;
-
-    private final String id = "test";
-    private final String password = "test";
-    private final String email = "test@email.com";
-
-    private final String url = "/api/v1/business";
 
     @BeforeEach
     public void setup() {
@@ -89,7 +84,7 @@ public class BusinessControllerTest {
         // 상호명 추가
         BusinessTestUtil.insertBusinessName(mvc, originalBusinessName);
 
-        String businessName = businessRepository.findByUserIdAndBusinessName(this.id, originalBusinessName)
+        String businessName = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, originalBusinessName)
                 .orElseThrow()
                 .getBusinessName();
         assertThat(businessName).isEqualTo(originalBusinessName);
@@ -99,13 +94,13 @@ public class BusinessControllerTest {
         // 상호명 편집
         String content = objectMapper.writeValueAsString(
                 UpdateBusinessRequestDto.builder()
-                        .userId(this.id)
+                        .userId(TestDataUtil.id)
                         .existingBusinessName(originalBusinessName)
                         .newBusinessName(newBusinessName)
                         .build());
 
         ResultActions action = mvc.perform(
-                post(url + "/update")
+                post(TestDataUtil.businessControllerUrl + "/update")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -118,7 +113,7 @@ public class BusinessControllerTest {
                 .andExpect(jsonPath("$.reason", nullValue()))
                 .andDo(print());
 
-        String updatedBusinessName = businessRepository.findByUserIdAndBusinessName(this.id, newBusinessName)
+        String updatedBusinessName = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, newBusinessName)
                 .orElseThrow()
                 .getBusinessName();
         assertThat(updatedBusinessName).isEqualTo(newBusinessName);
@@ -140,12 +135,12 @@ public class BusinessControllerTest {
 
         String content = objectMapper.writeValueAsString(
                 DeleteBusinessRequestDto.builder()
-                        .userId(this.id)
+                        .userId(TestDataUtil.id)
                         .businessName(businessName)
                         .build());
 
         ResultActions action = mvc.perform(
-                post(url + "/delete")
+                post(TestDataUtil.businessControllerUrl + "/delete")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -158,7 +153,7 @@ public class BusinessControllerTest {
                 .andExpect(jsonPath("$.reason", nullValue()))
                 .andDo(print());
 
-        Optional<Business> resultBusiness = businessRepository.findByUserIdAndBusinessName(this.id, businessName);
+        Optional<Business> resultBusiness = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, businessName);
         assertThat(resultBusiness.isPresent()).isFalse();
 
     }
@@ -180,11 +175,11 @@ public class BusinessControllerTest {
 
         String content = objectMapper.writeValueAsString(
                 ReadAllBusinessRequestDto.builder()
-                        .userId(this.id)
+                        .userId(TestDataUtil.id)
                         .build());
 
         ResultActions action = mvc.perform(
-                post(url + "/readAll")
+                post(TestDataUtil.businessControllerUrl + "/readAll")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
