@@ -12,7 +12,7 @@ const SettingBusiness = (props) => {
     const { loginUser } = useStore()
 
     const [ businessNames, setBusinessNames ] = useState([])
-    const [ newBusinessName, setNewBusinessName ] = useState('')
+    const [ newBusinessName, setNewBusinessName ] = useState('') // add & update 공유
 
     const [ addButtonHoverStatus, setAddButtonHoverStatus ] = useState(false)
 
@@ -41,12 +41,6 @@ const SettingBusiness = (props) => {
      * @param callback Modal를 닫는 콜백
      */
     const addBusinessNameHandler = (callback) => {
-
-        if ( newBusinessName === '' ) {
-            alert('새로운 상호명을 입력해주세요!')
-            return
-        }
-
         customAxios("/business/add", (response) => {
             if (response.resultStatus === 'SUCCESS') {
                 retrieveAllBusinessNames()  // refresh
@@ -61,6 +55,32 @@ const SettingBusiness = (props) => {
         })
     }
 
+    /**
+     * 상호명 갱신 쿼리
+     * 
+     * @param {string} existingBusinessName 기존 상호명
+     */
+    const updateBusinessNameHandler = (existingBusinessName) => {
+        return (callback) => customAxios("/business/update", (response) => {
+            if (response.resultStatus === 'SUCCESS') {
+                retrieveAllBusinessNames()  // refresh
+                setNewBusinessName('')      // 초기화
+                callback()                  // 모달 닫기
+            } else {
+                alert(response.reason)
+            }
+        }, {
+            userId: loginUser.loginUserId,
+            existingBusinessName,
+            newBusinessName
+        })
+    }
+
+    /**
+     * 상호명 삭제 쿼리
+     * 
+     * @param {string} deleteBusinessName 삭제할 상호명
+     */
     const deleteBusinessNameHandler = (deleteBusinessName) => {
         return (callback) => customAxios("/business/delete", (response) => {
             if (response.resultStatus === 'SUCCESS') {
@@ -76,6 +96,30 @@ const SettingBusiness = (props) => {
     }
 
     /**
+     * 모달이 닫힐 때 newBusiness state를 초기화
+     * 
+     * @param {function} callback 
+     */
+    const cancelModalHandler = (callback) => {
+        setNewBusinessName('')  // 초기화
+        callback()              // 모달 닫기
+    }
+
+    /**
+     * newBusiness state 값이 비어있는지 확인
+     * 
+     * @returns {Boolean} preCheck에 문제가 없으면 true, 있으면 false
+     */
+    const checkNewBusinessIsEmpty = () => {
+        if ( newBusinessName === '' ) {
+            alert('새로운 상호명을 입력해주세요!')
+            return false
+        }
+
+        return true
+    }
+
+    /**
      * 상호명 리스트를 랜더링한다
      */
     const renderBusinessNames = () => {
@@ -85,7 +129,40 @@ const SettingBusiness = (props) => {
                 className='SettingBusiness__list__item'>
                     <p>{businessNameJson.businessName}</p>
                     <div className='SettingBusiness__list__buttons'>
-                        <button>Edit</button>
+                        {/* EDIT */}
+                        <CustomModal
+                            modalTitle={`상호명(닉네임) 수정: ${businessNameJson.businessName}`}
+                            toggleButton={
+                                (
+                                    <button>Edit</button>
+                                )
+                            }
+                            preCheckHandler={ checkNewBusinessIsEmpty }
+                            okButtonClickedHandler={ updateBusinessNameHandler(businessNameJson.businessName) }
+                            cancelButtonClickedHandler={ cancelModalHandler } >
+                                <label
+                                    htmlFor="businessName"
+                                    style={{
+                                        "fontSize": "1.4em"
+                                    }}>
+                                        새 상호명(닉네임):
+                                </label>
+                                <input
+                                    id="businessName"
+                                    type="text"
+                                    className="modal__businessName"
+                                    style={{
+                                        "marginLeft": "12px",
+                                        "width": "50vw",
+                                        "height": "4vh",
+                                        "fontSize": "1.2em"
+                                    }}
+                                    value={newBusinessName}
+                                    onChange={(event) => {setNewBusinessName(event.target.value)}}
+                                    placeholder="새 상호명(닉네임)"/>
+                        </CustomModal>
+
+                        {/* DELETE */}
                         <CustomModal
                             modalTitle={`삭제할 상호명: ${businessNameJson.businessName}`}
                             toggleButton={
@@ -93,7 +170,7 @@ const SettingBusiness = (props) => {
                                     <button>Delete</button>
                                 )
                             }
-                            okButtonClickedHandler={deleteBusinessNameHandler(businessNameJson.businessName)} >
+                            okButtonClickedHandler={ deleteBusinessNameHandler(businessNameJson.businessName) } >
                                 <p>정말 삭제할까요?</p>
                         </CustomModal>
                     </div>
@@ -133,7 +210,9 @@ const SettingBusiness = (props) => {
                                 ADD
                         </button>)
                     }
-                    okButtonClickedHandler={addBusinessNameHandler} >
+                    preCheckHandler={ checkNewBusinessIsEmpty }
+                    okButtonClickedHandler={ addBusinessNameHandler }
+                    cancelButtonClickedHandler={ cancelModalHandler } >
                         <label
                             htmlFor="businessName"
                             style={{
@@ -152,10 +231,9 @@ const SettingBusiness = (props) => {
                                 "fontSize": "1.2em"
                             }}
                             value={newBusinessName}
-                            onChange={(event) => {setNewBusinessName(event.target.value)}}
+                            onChange={(event) => { setNewBusinessName(event.target.value) }}
                             placeholder="상호명(닉네임)"/>
                 </CustomModal>
-                
             </div>
             
             <div className='SettingBusiness__list'>

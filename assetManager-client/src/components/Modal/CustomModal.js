@@ -18,7 +18,26 @@ const CustomModal = (props) => {
   }
 
   const okButtonClickedHandler = () => {
-    props.okButtonClickedHandler(() => setIsOpen(false))
+    let preCheckResult = true;
+
+    if (props.preCheckHandler) {
+      preCheckResult = props.preCheckHandler()
+      console.log('log', preCheckResult)
+    }
+
+    if (preCheckResult) {
+      props.okButtonClickedHandler(closeModal)
+    }
+  }
+
+  const cancelButtonClickedHandler = () => {
+    // Cancel handler가 있으면 Handler 실행
+    if (props.cancelButtonClickedHandler) {
+      props.cancelButtonClickedHandler(closeModal)
+      return
+    }
+
+    closeModal()
   }
 
   return (
@@ -29,7 +48,7 @@ const CustomModal = (props) => {
 
         <Modal
           isOpen={isOpen}
-          onRequestClose={closeModal}
+          onRequestClose={ cancelButtonClickedHandler }
           contentLabel={'Hello Modal!'}
           className='CustomModal__modal'
           overlayClassName='CustomModal__overlay'
@@ -42,8 +61,8 @@ const CustomModal = (props) => {
           </div>
 
           <div className='modal__buttons'>
-            <button className='modal__ok__btn' onClick={okButtonClickedHandler}>OK</button>
-            <button className='modal__cancel__btn' onClick={closeModal}>CANCEL</button>
+            <button className='modal__ok__btn' onClick={ okButtonClickedHandler }>OK</button>
+            <button className='modal__cancel__btn' onClick={ cancelButtonClickedHandler }>CANCEL</button>
           </div>
         </Modal>
 
