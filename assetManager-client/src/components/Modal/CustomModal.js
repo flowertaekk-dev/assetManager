@@ -20,9 +20,9 @@ const CustomModal = (props) => {
   const okButtonClickedHandler = () => {
     let preCheckResult = true;
 
+    // PreCheck handler가 등록되어 있으면 preCheck 실행
     if (props.preCheckHandler) {
       preCheckResult = props.preCheckHandler()
-      console.log('log', preCheckResult)
     }
 
     if (preCheckResult) {
@@ -31,7 +31,7 @@ const CustomModal = (props) => {
   }
 
   const cancelButtonClickedHandler = () => {
-    // Cancel handler가 있으면 Handler 실행
+    // Cancel handler가 등록되어 있으면 Handler 실행
     if (props.cancelButtonClickedHandler) {
       props.cancelButtonClickedHandler(closeModal)
       return

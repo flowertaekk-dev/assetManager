@@ -67,7 +67,6 @@ const Header = (props) => {
      */
     const logoutHandler = () => {
         // loginUser 세션에서 삭제
-        window.localStorage.removeItem('loginUser')
         // mobx store에서도 삭제
         loginUser.deleteLoginUser()
 

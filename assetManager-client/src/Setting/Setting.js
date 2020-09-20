@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import SettingBusiness from './SettingBusiness/SettingBusiness'
 import SettingTable from './SettingTable/SettingTable'
 import SettingItem from './SettingItem/SettingItem'
-
-import customAxios from '../customAxios'
-import useStore from '../mobx/useStore'
-
 
 import './Setting.css'
 

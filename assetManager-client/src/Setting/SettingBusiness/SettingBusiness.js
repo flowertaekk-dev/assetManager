@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import _ from 'lodash'
 
 import CustomModal from '../../components/Modal/CustomModal'
 import customAxios from '../../customAxios'
@@ -9,10 +8,11 @@ import './SettingBusiness.css'
 
 const SettingBusiness = (props) => {
 
-    const { loginUser } = useStore()
+    const { loginUser, selectedBusiness } = useStore()
 
     const [ businessNames, setBusinessNames ] = useState([])
     const [ newBusinessName, setNewBusinessName ] = useState('') // add & update 공유
+    const [ selectedBusinessName, setSelectedBusinessName ] = useState(selectedBusiness.selectedBusiness)
 
     const [ addButtonHoverStatus, setAddButtonHoverStatus ] = useState(false)
 
@@ -120,13 +120,31 @@ const SettingBusiness = (props) => {
     }
 
     /**
+     * 특정 상호명을 선택했을 때 이벤트
+     */
+    const businessNameClickedHandler = (businessName) => {
+        // 선택된 상호명 색상 채우기
+        setSelectedBusinessName(businessName)
+
+        // TODO LocalStorage에 저장
+        // TODO mobx store에 저장
+        selectedBusiness.updateSelectedBusiness(businessName)
+    }
+
+    /**
      * 상호명 리스트를 랜더링한다
      */
     const renderBusinessNames = () => {
         return businessNames.map(businessNameJson => (
             <li
-                key={businessNameJson.seq}
-                className='SettingBusiness__list__item'>
+                key={ businessNameJson.seq }
+                className={
+                    `SettingBusiness__list__item
+                    ${selectedBusinessName === businessNameJson.businessName
+                            ? 'SettingBusiness__list__item__active'
+                            : ''}`
+                }
+                onClick={ () => businessNameClickedHandler(businessNameJson.businessName) } >
                     <p>{businessNameJson.businessName}</p>
                     <div className='SettingBusiness__list__buttons'>
                         {/* EDIT */}

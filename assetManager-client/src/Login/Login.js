@@ -20,9 +20,8 @@ const Login = (props) => {
 
             if (data.resultStatus === 'SUCCESS') {
                 // store에 저장
-                loginUser.updateLoginUser(id)
                 // session에 저장
-                window.localStorage.setItem('loginUser', id)
+                loginUser.updateLoginUser(id)
                 // 메인 테이블화면으로 이동
                 props.history.push('/tableMap')
             } else {

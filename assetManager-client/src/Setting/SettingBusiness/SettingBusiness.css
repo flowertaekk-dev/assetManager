@@ -41,6 +41,10 @@
     flex-direction: row;
     justify-content: space-between;
 }
+.SettingBusiness .SettingBusiness__list .SettingBusiness__list__item__active {
+    background-color: #eee;
+    border: 1px solid #eee;
+}
 .SettingBusiness .SettingBusiness__list ul li p {
     margin: 0;
     padding: 0;

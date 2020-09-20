@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-import Button from '../../components/Button/Button'
 import CustomModal from '../../components/Modal/CustomModal'
 
 import './SettingItem.css'
