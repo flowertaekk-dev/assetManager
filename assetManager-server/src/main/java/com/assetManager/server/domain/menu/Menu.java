@@ -1,0 +1,49 @@
+package com.assetManager.server.domain.menu;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Getter
+@NoArgsConstructor
+@Entity
+public class Menu {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long seq;
+
+    @Column(nullable = false)
+    private String userId;
+
+    @Column(nullable = false)
+    private String businessName;
+
+    @Column(nullable = false)
+    private String menu;
+
+    @Column(nullable = false)
+    private int price;
+
+    @Builder
+    public Menu(String userId, String businessName, String menu, int price) {
+        this.userId = userId;
+        this.businessName = businessName;
+        this.menu = menu;
+        this.price = price;
+    }
+
+    // ---------------------------------------------------------
+    // utils
+
+    /**
+     * menu, price를 갱신한다. <br />
+     * 이외의 항목들은 갱신 불가
+     */
+    public void updateMenu(Menu menu) {
+        this.menu = menu.menu;
+        this.price = menu.price;
+    }
+}

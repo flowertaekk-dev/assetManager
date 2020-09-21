@@ -64,6 +64,9 @@ public class BusinessService {
         // 상호명 삭제
         businessRepository.delete(business.get());
 
+        // TODO 테이블 카운트 삭제 로직 구현
+        // TODO 메뉴 삭제 로직 구현
+
         return CommonBusinessResponseDto.makeSuccessResponse();
     }
 
