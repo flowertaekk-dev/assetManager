@@ -30,7 +30,7 @@ public class MenuController {
     public ResponseEntity<CommonMenuResponseDto> updateMenu(@RequestBody UpdateMenuRequestDto request) {
         logger.info(String.format(
                 "updateMenu -> userId: %s, businessName: %s, menu: %s, price: %d",
-                request.getUserId(), request.getBusinessName(), request.getMenu(), request.getPrice()));
+                request.getUserId(), request.getBusinessName(), request.getExistingMenu(), request.getPrice()));
         return ResponseEntity.ok(menuService.updateMenu(request));
     }
 

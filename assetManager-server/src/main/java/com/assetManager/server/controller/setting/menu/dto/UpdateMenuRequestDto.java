@@ -13,15 +13,15 @@ public class UpdateMenuRequestDto {
 
     private String userId;
     private String businessName;
-    private String menu;
+    private String existingMenu;
     private String newMenu;
     private int price;
 
     @Builder
-    public UpdateMenuRequestDto(String userId, String businessName, String menu, String newMenu, int price) {
+    public UpdateMenuRequestDto(String userId, String businessName, String existingMenu, String newMenu, int price) {
         this.userId = userId;
         this.businessName = businessName;
-        this.menu = menu;
+        this.existingMenu = existingMenu;
         this.newMenu = newMenu;
         this.price = price;
     }
@@ -32,7 +32,7 @@ public class UpdateMenuRequestDto {
                 .businessName(this.businessName)
                 .menu(
                         Objects.isNull(this.newMenu)
-                                ? this.menu
+                                ? this.existingMenu
                                 : this.newMenu)
                 .price(this.price)
                 .build();

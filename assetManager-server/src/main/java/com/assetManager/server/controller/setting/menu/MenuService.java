@@ -39,7 +39,7 @@ public class MenuService {
 
         // 기존 데이터 확인
         Optional<Menu> menu = menuRepository
-                .findByUserIdAndBusinessNameAndMenu(request.getUserId(), request.getBusinessName(), request.getMenu());
+                .findByUserIdAndBusinessNameAndMenu(request.getUserId(), request.getBusinessName(), request.getExistingMenu());
 
         // 기존 데이터가 없으면 에러
         if (menu.isEmpty()) {
