@@ -1,0 +1,81 @@
+.SettingMenu {
+    width: 95%;
+}
+
+.SettingMenu .SettingMenu__header {
+    margin: 12px 0;
+    font-size: 1.5em;
+    border-bottom: 2px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.SettingMenu .SettingMenu__header h1 {
+    margin: 0;
+    padding-bottom: 12px;
+}
+.SettingMenu .SettingMenu__header button {
+    width: 100px;
+    font-size: 1.3vw;
+    letter-spacing: 0.5px;
+    margin: 12px;
+}
+.SettingMenu .SettingMenu__header .CustomModal .CustomModal__toggleButton {
+    font-size: 1.3vw;
+}
+
+.SettingMenu .SettingMenu__list ul {
+    list-style: none;
+}
+.SettingMenu .SettingMenu__list ul li {
+    margin-bottom: 12px;
+    padding: 12px;
+    font-size: 1.3em;
+    cursor: pointer;
+    border: 1px solid #48C5F0;
+    border-radius: 4px;
+}
+.SettingMenu .SettingMenu__list ul li:hover {
+    background-color: #48C5F0;
+}
+
+.SettingMenu .SettingMenu__list .SettingMenu__list__item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.SettingMenu .SettingMenu__list ul li p {
+    margin: 0;
+    padding: 0;
+}
+.SettingMenu .SettingMenu__list ul li .SettingMenu__list__buttons button {
+    margin-left: 12px;
+}
+
+/* MODAL */
+
+.ReactModal__Content .modal__body .modal__item {
+    margin-bottom: 8px;
+}
+
+/* TABLET */
+@media screen and (min-width: 768px) and (max-width: 1025px) {
+    .SettingMenu .SettingMenu__header button {
+        font-size: 1.8vw;
+    }
+
+    .SettingMenu .SettingMenu__header .CustomModal .CustomModal__toggleButton {
+        font-size: 1.8vw;
+    }
+}
+
+/* MOBILE */
+@media screen and (max-width: 767px) {
+    .SettingMenu .SettingMenu__header button {
+        font-size: 2.4vw;
+    }
+
+    .SettingMenu .SettingMenu__header .CustomModal .CustomModal__toggleButton {
+        font-size: 2.4vw;
+    }
+}

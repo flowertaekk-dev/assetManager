@@ -2,7 +2,7 @@ import React from 'react'
 
 import SettingBusiness from './SettingBusiness/SettingBusiness'
 import SettingTable from './SettingTable/SettingTable'
-import SettingItem from './SettingItem/SettingItem'
+import SettingMenu from './SettingMenu/SettingMenu'
 
 import './Setting.css'
 
@@ -18,7 +18,7 @@ const Setting = () => {
             <SettingTable />
 
             {/* 메뉴 설정: 메뉴명 단가 */}
-            <SettingItem />
+            <SettingMenu />
             
         </section>
     )

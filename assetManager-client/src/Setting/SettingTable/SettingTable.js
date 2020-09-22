@@ -13,7 +13,7 @@ const SettingTable = observer(() => {
     const { loginUser, selectedBusiness } = useStore()
 
     const [ tableCount, setTableCount ] = useState(0)
-    const [ initTableCountValue, setInitTableCountValue ] = useState(0)
+    const [ initTableCountValue, setInitTableCountValue ] = useState(0) // 유저가 옳지 않은 값을 입력했을시 원상태로 돌리기 위한 값!
 
     useEffect(() => {
         customAxios("/table/read", (response) => {
