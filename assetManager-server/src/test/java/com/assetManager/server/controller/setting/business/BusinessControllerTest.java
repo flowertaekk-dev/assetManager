@@ -197,4 +197,6 @@ public class BusinessControllerTest {
     }
 
     // TODO case: 상호명이 변경되면 관계가 있는 테이블 및 메뉴의 상호명도 함께 변경된다.
+
+    // TODO case: 상호명이 삭제되면 해당되는 메뉴도 전부 삭제된다.
 }

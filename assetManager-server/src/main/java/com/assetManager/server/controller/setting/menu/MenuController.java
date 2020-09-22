@@ -1,8 +1,6 @@
 package com.assetManager.server.controller.setting.menu;
 
-import com.assetManager.server.controller.setting.menu.dto.AddMenuRequestDto;
-import com.assetManager.server.controller.setting.menu.dto.CommonMenuResponseDto;
-import com.assetManager.server.controller.setting.menu.dto.UpdateMenuRequestDto;
+import com.assetManager.server.controller.setting.menu.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +29,25 @@ public class MenuController {
     @PostMapping("/update")
     public ResponseEntity<CommonMenuResponseDto> updateMenu(@RequestBody UpdateMenuRequestDto request) {
         logger.info(String.format(
-                "addMenu -> userId: %s, businessName: %s, menu: %s, price: %d",
+                "updateMenu -> userId: %s, businessName: %s, menu: %s, price: %d",
                 request.getUserId(), request.getBusinessName(), request.getMenu(), request.getPrice()));
         return ResponseEntity.ok(menuService.updateMenu(request));
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<CommonMenuResponseDto> deleteMenu(@RequestBody DeleteMenuRequestDto request) {
+        logger.info(String.format(
+                "deleteMenu -> userId: %s, businessName: %s, menu: %s",
+                request.getUserId(), request.getBusinessName(), request.getMenu()));
+        return ResponseEntity.ok(menuService.deleteMenu(request));
+    }
+
+    @PostMapping("/readAll")
+    public ResponseEntity<ReadAllMenuResponseDto> readAllMenu(@RequestBody ReadAllMenuRequestDto request) {
+        logger.info(String.format(
+                "readAllMenu -> userId: %s, businessName: %s",
+                request.getUserId(), request.getBusinessName()));
+        return ResponseEntity.ok(menuService.readAllMenu(request));
     }
 
 }

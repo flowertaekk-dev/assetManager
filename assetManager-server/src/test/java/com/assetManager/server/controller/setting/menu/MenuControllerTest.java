@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.*;
 
 import com.assetManager.server.controller.setting.business.BusinessTestUtil;
+import com.assetManager.server.controller.setting.menu.dto.DeleteMenuRequestDto;
+import com.assetManager.server.controller.setting.menu.dto.ReadAllMenuRequestDto;
 import com.assetManager.server.controller.setting.menu.dto.UpdateMenuRequestDto;
 import com.assetManager.server.controller.signup.UserTestUtil;
 import com.assetManager.server.controller.utils.TestDataUtil;
@@ -186,11 +188,113 @@ public class MenuControllerTest {
         assertThat(menus.get(0).getPrice()).isEqualTo(price);
     }
 
-    // TODO case: 변경 대상 메뉴가 존재하지 않으면 FAILURE를 반환한다.
+    // case: 변경 대상 메뉴가 존재하지 않으면 FAILURE를 반환한다.
+    @Test
+    public void test_fail_when_cannot_find_target_menu() throws Exception {
+        // given
+        // do nothing
 
-    // TODO case: 메뉴를 삭제한다.
+        // when
+        String content = objectMapper.writeValueAsString(
+                UpdateMenuRequestDto.builder()
+                        .userId(TestDataUtil.id)
+                        .businessName(this.businessName)
+                        .menu(this.menu)
+                        .price(price)
+                        .build());
 
-    // TODO case: 유저 아이디와 상호명에 연결된 메뉴를 전부 불러올 수 있다.
+        ResultActions action = mvc.perform(
+                post(TestDataUtil.menuControllerUrl + "/update")
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
+
+        // then
+        action
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultStatus", is("FAILURE")))
+                .andExpect(jsonPath("$.reason", is("변경할 대상 데이터가 존재하지 않습니다.")))
+                .andDo(print());
+    }
+
+    // case: 메뉴를 삭제한다.
+    @Test
+    public void test_can_delete_menu() throws Exception {
+        // given
+        MenuTestUtil.insertTableCount(this.mvc, this.businessName, this.menu, this.price)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
+                .andExpect(jsonPath("$.reason", nullValue()))
+                .andDo(print());
+
+        // when
+        String content = objectMapper.writeValueAsString(
+                DeleteMenuRequestDto.builder()
+                        .userId(TestDataUtil.id)
+                        .businessName(this.businessName)
+                        .menu(this.menu)
+                        .build());
+
+        ResultActions action = mvc.perform(
+                post(TestDataUtil.menuControllerUrl + "/delete")
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
+
+        // then
+        action
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
+                .andExpect(jsonPath("$.reason", nullValue()))
+                .andDo(print());
+    }
+
+    // case: 유저 아이디와 상호명에 연결된 메뉴를 전부 불러올 수 있다.
+    @Test
+    public void test_can_retrieve_menus_by_userId_and_businessName() throws Exception {
+        // given
+
+        // 메뉴 1
+        MenuTestUtil.insertTableCount(this.mvc, this.businessName, this.menu, this.price)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
+                .andExpect(jsonPath("$.reason", nullValue()))
+                .andDo(print());
+
+        // 메뉴 2
+        String menu2 = "냉면";
+        int price2 = 5000;
+
+        MenuTestUtil.insertTableCount(this.mvc, this.businessName, menu2, price2)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
+                .andExpect(jsonPath("$.reason", nullValue()))
+                .andDo(print());
+
+        // when
+
+        String content = objectMapper.writeValueAsString(
+                ReadAllMenuRequestDto.builder()
+                        .userId(TestDataUtil.id)
+                        .businessName(this.businessName)
+                        .build());
+
+        ResultActions action = mvc.perform(
+                post(TestDataUtil.menuControllerUrl + "/readAll")
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
+
+        // then
+        action
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
+                .andExpect(jsonPath("$.reason", nullValue()))
+                .andExpect(jsonPath("$.menus[0].menu", is(this.menu)))
+                .andExpect(jsonPath("$.menus[1].menu", is(menu2)))
+                .andDo(print());
+
+    }
 
 
 }
