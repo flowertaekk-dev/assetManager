@@ -31,12 +31,8 @@
     margin-bottom: 12px;
     padding: 12px;
     font-size: 1.3em;
-    cursor: pointer;
     border: 1px solid #48C5F0;
     border-radius: 4px;
-}
-.SettingMenu .SettingMenu__list ul li:hover {
-    background-color: #48C5F0;
 }
 
 .SettingMenu .SettingMenu__list .SettingMenu__list__item {
@@ -49,6 +45,7 @@
     padding: 0;
 }
 .SettingMenu .SettingMenu__list ul li .SettingMenu__list__buttons button {
+    cursor: pointer;
     margin-left: 12px;
 }
 

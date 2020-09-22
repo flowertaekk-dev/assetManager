@@ -126,6 +126,17 @@ const SettingMenu = observer(() => {
     }
 
     /**
+     * 기존의 값들을 state에 세팅한다
+     * 
+     * @param {string} menu 기존 메뉴명
+     * @param {number} price 기존 가격
+     */
+    const setDefaultMenuAndPrice = (menu, price) => {
+        setNewMenu(menu)
+        setPrice(price)
+    }
+
+    /**
      * 모달이 닫힐 때 newBusiness state를 초기화
      * 
      * @param {function} callback 
@@ -151,7 +162,7 @@ const SettingMenu = observer(() => {
                             modalTitle={`메뉴 수정: ${menuJson.menu}`}
                             toggleButton={
                                 (
-                                    <button>Edit</button>
+                                    <button onClick={ () => setDefaultMenuAndPrice(menuJson.menu, menuJson.price) }>Edit</button>
                                 )
                             }
                             preCheckHandler={ checkNewMenuAndPriceAreEmpty }
@@ -162,6 +173,8 @@ const SettingMenu = observer(() => {
                                     <label
                                         htmlFor="menu"
                                         style={{
+                                            "display": "inline-block",
+                                            "width": "96px",
                                             "fontSize": "1.4em"
                                         }}>
                                             새 메뉴명:
@@ -176,24 +189,24 @@ const SettingMenu = observer(() => {
                                             "height": "4vh",
                                             "fontSize": "1.2em"
                                         }}
-                                        // TODO update 할 때는 기존의 메뉴명을 표시하고 싶다 (상호명 쪽에서도 같은 처리로 하자)
                                         value={newMenu}
                                         onChange={(event) => {setNewMenu(event.target.value)}}
                                         placeholder="새 메뉴명"/>
                                 </div>
 
                                 <div className='modal__item'>
-                                    {/* TODO '새 메뉴명: '이랑 '가격: '의 너비를 동일하게  */}
                                     <label
                                         htmlFor="price"
                                         style={{
+                                            "display": "inline-block",
+                                            "width": "96px",
                                             "fontSize": "1.4em"
                                         }}>
                                             가격:
                                     </label>
                                     <input
                                         id="price"
-                                        type="text"
+                                        type="number"
                                         className="modal__menu"
                                         style={{
                                             "marginLeft": "12px",
@@ -201,7 +214,6 @@ const SettingMenu = observer(() => {
                                             "height": "4vh",
                                             "fontSize": "1.2em"
                                         }}
-                                        // TODO update 할 때는 기존의 가격을 표시하고 싶다
                                         value={price}
                                         onChange={(event) => {setPrice(event.target.value)}}
                                         placeholder="가격"/>
@@ -310,20 +322,7 @@ const SettingMenu = observer(() => {
             
             <div className='SettingMenu__list'>
                 <ul>
-                    {/* <li className='SettingMenu__list__item'>
-                        <p>삼겹살</p>
-                        <p>5000원</p>
-                    </li>
-                    <li className='SettingMenu__list__item'>
-                        <p>육회</p>
-                        <p>12000원</p>
-                    </li>
-                    <li className='SettingMenu__list__item'>
-                        <p>함흥냉면</p>
-                        <p>9000원</p>
-                    </li> */}
-
-                    {  renderMenus() }
+                    { renderMenus() }
                 </ul>
             </div>
 

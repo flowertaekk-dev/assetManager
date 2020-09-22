@@ -36,3 +36,6 @@
     margin: 0;
     padding: 0;
 }
+.SettingTable .SettingTable__list ul li .SettingTable__list__buttons button {
+    cursor: pointer;
+}

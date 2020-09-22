@@ -28,7 +28,6 @@
     margin-bottom: 12px;
     padding: 12px;
     font-size: 1.3em;
-    cursor: pointer;
     border: 1px solid #48C5F0;
     border-radius: 4px;
 }
@@ -50,6 +49,7 @@
     padding: 0;
 }
 .SettingBusiness .SettingBusiness__list ul li .SettingBusiness__list__buttons button {
+    cursor: pointer;
     margin-left: 12px;
 }
 

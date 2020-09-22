@@ -90,38 +90,40 @@ const SettingTable = observer(() => {
                 <ul>
                     <li className='SettingTable__list__item'>
                         <p>개수: { tableCount }</p>
-                        <CustomModal
-                            modalTitle='테이블 개수 수정'
-                            toggleButton={
-                                (
-                                    <button>Edit</button>
-                                )
-                            }
-                            preCheckHandler={ checkTableCountIsEmpty }
-                            okButtonClickedHandler={ updateTableCountHandler }
-                            cancelButtonClickedHandler={ cancelModalHandler } >
-                                <label
-                                    htmlFor="tableCount"
-                                    style={{
-                                        "fontSize": "1.4em"
-                                    }}>
-                                        개수:
-                                </label>
-                                <input
-                                    id="tableCount"
-                                    type="number"
-                                    className="modal__tableCount"
-                                    style={{
-                                        "marginLeft": "12px",
-                                        "width": "50vw",
-                                        "height": "4vh",
-                                        "fontSize": "1.2em"
-                                    }}
-                                    value={ tableCount }
-                                    onChange={(event) => { setTableCount(event.target.value) }}
-                                    min='0'
-                                    placeholder="테이블 개수"/>
-                        </CustomModal>
+                        <div className='SettingTable__list__buttons'>
+                            <CustomModal
+                                modalTitle='테이블 개수 수정'
+                                toggleButton={
+                                    (
+                                        <button >Edit</button>
+                                    )
+                                }
+                                preCheckHandler={ checkTableCountIsEmpty }
+                                okButtonClickedHandler={ updateTableCountHandler }
+                                cancelButtonClickedHandler={ cancelModalHandler } >
+                                    <label
+                                        htmlFor="tableCount"
+                                        style={{
+                                            "fontSize": "1.4em"
+                                        }}>
+                                            개수:
+                                    </label>
+                                    <input
+                                        id="tableCount"
+                                        type="number"
+                                        className="modal__tableCount"
+                                        style={{
+                                            "marginLeft": "12px",
+                                            "width": "50vw",
+                                            "height": "4vh",
+                                            "fontSize": "1.2em"
+                                        }}
+                                        value={ tableCount }
+                                        onChange={(event) => { setTableCount(event.target.value) }}
+                                        min='0'
+                                        placeholder="테이블 개수"/>
+                            </CustomModal>
+                        </div>
                     </li>
                 </ul>
             </div>
