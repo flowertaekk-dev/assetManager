@@ -4,6 +4,7 @@ import com.assetManager.server.controller.CommonResponseResult;
 import com.assetManager.server.controller.setting.business.dto.*;
 import com.assetManager.server.domain.business.Business;
 import com.assetManager.server.domain.business.BusinessRepository;
+import com.assetManager.server.domain.tableCount.TableCountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

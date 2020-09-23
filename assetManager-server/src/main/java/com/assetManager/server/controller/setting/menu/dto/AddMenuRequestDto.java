@@ -1,6 +1,7 @@
 package com.assetManager.server.controller.setting.menu.dto;
 
 import com.assetManager.server.domain.menu.Menu;
+import com.assetManager.server.utils.RandomIdCreator;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class AddMenuRequestDto {
+    private final String identityCode = "MN-";
 
     private String userId;
     private String businessName;
@@ -24,6 +26,7 @@ public class AddMenuRequestDto {
 
     public Menu toMenuEntity() {
         return Menu.builder()
+                .menuId(identityCode + RandomIdCreator.create())
                 .userId(this.userId)
                 .businessName(this.businessName)
                 .menu(this.menu)

@@ -27,7 +27,6 @@ const SettingMenu = observer(() => {
     const retrieveAllMenus = () =>{
         customAxios("/menu/readAll", (response) => {
             if (response.resultStatus === 'SUCCESS') {
-                console.log('settingMenu', response.menus)
                 // 메뉴 저장
                 setMenus(response.menus)
             } else {
@@ -153,7 +152,7 @@ const SettingMenu = observer(() => {
     const renderMenus = () => {
         return menus.map(menuJson => (
             <li
-                key={ menuJson.seq }
+                key={ menuJson.menuId }
                 className='SettingMenu__list__item' >
                     <p>{`${menuJson.menu}  ${menuJson.price}`}</p>
                     <div className='SettingMenu__list__buttons'>

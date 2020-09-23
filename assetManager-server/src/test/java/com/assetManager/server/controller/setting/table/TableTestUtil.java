@@ -1,6 +1,6 @@
 package com.assetManager.server.controller.setting.table;
 
-import com.assetManager.server.controller.setting.table.dto.UpsertTableCountRequestDto;
+import com.assetManager.server.controller.setting.table.dto.UpdateTableCountRequestDto;
 import com.assetManager.server.controller.utils.TestDataUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +24,14 @@ public class TableTestUtil extends TestDataUtil {
 
     public static ResultActions insertTableCount(MockMvc mvc, String businessName, int tableCount) throws Exception {
         String content = staticObjectMapper.writeValueAsString(
-                UpsertTableCountRequestDto.builder()
+                UpdateTableCountRequestDto.builder()
                         .userId(TestDataUtil.id)
                         .businessName(businessName)
                         .tableCount(tableCount)
                         .build());
 
         return mvc.perform(
-                post(TestDataUtil.tableCountControllerUrl + "/upsert")
+                post(TestDataUtil.tableCountControllerUrl + "/add")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));

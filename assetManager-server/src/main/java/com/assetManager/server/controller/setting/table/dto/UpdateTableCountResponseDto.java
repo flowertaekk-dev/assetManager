@@ -6,14 +6,14 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class UpsertTableCountResponseDto {
+public class UpdateTableCountResponseDto {
 
     private CommonResponseResult resultStatus;
     private String reason;
 
     @Builder
     @JsonCreator
-    public UpsertTableCountResponseDto(CommonResponseResult resultStatus, String reason) {
+    public UpdateTableCountResponseDto(CommonResponseResult resultStatus, String reason) {
         this.resultStatus = resultStatus;
         this.reason = reason;
     }
@@ -24,8 +24,8 @@ public class UpsertTableCountResponseDto {
     /**
      * SUCCESS Response를 반환
      */
-    public static UpsertTableCountResponseDto makeSuccessResponse() {
-        return UpsertTableCountResponseDto.builder()
+    public static UpdateTableCountResponseDto makeSuccessResponse() {
+        return UpdateTableCountResponseDto.builder()
                 .resultStatus(CommonResponseResult.SUCCESS)
                 .build();
     }
@@ -33,8 +33,8 @@ public class UpsertTableCountResponseDto {
     /**
      * FAILURE Response를 반환
      */
-    public static UpsertTableCountResponseDto makeFailureResponse(String reason) {
-        return UpsertTableCountResponseDto.builder()
+    public static UpdateTableCountResponseDto makeFailureResponse(String reason) {
+        return UpdateTableCountResponseDto.builder()
                 .resultStatus(CommonResponseResult.FAILURE)
                 .reason(reason)
                 .build();

@@ -1,7 +1,6 @@
 package com.assetManager.server.controller.setting.menu;
 
 import com.assetManager.server.controller.setting.menu.dto.AddMenuRequestDto;
-import com.assetManager.server.controller.setting.table.dto.UpsertTableCountRequestDto;
 import com.assetManager.server.controller.utils.TestDataUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;

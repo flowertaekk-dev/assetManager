@@ -43,6 +43,7 @@ const SettingBusiness = (props) => {
     const addBusinessNameHandler = (callback) => {
         customAxios("/business/add", (response) => {
             if (response.resultStatus === 'SUCCESS') {
+                addTableCountHandler()
                 retrieveAllBusinessNames()  // refresh
                 setNewBusinessName('')      // 초기화
                 callback()                  // 모달 닫기
@@ -52,6 +53,20 @@ const SettingBusiness = (props) => {
         }, {
             userId: loginUser.loginUserId,
             businessName: newBusinessName
+        })
+    }
+
+    const addTableCountHandler = () => {
+        customAxios("/table/add", (response) => {
+            if (response.resultStatus === 'SUCCESS') {
+                // do nothing
+            } else {
+                alert('테이블 정보 초기화에 실패했습니다.')
+            }
+        }, {
+            userId: loginUser.loginUserId,
+            businessName: newBusinessName,
+            tableCount: 0 // 초기값
         })
     }
 
@@ -137,7 +152,7 @@ const SettingBusiness = (props) => {
     const renderBusinessNames = () => {
         return businessNames.map(businessNameJson => (
             <li
-                key={ businessNameJson.seq }
+                key={ businessNameJson.businessId }
                 className={
                     `SettingBusiness__list__item
                     ${selectedBusinessName === businessNameJson.businessName

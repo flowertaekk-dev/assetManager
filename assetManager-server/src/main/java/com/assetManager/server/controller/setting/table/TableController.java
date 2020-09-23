@@ -1,10 +1,6 @@
 package com.assetManager.server.controller.setting.table;
 
-import com.assetManager.server.controller.setting.table.dto.ReadTableCountRequestDto;
-import com.assetManager.server.controller.setting.table.dto.ReadTableCountResponseDto;
-import com.assetManager.server.controller.setting.table.dto.UpsertTableCountRequestDto;
-import com.assetManager.server.controller.setting.table.dto.UpsertTableCountResponseDto;
-import com.sun.mail.iap.Response;
+import com.assetManager.server.controller.setting.table.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,20 +18,26 @@ public class TableController {
 
     private final TableCountService tableCountService;
 
-    @PostMapping("/upsert")
-    public ResponseEntity<UpsertTableCountResponseDto> upsertTableCount(@RequestBody UpsertTableCountRequestDto request) {
+    @PostMapping("/add")
+    public ResponseEntity<AddTableCountResponseDto> addTableCount(@RequestBody AddTableCountRequestDto request) {
         logger.info(String.format(
-                "upsertTableCount -> userId: %s, businessName: %s, tableCount: %s",
+                "addTableCount -> userId: %s, businessName: %s, tableCount: %s",
                 request.getUserId(), request.getBusinessName(), request.getTableCount()));
+        return ResponseEntity.ok(tableCountService.addTableCount(request));
+    }
 
-        return ResponseEntity.ok(tableCountService.upsertTableCount(request));
+    @PostMapping("/update")
+    public ResponseEntity<UpdateTableCountResponseDto> updateTableCount(@RequestBody UpdateTableCountRequestDto request) {
+        logger.info(String.format(
+                "updateTableCount -> userId: %s, businessName: %s, tableCount: %s",
+                request.getUserId(), request.getBusinessName(), request.getTableCount()));
+        return ResponseEntity.ok(tableCountService.updateTableCount(request));
     }
 
     @PostMapping("/read")
     public ResponseEntity<ReadTableCountResponseDto> readTableCount(@RequestBody ReadTableCountRequestDto request) {
         logger.info(String.format(
                 "readTableCount -> userId: %s, businessName: %s", request.getUserId(), request.getBusinessName()));
-
         return ResponseEntity.ok(tableCountService.readTableCount(request));
     }
 

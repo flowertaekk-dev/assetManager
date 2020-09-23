@@ -56,11 +56,11 @@ const SettingTable = observer(() => {
      * TableCount update 쿼리
      */
     const updateTableCountHandler = (callback) => {
-        customAxios("/table/upsert", (response) => {
+        customAxios("/table/update", (response) => {
             if (response.resultStatus === 'SUCCESS') {
                 callback()
             } else {
-                alert('ERROR', response.reason)
+                alert(response.reason)
             }
         }, {
             userId: loginUser.loginUserId,

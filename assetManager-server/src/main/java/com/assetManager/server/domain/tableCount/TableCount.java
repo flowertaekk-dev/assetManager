@@ -9,11 +9,10 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class TableCount {
+public class TableCount { // TODO 이거 TableInfo로 바꾸자
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long seq;
+    private String tableCountId;
 
     @Column(nullable = false)
     private String userId;
@@ -25,7 +24,8 @@ public class TableCount {
     private int tableCount;
 
     @Builder
-    public TableCount(String userId, String businessName, int tableCount) {
+    public TableCount(String tableCountId, String userId, String businessName, int tableCount) {
+        this.tableCountId = tableCountId;
         this.userId = userId;
         this.businessName = businessName;
         this.tableCount = tableCount;

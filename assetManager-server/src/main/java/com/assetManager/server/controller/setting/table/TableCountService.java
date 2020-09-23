@@ -1,9 +1,6 @@
 package com.assetManager.server.controller.setting.table;
 
-import com.assetManager.server.controller.setting.table.dto.ReadTableCountRequestDto;
-import com.assetManager.server.controller.setting.table.dto.ReadTableCountResponseDto;
-import com.assetManager.server.controller.setting.table.dto.UpsertTableCountRequestDto;
-import com.assetManager.server.controller.setting.table.dto.UpsertTableCountResponseDto;
+import com.assetManager.server.controller.setting.table.dto.*;
 import com.assetManager.server.domain.business.Business;
 import com.assetManager.server.domain.business.BusinessRepository;
 import com.assetManager.server.domain.tableCount.TableCount;
@@ -22,27 +19,45 @@ public class TableCountService {
     private final TableCountRepository tableCountRepository;
     private final BusinessRepository businessRepository;
 
-    protected UpsertTableCountResponseDto upsertTableCount(UpsertTableCountRequestDto request) {
+    protected AddTableCountResponseDto addTableCount(AddTableCountRequestDto request) {
 
         // 상호명이 존재하는지 확인
         Optional<Business> business = businessRepository.findByUserIdAndBusinessName(request.getUserId(), request.getBusinessName());
 
         if (business.isEmpty())
-            return UpsertTableCountResponseDto.makeFailureResponse("상호명(닉네임)이 존재하지 않습니다.");
+            return AddTableCountResponseDto.makeFailureResponse("상호명(닉네임)이 존재하지 않습니다.");
+
+        Optional<TableCount> tableInfo = tableCountRepository.findByUserIdAndBusinessName(request.getUserId(), request.getBusinessName());
+        if (tableInfo.isPresent()) {
+            return AddTableCountResponseDto.makeFailureResponse("테이블 정보가 이미 존재합니다.");
+        }
+
+        // 등록
+        tableCountRepository.save(request.toTableCountEntity());
+
+        return AddTableCountResponseDto.makeSuccessResponse();
+    }
+
+    protected UpdateTableCountResponseDto updateTableCount(UpdateTableCountRequestDto request) {
+
+        // 상호명이 존재하는지 확인
+        Optional<Business> business = businessRepository.findByUserIdAndBusinessName(request.getUserId(), request.getBusinessName());
+
+        if (business.isEmpty())
+            return UpdateTableCountResponseDto.makeFailureResponse("상호명(닉네임)이 존재하지 않습니다.");
 
         Optional<TableCount> tableCount = tableCountRepository
                 .findByUserIdAndBusinessName(request.getUserId(), request.getBusinessName());
 
-        if (tableCount.isPresent()) {
-            tableCount.get().updateTableCount(request.getTableCount());
-        } else {
-            // spring-data의 upsert를 이용하려면 id가 같아야하는데 id는 이 시점에서 특정 불가
-            tableCountRepository.save(request.toTableCountEntity());
+        if (tableCount.isEmpty()) {
+            return UpdateTableCountResponseDto.makeFailureResponse("테이블 정보가 존재하지 않습니다.");
         }
 
+        // 수정
+        tableCount.get().updateTableCount(request.getTableCount());
+
         businessRepository.flush();
-        // 실패하는 케이스는 없을까?
-        return UpsertTableCountResponseDto.makeSuccessResponse();
+        return UpdateTableCountResponseDto.makeSuccessResponse();
     }
 
     protected ReadTableCountResponseDto readTableCount(ReadTableCountRequestDto request) {

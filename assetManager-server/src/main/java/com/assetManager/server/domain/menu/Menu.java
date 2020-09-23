@@ -12,8 +12,7 @@ import javax.persistence.*;
 public class Menu {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long seq;
+    private String menuId;
 
     @Column(nullable = false)
     private String userId;
@@ -28,7 +27,8 @@ public class Menu {
     private int price;
 
     @Builder
-    public Menu(String userId, String businessName, String menu, int price) {
+    public Menu(String menuId, String userId, String businessName, String menu, int price) {
+        this.menuId = menuId;
         this.userId = userId;
         this.businessName = businessName;
         this.menu = menu;

@@ -30,6 +30,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootTest
 public class MenuControllerTest {
@@ -118,7 +119,7 @@ public class MenuControllerTest {
                 UpdateMenuRequestDto.builder()
                         .userId(TestDataUtil.id)
                         .businessName(this.businessName)
-                        .menu(this.menu)
+                        .existingMenu(this.menu)
                         .newMenu(newMenu)
                         .price(price)
                         .build());
@@ -162,7 +163,7 @@ public class MenuControllerTest {
                 UpdateMenuRequestDto.builder()
                         .userId(TestDataUtil.id)
                         .businessName(this.businessName)
-                        .menu(this.menu)
+                        .existingMenu(this.menu)
                         .price(price)
                         .build());
 
@@ -199,7 +200,7 @@ public class MenuControllerTest {
                 UpdateMenuRequestDto.builder()
                         .userId(TestDataUtil.id)
                         .businessName(this.businessName)
-                        .menu(this.menu)
+                        .existingMenu(this.menu)
                         .price(price)
                         .build());
 

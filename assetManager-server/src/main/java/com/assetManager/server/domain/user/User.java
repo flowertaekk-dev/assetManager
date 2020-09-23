@@ -14,9 +14,6 @@ import java.util.Arrays;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long seq;
-
     @Column(nullable = false, unique = true)
     private String id;
 

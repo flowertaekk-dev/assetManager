@@ -14,6 +14,8 @@ import com.assetManager.server.controller.signup.UserTestUtil;
 import com.assetManager.server.controller.utils.TestDataUtil;
 import com.assetManager.server.domain.business.Business;
 import com.assetManager.server.domain.business.BusinessRepository;
+import com.assetManager.server.domain.tableCount.TableCount;
+import com.assetManager.server.domain.tableCount.TableCountRepository;
 import com.assetManager.server.domain.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -27,6 +29,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -36,6 +39,7 @@ public class BusinessControllerTest {
     @Autowired private ObjectMapper objectMapper;
     @Autowired private UserRepository userRepository;
     @Autowired private BusinessRepository businessRepository;
+    @Autowired private TableCountRepository tableCountRepository;
 
     private MockMvc mvc;
 
@@ -49,6 +53,7 @@ public class BusinessControllerTest {
 
     @AfterEach
     public void clean() {
+        tableCountRepository.deleteAll();
         businessRepository.deleteAll();
         userRepository.deleteAll();
     }
@@ -57,20 +62,22 @@ public class BusinessControllerTest {
     @Test
     public void test_can_save_business_name() throws Exception {
         // given
-
         String businessName = "testBusiness";
 
         // when
-
         ResultActions action = BusinessTestUtil.insertBusinessName(mvc, businessName);
 
         // then
-
         action
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
                 .andExpect(jsonPath("$.reason", nullValue()))
                 .andDo(print());
+
+        List<Business> businesses = businessRepository.findAll();
+        assertThat(businesses).isNotEmpty();
+        assertThat(businesses.get(0).getUserId()).isEqualTo(TestDataUtil.id);
+        assertThat(businesses.get(0).getBusinessName()).isEqualTo(businessName);
     }
 
     // case: 상호명(닉네임)을 변경한다.
@@ -162,7 +169,6 @@ public class BusinessControllerTest {
     @Test
     public void test_can_retrieve_all_business_name_by_userId() throws Exception {
         // given
-
         String firstBusinessName = "firstBusiness";
         String secondBusinessName = "secondBusinessName";
         String thirdBusinessName = "thirdBusinessName";
@@ -172,7 +178,6 @@ public class BusinessControllerTest {
         BusinessTestUtil.insertBusinessName(mvc, thirdBusinessName);
 
         // when
-
         String content = objectMapper.writeValueAsString(
                 ReadAllBusinessRequestDto.builder()
                         .userId(TestDataUtil.id)
@@ -185,7 +190,6 @@ public class BusinessControllerTest {
                         .accept(MediaType.APPLICATION_JSON));
 
         // then
-
         action
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
