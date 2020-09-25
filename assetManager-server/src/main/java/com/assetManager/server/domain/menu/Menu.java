@@ -18,7 +18,7 @@ public class Menu {
     private String userId;
 
     @Column(nullable = false)
-    private String businessName;
+    private String businessId;
 
     @Column(nullable = false)
     private String menu;
@@ -27,10 +27,10 @@ public class Menu {
     private int price;
 
     @Builder
-    public Menu(String menuId, String userId, String businessName, String menu, int price) {
+    public Menu(String menuId, String userId, String businessId, String menu, int price) {
         this.menuId = menuId;
         this.userId = userId;
-        this.businessName = businessName;
+        this.businessId = businessId;
         this.menu = menu;
         this.price = price;
     }

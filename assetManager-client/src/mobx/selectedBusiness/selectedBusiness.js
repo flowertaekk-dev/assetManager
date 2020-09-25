@@ -1,13 +1,13 @@
 import { observable } from 'mobx'
 
 const selectedBusiness = observable({
-    selectedBusiness: window.localStorage.getItem('selectedBusiness'),
-    updateSelectedBusiness(selectedBusiness) {
-        this.selectedBusiness = selectedBusiness
-        window.localStorage.setItem('selectedBusiness', selectedBusiness)
+    selectedBusinessId: window.localStorage.getItem('selectedBusinessId'),
+    updateSelectedBusinessId(selectedBusinessId) {
+        this.selectedBusinessId = selectedBusinessId
+        window.localStorage.setItem('selectedBusinessId', selectedBusinessId)
     },
-    deleteSelectedBusiness() {
-        this.selectedBusiness = undefined
+    deleteSelectedBusinessId() {
+        this.selectedBusinessId = undefined
     },
 })
 

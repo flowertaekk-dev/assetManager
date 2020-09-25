@@ -1,6 +1,7 @@
 package com.assetManager.server.controller.setting.table.dto;
 
 import com.assetManager.server.controller.CommonResponseResult;
+import com.assetManager.server.domain.tableCount.TableCount;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,12 +9,14 @@ import lombok.Getter;
 @Getter
 public class AddTableCountResponseDto {
 
+    private TableCount tableCount;
     private CommonResponseResult resultStatus;
     private String reason;
 
     @Builder
     @JsonCreator
-    public AddTableCountResponseDto(CommonResponseResult resultStatus, String reason) {
+    public AddTableCountResponseDto(TableCount tableCount, CommonResponseResult resultStatus, String reason) {
+        this.tableCount = tableCount;
         this.resultStatus = resultStatus;
         this.reason = reason;
     }
@@ -24,8 +27,9 @@ public class AddTableCountResponseDto {
     /**
      * SUCCESS Response를 반환
      */
-    public static AddTableCountResponseDto makeSuccessResponse() {
+    public static AddTableCountResponseDto makeSuccessResponse(TableCount tableCount) {
         return AddTableCountResponseDto.builder()
+                .tableCount(tableCount)
                 .resultStatus(CommonResponseResult.SUCCESS)
                 .build();
     }

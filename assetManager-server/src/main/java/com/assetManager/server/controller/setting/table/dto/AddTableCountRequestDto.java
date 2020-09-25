@@ -13,13 +13,13 @@ public class AddTableCountRequestDto {
     private final String identityCode = "TC-";
 
     private String userId;
-    private String businessName;
+    private String businessId;
     private int tableCount;
 
     @Builder
-    public AddTableCountRequestDto(String userId, String businessName, int tableCount) {
+    public AddTableCountRequestDto(String userId, String businessId, int tableCount) {
         this.userId = userId;
-        this.businessName = businessName;
+        this.businessId = businessId;
         this.tableCount = tableCount;
     }
 
@@ -27,7 +27,7 @@ public class AddTableCountRequestDto {
         return TableCount.builder()
                 .tableCountId(identityCode + RandomIdCreator.create())
                 .userId(this.userId)
-                .businessName(this.businessName)
+                .businessId(this.businessId)
                 .tableCount(this.tableCount)
                 .build();
     }

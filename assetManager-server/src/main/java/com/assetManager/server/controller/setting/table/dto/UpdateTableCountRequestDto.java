@@ -1,6 +1,5 @@
 package com.assetManager.server.controller.setting.table.dto;
 
-import com.assetManager.server.domain.business.Business;
 import com.assetManager.server.domain.tableCount.TableCount;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,20 +10,20 @@ import lombok.NoArgsConstructor;
 public class UpdateTableCountRequestDto {
 
     private String userId;
-    private String businessName;
+    private String businessId;
     private int tableCount;
 
     @Builder
-    public UpdateTableCountRequestDto(String userId, String businessName, int tableCount) {
+    public UpdateTableCountRequestDto(String userId, String businessId, int tableCount) {
         this.userId = userId;
-        this.businessName = businessName;
+        this.businessId = businessId;
         this.tableCount = tableCount;
     }
 
     public TableCount toTableCountEntity() {
         return TableCount.builder()
                 .userId(this.userId)
-                .businessName(this.businessName)
+                .businessId(this.businessId)
                 .tableCount(this.tableCount)
                 .build();
     }

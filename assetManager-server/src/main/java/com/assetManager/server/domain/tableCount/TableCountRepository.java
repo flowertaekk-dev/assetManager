@@ -6,6 +6,6 @@ import java.util.Optional;
 
 public interface TableCountRepository extends JpaRepository<TableCount, Long> {
 
-    Optional<TableCount> findByUserIdAndBusinessName(String userId, String businessName);
+    Optional<TableCount> findByUserIdAndBusinessId(String userId, String businessId);
 
 }

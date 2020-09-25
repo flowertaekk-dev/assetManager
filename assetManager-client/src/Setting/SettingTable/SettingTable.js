@@ -26,9 +26,9 @@ const SettingTable = observer(() => {
             }
         }, {
             userId: loginUser.loginUserId,
-            businessName: selectedBusiness.selectedBusiness
+            businessId: selectedBusiness.selectedBusinessId
         })
-    }, [ selectedBusiness.selectedBusiness ])
+    }, [ selectedBusiness.selectedBusinessId ])
 
     /**
      * tableCount에 빈 값이 들어있는지 확인한다
@@ -64,7 +64,7 @@ const SettingTable = observer(() => {
             }
         }, {
             userId: loginUser.loginUserId,
-            businessName: selectedBusiness.selectedBusiness,
+            businessId: selectedBusiness.selectedBusinessId,
             tableCount
         })
     }

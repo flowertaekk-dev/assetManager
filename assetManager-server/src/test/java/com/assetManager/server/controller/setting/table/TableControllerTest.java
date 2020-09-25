@@ -63,9 +63,12 @@ public class TableControllerTest {
         // given
         int tableCount = 10;
         BusinessTestUtil.insertBusinessName(mvc, this.businessName);
+        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, this.businessName)
+                .orElseThrow()
+                .getBusinessId();
 
         // when
-        ResultActions action = TableTestUtil.insertTableCount(mvc, businessName, tableCount);
+        ResultActions action = TableTestUtil.insertTableCount(mvc, businessId, tableCount);
 
         // then
         action
@@ -78,7 +81,7 @@ public class TableControllerTest {
         assertThat(tableCounts).isNotEmpty();
         assertThat(tableCounts.get(0).getTableCountId()).isNotNull();
         assertThat(tableCounts.get(0).getUserId()).isEqualTo(TestDataUtil.id);
-        assertThat(tableCounts.get(0).getBusinessName()).isEqualTo(businessName);
+        assertThat(tableCounts.get(0).getBusinessId()).isEqualTo(businessId);
         assertThat(tableCounts.get(0).getTableCount()).isEqualTo(10);
     }
 
@@ -88,8 +91,11 @@ public class TableControllerTest {
         // given
         int tableCount = 10;
         BusinessTestUtil.insertBusinessName(mvc, this.businessName);
+        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, this.businessName)
+                .orElseThrow()
+                .getBusinessId();
 
-        TableTestUtil.insertTableCount(mvc, this.businessName, tableCount)
+        TableTestUtil.insertTableCount(mvc, businessId, tableCount)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
                 .andExpect(jsonPath("$.reason", nullValue()))
@@ -99,11 +105,11 @@ public class TableControllerTest {
         assertThat(tableCounts).isNotEmpty();
         assertThat(tableCounts.get(0).getTableCountId()).isNotNull();
         assertThat(tableCounts.get(0).getUserId()).isEqualTo(TestDataUtil.id);
-        assertThat(tableCounts.get(0).getBusinessName()).isEqualTo(this.businessName);
+        assertThat(tableCounts.get(0).getBusinessId()).isEqualTo(businessId);
         assertThat(tableCounts.get(0).getTableCount()).isEqualTo(10);
 
         // when
-        ResultActions action = TableTestUtil.insertTableCount(mvc, this.businessName, tableCount);
+        ResultActions action = TableTestUtil.insertTableCount(mvc, businessId, tableCount);
 
         // then
         action
@@ -119,9 +125,12 @@ public class TableControllerTest {
         // given
         int tableCount = 10;
         BusinessTestUtil.insertBusinessName(mvc, this.businessName);
+        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, this.businessName)
+                .orElseThrow()
+                .getBusinessId();
 
         // when
-        TableTestUtil.insertTableCount(mvc, businessName, tableCount)
+        TableTestUtil.insertTableCount(mvc, businessId, tableCount)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
                 .andExpect(jsonPath("$.reason", nullValue()))
@@ -131,7 +140,7 @@ public class TableControllerTest {
         assertThat(tableCounts).isNotEmpty();
         assertThat(tableCounts.get(0).getTableCountId()).isNotNull();
         assertThat(tableCounts.get(0).getUserId()).isEqualTo(TestDataUtil.id);
-        assertThat(tableCounts.get(0).getBusinessName()).isEqualTo(businessName);
+        assertThat(tableCounts.get(0).getBusinessId()).isEqualTo(businessId);
         assertThat(tableCounts.get(0).getTableCount()).isEqualTo(10);
 
         // then
@@ -140,7 +149,7 @@ public class TableControllerTest {
         String content = objectMapper.writeValueAsString(
                 UpdateTableCountRequestDto.builder()
                         .userId(TestDataUtil.id)
-                        .businessName(this.businessName)
+                        .businessId(businessId)
                         .tableCount(secondTableCount)
                         .build());
 
@@ -159,7 +168,7 @@ public class TableControllerTest {
         List<TableCount> secondTableCounts = tableCountRepository.findAll();
         assertThat(secondTableCounts).isNotEmpty();
         assertThat(secondTableCounts.get(0).getUserId()).isEqualTo(TestDataUtil.id);
-        assertThat(secondTableCounts.get(0).getBusinessName()).isEqualTo(this.businessName);
+        assertThat(secondTableCounts.get(0).getBusinessId()).isEqualTo(businessId);
         assertThat(secondTableCounts.get(0).getTableCount()).isEqualTo(secondTableCount);
     }
 
@@ -168,9 +177,10 @@ public class TableControllerTest {
     public void test_cannot_save_tableCount_when_businessName_does_not_exist() throws Exception {
         // given
         int tableCount = 10;
+        String fakeBusinessId = "BS-00000000-00000000";
 
         // when
-        ResultActions action = TableTestUtil.insertTableCount(mvc, businessName, tableCount);
+        ResultActions action = TableTestUtil.insertTableCount(mvc, fakeBusinessId, tableCount);
 
         // then
         action
@@ -183,18 +193,22 @@ public class TableControllerTest {
 
     // case: userId와 상호명으로 테이블 카운트 불러오기
     @Test
-    public void test_can_retrieve_tableCount_by_userId_and_businessName() throws Exception {
+    public void test_can_retrieve_tableCount_by_userId_and_businessId() throws Exception {
         // given
         int tableCount = 20;
 
         BusinessTestUtil.insertBusinessName(mvc, businessName);
-        TableTestUtil.insertTableCount(mvc, businessName, tableCount);
+        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, this.businessName)
+                .orElseThrow()
+                .getBusinessId();
+
+        TableTestUtil.insertTableCount(mvc, businessId, tableCount);
 
         // when
         String content = objectMapper.writeValueAsString(
                 UpdateTableCountRequestDto.builder()
                         .userId(TestDataUtil.id)
-                        .businessName(businessName)
+                        .businessId(businessId)
                         .tableCount(tableCount)
                         .build());
 
@@ -208,7 +222,7 @@ public class TableControllerTest {
         action
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId", is(TestDataUtil.id)))
-                .andExpect(jsonPath("$.businessName", is(businessName)))
+                .andExpect(jsonPath("$.businessId", is(businessId)))
                 .andExpect(jsonPath("$.tableCount", is(tableCount)))
                 .andDo(print());
 

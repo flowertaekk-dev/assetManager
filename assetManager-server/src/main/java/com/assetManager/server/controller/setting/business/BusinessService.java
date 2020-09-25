@@ -30,9 +30,7 @@ public class BusinessService {
         }
 
         // 상호명 등록
-        businessRepository.save(request.toBusinessEntity());
-
-        return CommonBusinessResponseDto.makeSuccessResponse();
+        return CommonBusinessResponseDto.makeSuccessResponse(businessRepository.save(request.toBusinessEntity()));
     }
 
     protected CommonBusinessResponseDto updateBusinessName(UpdateBusinessRequestDto request) {
@@ -46,10 +44,10 @@ public class BusinessService {
         }
 
         // 상호명 변경
-        business.get().updateBusinessName(request.getNewBusinessName());
-        businessRepository.flush(); // 이거 필요해? JPA 영속성하고 관련된 듯 아닌듯..
+        Business updatedBusiness = business.get().updateBusinessName(request.getNewBusinessName());
+        businessRepository.flush();
 
-        return CommonBusinessResponseDto.makeSuccessResponse();
+        return CommonBusinessResponseDto.makeSuccessResponse(updatedBusiness);
     }
 
     protected CommonBusinessResponseDto deleteBusinessName(DeleteBusinessRequestDto request) {
@@ -68,7 +66,7 @@ public class BusinessService {
         // TODO 테이블 카운트 삭제 로직 구현
         // TODO 메뉴 삭제 로직 구현
 
-        return CommonBusinessResponseDto.makeSuccessResponse();
+        return CommonBusinessResponseDto.makeSuccessResponse(null);
     }
 
     protected ReadAllBusinessResponseDto readAll(ReadAllBusinessRequestDto request) {

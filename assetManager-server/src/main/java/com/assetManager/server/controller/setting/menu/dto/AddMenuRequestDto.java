@@ -12,14 +12,14 @@ public class AddMenuRequestDto {
     private final String identityCode = "MN-";
 
     private String userId;
-    private String businessName;
+    private String businessId;
     private String menu;
     private int price;
 
     @Builder
-    public AddMenuRequestDto(String userId, String businessName, String menu, int price) {
+    public AddMenuRequestDto(String userId, String businessId, String menu, int price) {
         this.userId = userId;
-        this.businessName = businessName;
+        this.businessId = businessId;
         this.menu = menu;
         this.price = price;
     }
@@ -28,7 +28,7 @@ public class AddMenuRequestDto {
         return Menu.builder()
                 .menuId(identityCode + RandomIdCreator.create())
                 .userId(this.userId)
-                .businessName(this.businessName)
+                .businessId(this.businessId)
                 .menu(this.menu)
                 .price(this.price)
                 .build();

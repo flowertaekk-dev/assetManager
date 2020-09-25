@@ -12,15 +12,15 @@ import java.util.Objects;
 public class UpdateMenuRequestDto {
 
     private String userId;
-    private String businessName;
+    private String businessId;
     private String existingMenu;
     private String newMenu;
     private int price;
 
     @Builder
-    public UpdateMenuRequestDto(String userId, String businessName, String existingMenu, String newMenu, int price) {
+    public UpdateMenuRequestDto(String userId, String businessId, String existingMenu, String newMenu, int price) {
         this.userId = userId;
-        this.businessName = businessName;
+        this.businessId = businessId;
         this.existingMenu = existingMenu;
         this.newMenu = newMenu;
         this.price = price;
@@ -29,7 +29,7 @@ public class UpdateMenuRequestDto {
     public Menu toUpdatedMenuEntity() {
         return Menu.builder()
                 .userId(this.userId)
-                .businessName(this.businessName)
+                .businessId(this.businessId)
                 .menu(
                         Objects.isNull(this.newMenu)
                                 ? this.existingMenu

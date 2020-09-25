@@ -22,11 +22,11 @@ public class MenuTestUtil {
         staticObjectMapper = this.objectMapper;
     }
 
-    public static ResultActions insertTableCount(MockMvc mvc, String businessName, String menu, int price) throws Exception {
+    public static ResultActions insertTableCount(MockMvc mvc, String businessId, String menu, int price) throws Exception {
         String content = staticObjectMapper.writeValueAsString(
                 AddMenuRequestDto.builder()
                         .userId(TestDataUtil.id)
-                        .businessName(businessName)
+                        .businessId(businessId)
                         .menu(menu)
                         .price(price)
                         .build());

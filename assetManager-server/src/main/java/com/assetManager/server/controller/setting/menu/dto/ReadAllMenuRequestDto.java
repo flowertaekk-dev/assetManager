@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 public class ReadAllMenuRequestDto {
 
     private String userId;
-    private String businessName;
+    private String businessId;
 
     @Builder
-    public ReadAllMenuRequestDto(String userId, String businessName) {
+    public ReadAllMenuRequestDto(String userId, String businessId) {
         this.userId = userId;
-        this.businessName = businessName;
+        this.businessId = businessId;
     }
 }

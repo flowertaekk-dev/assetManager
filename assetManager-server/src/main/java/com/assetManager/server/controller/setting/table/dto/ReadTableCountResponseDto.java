@@ -13,15 +13,15 @@ public class ReadTableCountResponseDto {
     private CommonResponseResult resultStatus;
     private String reason;
     private String userId;
-    private String businessName;
+    private String businessId;
     private int tableCount;
 
     @Builder
-    public ReadTableCountResponseDto(CommonResponseResult resultStatus, String reason, String userId, String businessName, int tableCount) {
+    public ReadTableCountResponseDto(CommonResponseResult resultStatus, String reason, String userId, String businessId, int tableCount) {
         this.resultStatus = resultStatus;
         this.reason = reason;
         this.userId = userId;
-        this.businessName = businessName;
+        this.businessId = businessId;
         this.tableCount = tableCount;
     }
 
@@ -35,7 +35,7 @@ public class ReadTableCountResponseDto {
         return ReadTableCountResponseDto.builder()
                 .resultStatus(CommonResponseResult.SUCCESS)
                 .userId(entity.getUserId())
-                .businessName(entity.getBusinessName())
+                .businessId(entity.getBusinessId())
                 .tableCount(entity.getTableCount())
                 .build();
     }

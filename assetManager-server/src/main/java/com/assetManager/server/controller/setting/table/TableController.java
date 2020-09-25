@@ -21,23 +21,23 @@ public class TableController {
     @PostMapping("/add")
     public ResponseEntity<AddTableCountResponseDto> addTableCount(@RequestBody AddTableCountRequestDto request) {
         logger.info(String.format(
-                "addTableCount -> userId: %s, businessName: %s, tableCount: %s",
-                request.getUserId(), request.getBusinessName(), request.getTableCount()));
+                "addTableCount -> userId: %s, businessId: %s, tableCount: %s",
+                request.getUserId(), request.getBusinessId(), request.getTableCount()));
         return ResponseEntity.ok(tableCountService.addTableCount(request));
     }
 
     @PostMapping("/update")
     public ResponseEntity<UpdateTableCountResponseDto> updateTableCount(@RequestBody UpdateTableCountRequestDto request) {
         logger.info(String.format(
-                "updateTableCount -> userId: %s, businessName: %s, tableCount: %s",
-                request.getUserId(), request.getBusinessName(), request.getTableCount()));
+                "updateTableCount -> userId: %s, businessId: %s, tableCount: %s",
+                request.getUserId(), request.getBusinessId(), request.getTableCount()));
         return ResponseEntity.ok(tableCountService.updateTableCount(request));
     }
 
     @PostMapping("/read")
     public ResponseEntity<ReadTableCountResponseDto> readTableCount(@RequestBody ReadTableCountRequestDto request) {
         logger.info(String.format(
-                "readTableCount -> userId: %s, businessName: %s", request.getUserId(), request.getBusinessName()));
+                "readTableCount -> userId: %s, businessId: %s", request.getUserId(), request.getBusinessId()));
         return ResponseEntity.ok(tableCountService.readTableCount(request));
     }
 

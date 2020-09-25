@@ -12,7 +12,7 @@ const SettingBusiness = (props) => {
 
     const [ businessNames, setBusinessNames ] = useState([])
     const [ newBusinessName, setNewBusinessName ] = useState('') // add & update 공유
-    const [ selectedBusinessName, setSelectedBusinessName ] = useState(selectedBusiness.selectedBusiness)
+    const [ selectedBusinessId, setSelectedBusinessId ] = useState(selectedBusiness.selectedBusinessId)
 
     const [ addButtonHoverStatus, setAddButtonHoverStatus ] = useState(false)
 
@@ -43,10 +43,11 @@ const SettingBusiness = (props) => {
     const addBusinessNameHandler = (callback) => {
         customAxios("/business/add", (response) => {
             if (response.resultStatus === 'SUCCESS') {
-                addTableCountHandler()
-                retrieveAllBusinessNames()  // refresh
-                setNewBusinessName('')      // 초기화
-                callback()                  // 모달 닫기
+                addTableCountHandler(response.business.businessId)       // 테이블 정보 초기화
+                businessNameClickedHandler(response.business.businessId) // 생성한 상호명 자동 선택
+                retrieveAllBusinessNames()                               // refresh
+                setNewBusinessName('')                                   // 초기화
+                callback()                                               // 모달 닫기
             } else {
                 alert(response.reason)
             }
@@ -56,7 +57,7 @@ const SettingBusiness = (props) => {
         })
     }
 
-    const addTableCountHandler = () => {
+    const addTableCountHandler = (businessId) => {
         customAxios("/table/add", (response) => {
             if (response.resultStatus === 'SUCCESS') {
                 // do nothing
@@ -65,7 +66,7 @@ const SettingBusiness = (props) => {
             }
         }, {
             userId: loginUser.loginUserId,
-            businessName: newBusinessName,
+            businessId: businessId,
             tableCount: 0 // 초기값
         })
     }
@@ -137,13 +138,13 @@ const SettingBusiness = (props) => {
     /**
      * 특정 상호명을 선택했을 때 이벤트
      */
-    const businessNameClickedHandler = (businessName) => {
+    const businessNameClickedHandler = (businessId) => {
         // 선택된 상호명 색상 채우기
-        setSelectedBusinessName(businessName)
+        setSelectedBusinessId(businessId)
 
         // TODO LocalStorage에 저장
         // TODO mobx store에 저장
-        selectedBusiness.updateSelectedBusiness(businessName)
+        selectedBusiness.updateSelectedBusinessId(businessId)
     }
 
     /**
@@ -155,11 +156,11 @@ const SettingBusiness = (props) => {
                 key={ businessNameJson.businessId }
                 className={
                     `SettingBusiness__list__item
-                    ${selectedBusinessName === businessNameJson.businessName
+                    ${selectedBusinessId === businessNameJson.businessId
                             ? 'SettingBusiness__list__item__active'
                             : ''}`
                 }
-                onClick={ () => businessNameClickedHandler(businessNameJson.businessName) } >
+                onClick={ () => businessNameClickedHandler(businessNameJson.businessId) } >
                     <p>{businessNameJson.businessName}</p>
                     <div className='SettingBusiness__list__buttons'>
                         {/* EDIT */}

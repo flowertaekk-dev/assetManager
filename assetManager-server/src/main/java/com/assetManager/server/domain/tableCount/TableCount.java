@@ -18,23 +18,29 @@ public class TableCount { // TODO 이거 TableInfo로 바꾸자
     private String userId;
 
     @Column(nullable = false)
-    private String businessName;
+    private String businessId;
 
     @Column(nullable = false)
     private int tableCount;
 
     @Builder
-    public TableCount(String tableCountId, String userId, String businessName, int tableCount) {
+    public TableCount(String tableCountId, String userId, String businessId, int tableCount) {
         this.tableCountId = tableCountId;
         this.userId = userId;
-        this.businessName = businessName;
+        this.businessId = businessId;
         this.tableCount = tableCount;
     }
 
     // -----------------------------------------------------------------------------------
     // util method
 
-    public void updateTableCount(int tableCount) {
+    /**
+     * 테이블 개수를 수정한다.
+     *
+     * @return 수정된 TableInfo 객체
+     */
+    public TableCount updateTableCount(int tableCount) {
         this.tableCount = tableCount;
+        return this;
     }
 }

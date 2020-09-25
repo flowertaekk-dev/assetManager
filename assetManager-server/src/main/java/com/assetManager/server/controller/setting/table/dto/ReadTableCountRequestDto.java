@@ -10,18 +10,18 @@ import lombok.NoArgsConstructor;
 public class ReadTableCountRequestDto {
 
     private String userId;
-    private String businessName;
+    private String businessId;
 
     @Builder
-    public ReadTableCountRequestDto(String userId, String businessName) {
+    public ReadTableCountRequestDto(String userId, String businessId) {
         this.userId = userId;
-        this.businessName = businessName;
+        this.businessId = businessId;
     }
 
     public TableCount toTableCountEntity() {
         return TableCount.builder()
                 .userId(this.userId)
-                .businessName(this.businessName)
+                .businessId(this.businessId)
                 .build();
     }
 }

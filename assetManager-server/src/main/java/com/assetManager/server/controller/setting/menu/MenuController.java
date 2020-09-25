@@ -21,32 +21,32 @@ public class MenuController {
     @PostMapping("/add")
     public ResponseEntity<CommonMenuResponseDto> addMenu(@RequestBody AddMenuRequestDto request) {
         logger.info(String.format(
-                "addMenu -> userId: %s, businessName: %s, menu: %s, price: %d",
-                request.getUserId(), request.getBusinessName(), request.getMenu(), request.getPrice()));
+                "addMenu -> userId: %s, businessId: %s, menu: %s, price: %d",
+                request.getUserId(), request.getBusinessId(), request.getMenu(), request.getPrice()));
         return ResponseEntity.ok(menuService.addMenu(request));
     }
 
     @PostMapping("/update")
     public ResponseEntity<CommonMenuResponseDto> updateMenu(@RequestBody UpdateMenuRequestDto request) {
         logger.info(String.format(
-                "updateMenu -> userId: %s, businessName: %s, menu: %s, price: %d",
-                request.getUserId(), request.getBusinessName(), request.getExistingMenu(), request.getPrice()));
+                "updateMenu -> userId: %s, businessId: %s, menu: %s, price: %d",
+                request.getUserId(), request.getBusinessId(), request.getExistingMenu(), request.getPrice()));
         return ResponseEntity.ok(menuService.updateMenu(request));
     }
 
     @PostMapping("/delete")
     public ResponseEntity<CommonMenuResponseDto> deleteMenu(@RequestBody DeleteMenuRequestDto request) {
         logger.info(String.format(
-                "deleteMenu -> userId: %s, businessName: %s, menu: %s",
-                request.getUserId(), request.getBusinessName(), request.getMenu()));
+                "deleteMenu -> userId: %s, businessId: %s, menu: %s",
+                request.getUserId(), request.getBusinessId(), request.getMenu()));
         return ResponseEntity.ok(menuService.deleteMenu(request));
     }
 
     @PostMapping("/readAll")
     public ResponseEntity<ReadAllMenuResponseDto> readAllMenu(@RequestBody ReadAllMenuRequestDto request) {
         logger.info(String.format(
-                "readAllMenu -> userId: %s, businessName: %s",
-                request.getUserId(), request.getBusinessName()));
+                "readAllMenu -> userId: %s, businessId: %s",
+                request.getUserId(), request.getBusinessId()));
         return ResponseEntity.ok(menuService.readAllMenu(request));
     }
 

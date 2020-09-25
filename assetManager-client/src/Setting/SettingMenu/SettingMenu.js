@@ -19,7 +19,7 @@ const SettingMenu = observer(() => {
 
     useEffect(() => {
         retrieveAllMenus()
-    }, [ selectedBusiness.selectedBusiness ])
+    }, [ selectedBusiness.selectedBusinessId ])
 
     /**
      * 소유한 상호명(닉네임)을 전부 불러온다
@@ -34,7 +34,7 @@ const SettingMenu = observer(() => {
             }
         }, {
             userId: loginUser.loginUserId,
-            businessName: selectedBusiness.selectedBusiness
+            businessId: selectedBusiness.selectedBusinessId
         })
     }
 
@@ -55,7 +55,7 @@ const SettingMenu = observer(() => {
             }
         }, {
             userId: loginUser.loginUserId,
-            businessName: selectedBusiness.selectedBusiness,
+            businessId: selectedBusiness.selectedBusinessId,
             menu: newMenu,
             price: price
         })
@@ -78,7 +78,7 @@ const SettingMenu = observer(() => {
             }
         }, {
             userId: loginUser.loginUserId,
-            businessName: selectedBusiness.selectedBusiness,
+            businessId: selectedBusiness.selectedBusinessId,
             existingMenu,
             newMenu,
             price
@@ -100,7 +100,7 @@ const SettingMenu = observer(() => {
             }
         }, {
             userId: loginUser.loginUserId,
-            businessName: selectedBusiness.selectedBusiness,
+            businessId: selectedBusiness.selectedBusinessId,
             menu: deleteMenu
         })
     }

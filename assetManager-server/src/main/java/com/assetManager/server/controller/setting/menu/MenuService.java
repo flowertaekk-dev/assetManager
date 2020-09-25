@@ -22,7 +22,7 @@ public class MenuService {
 
         // 이미 등록되어있는지 확인
         Optional<Menu> menu = menuRepository
-                .findByUserIdAndBusinessNameAndMenu(request.getUserId(), request.getBusinessName(), request.getMenu());
+                .findByUserIdAndBusinessIdAndMenu(request.getUserId(), request.getBusinessId(), request.getMenu());
 
         if (menu.isPresent()) {
             return CommonMenuResponseDto.makeFailureResponse("이미 존재하는 메뉴입니다.");
@@ -39,7 +39,7 @@ public class MenuService {
 
         // 기존 데이터 확인
         Optional<Menu> menu = menuRepository
-                .findByUserIdAndBusinessNameAndMenu(request.getUserId(), request.getBusinessName(), request.getExistingMenu());
+                .findByUserIdAndBusinessIdAndMenu(request.getUserId(), request.getBusinessId(), request.getExistingMenu());
 
         // 기존 데이터가 없으면 에러
         if (menu.isEmpty()) {
@@ -60,7 +60,7 @@ public class MenuService {
 
         // 타켓 데이터가 존재하는지 확인
         Optional<Menu> menu = menuRepository
-                .findByUserIdAndBusinessNameAndMenu(request.getUserId(), request.getBusinessName(), request.getMenu());
+                .findByUserIdAndBusinessIdAndMenu(request.getUserId(), request.getBusinessId(), request.getMenu());
 
         // 타겟 데이터가 없으면 실패
         if (menu.isEmpty()) {
@@ -79,7 +79,7 @@ public class MenuService {
     protected ReadAllMenuResponseDto readAllMenu(ReadAllMenuRequestDto request) {
 
         // 데이터 쿼리
-        List<Menu> menus = menuRepository.findByUserIdAndBusinessName(request.getUserId(), request.getBusinessName());
+        List<Menu> menus = menuRepository.findByUserIdAndBusinessId(request.getUserId(), request.getBusinessId());
 
         // 성공
         return ReadAllMenuResponseDto.builder()

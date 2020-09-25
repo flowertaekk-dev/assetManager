@@ -1,6 +1,5 @@
 package com.assetManager.server.controller.setting.menu.dto;
 
-import com.assetManager.server.domain.menu.Menu;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,13 +9,13 @@ import lombok.NoArgsConstructor;
 public class DeleteMenuRequestDto {
 
     private String userId;
-    private String businessName;
+    private String businessId;
     private String menu;
 
     @Builder
-    public DeleteMenuRequestDto(String userId, String businessName, String menu) {
+    public DeleteMenuRequestDto(String userId, String businessId, String menu) {
         this.userId = userId;
-        this.businessName = businessName;
+        this.businessId = businessId;
         this.menu = menu;
     }
 }

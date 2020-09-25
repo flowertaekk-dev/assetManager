@@ -22,11 +22,11 @@ public class TableTestUtil extends TestDataUtil {
         staticObjectMapper = this.objectMapper;
     }
 
-    public static ResultActions insertTableCount(MockMvc mvc, String businessName, int tableCount) throws Exception {
+    public static ResultActions insertTableCount(MockMvc mvc, String businessId, int tableCount) throws Exception {
         String content = staticObjectMapper.writeValueAsString(
                 UpdateTableCountRequestDto.builder()
                         .userId(TestDataUtil.id)
-                        .businessName(businessName)
+                        .businessId(businessId)
                         .tableCount(tableCount)
                         .build());
 

@@ -30,7 +30,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
-import java.util.UUID;
 
 @SpringBootTest
 public class MenuControllerTest {
@@ -42,6 +41,7 @@ public class MenuControllerTest {
     @Autowired private MenuRepository menuRepository;
 
     private MockMvc mvc;
+    private String businessId;
 
     private final String businessName = "assetManager";
     private final String menu = "삼겹살";
@@ -54,6 +54,9 @@ public class MenuControllerTest {
         // 유저 데이터 초기화
         UserTestUtil.insertUser();
         BusinessTestUtil.insertBusinessName(this.mvc, this.businessName);
+        this.businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, this.businessName)
+                .orElseThrow()
+                .getBusinessId();
     }
 
     @AfterEach
@@ -108,17 +111,24 @@ public class MenuControllerTest {
         // given
         String newMenu = "족발";
 
-        MenuTestUtil.insertTableCount(this.mvc, this.businessName, this.menu, this.price)
+        MenuTestUtil.insertTableCount(this.mvc, this.businessId, this.menu, this.price)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
                 .andExpect(jsonPath("$.reason", nullValue()))
                 .andDo(print());
 
+        List<Menu> menus2 = menuRepository.findAll();
+        System.out.println(menus2.size());
+
+        String menuId = menuRepository.findByUserIdAndBusinessIdAndMenu(TestDataUtil.id, this.businessId, this.menu)
+                .orElseThrow()
+                .getMenuId();
+
         // when
         String content = objectMapper.writeValueAsString(
                 UpdateMenuRequestDto.builder()
                         .userId(TestDataUtil.id)
-                        .businessName(this.businessName)
+                        .businessId(this.businessId)
                         .existingMenu(this.menu)
                         .newMenu(newMenu)
                         .price(price)
@@ -141,7 +151,7 @@ public class MenuControllerTest {
         List<Menu> menus = menuRepository.findAll();
         assertThat(menus).isNotEmpty();
         assertThat(menus.get(0).getUserId()).isEqualTo(TestDataUtil.id);
-        assertThat(menus.get(0).getBusinessName()).isEqualTo(this.businessName);
+        assertThat(menus.get(0).getBusinessId()).isEqualTo(this.businessId);
         assertThat(menus.get(0).getMenu()).isEqualTo(newMenu);
         assertThat(menus.get(0).getPrice()).isEqualTo(price);
     }
@@ -152,7 +162,7 @@ public class MenuControllerTest {
         // given
         int price = 5000;
 
-        MenuTestUtil.insertTableCount(this.mvc, this.businessName, this.menu, this.price)
+        MenuTestUtil.insertTableCount(this.mvc, this.businessId, this.menu, this.price)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
                 .andExpect(jsonPath("$.reason", nullValue()))
@@ -162,7 +172,7 @@ public class MenuControllerTest {
         String content = objectMapper.writeValueAsString(
                 UpdateMenuRequestDto.builder()
                         .userId(TestDataUtil.id)
-                        .businessName(this.businessName)
+                        .businessId(this.businessId)
                         .existingMenu(this.menu)
                         .price(price)
                         .build());
@@ -184,7 +194,7 @@ public class MenuControllerTest {
         List<Menu> menus = menuRepository.findAll();
         assertThat(menus).isNotEmpty();
         assertThat(menus.get(0).getUserId()).isEqualTo(TestDataUtil.id);
-        assertThat(menus.get(0).getBusinessName()).isEqualTo(this.businessName);
+        assertThat(menus.get(0).getBusinessId()).isEqualTo(this.businessId);
         assertThat(menus.get(0).getMenu()).isEqualTo(this.menu);
         assertThat(menus.get(0).getPrice()).isEqualTo(price);
     }
@@ -199,7 +209,7 @@ public class MenuControllerTest {
         String content = objectMapper.writeValueAsString(
                 UpdateMenuRequestDto.builder()
                         .userId(TestDataUtil.id)
-                        .businessName(this.businessName)
+                        .businessId(this.businessId)
                         .existingMenu(this.menu)
                         .price(price)
                         .build());
@@ -222,7 +232,7 @@ public class MenuControllerTest {
     @Test
     public void test_can_delete_menu() throws Exception {
         // given
-        MenuTestUtil.insertTableCount(this.mvc, this.businessName, this.menu, this.price)
+        MenuTestUtil.insertTableCount(this.mvc, this.businessId, this.menu, this.price)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
                 .andExpect(jsonPath("$.reason", nullValue()))
@@ -232,7 +242,7 @@ public class MenuControllerTest {
         String content = objectMapper.writeValueAsString(
                 DeleteMenuRequestDto.builder()
                         .userId(TestDataUtil.id)
-                        .businessName(this.businessName)
+                        .businessId(this.businessId)
                         .menu(this.menu)
                         .build());
 
@@ -252,11 +262,11 @@ public class MenuControllerTest {
 
     // case: 유저 아이디와 상호명에 연결된 메뉴를 전부 불러올 수 있다.
     @Test
-    public void test_can_retrieve_menus_by_userId_and_businessName() throws Exception {
+    public void test_can_retrieve_menus_by_userId_and_businessId() throws Exception {
         // given
 
         // 메뉴 1
-        MenuTestUtil.insertTableCount(this.mvc, this.businessName, this.menu, this.price)
+        MenuTestUtil.insertTableCount(this.mvc, this.businessId, this.menu, this.price)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
                 .andExpect(jsonPath("$.reason", nullValue()))
@@ -266,7 +276,7 @@ public class MenuControllerTest {
         String menu2 = "냉면";
         int price2 = 5000;
 
-        MenuTestUtil.insertTableCount(this.mvc, this.businessName, menu2, price2)
+        MenuTestUtil.insertTableCount(this.mvc, this.businessId, menu2, price2)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
                 .andExpect(jsonPath("$.reason", nullValue()))
@@ -277,7 +287,7 @@ public class MenuControllerTest {
         String content = objectMapper.writeValueAsString(
                 ReadAllMenuRequestDto.builder()
                         .userId(TestDataUtil.id)
-                        .businessName(this.businessName)
+                        .businessId(this.businessId)
                         .build());
 
         ResultActions action = mvc.perform(
