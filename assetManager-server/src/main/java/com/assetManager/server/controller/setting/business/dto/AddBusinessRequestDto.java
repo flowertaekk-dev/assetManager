@@ -1,7 +1,7 @@
 package com.assetManager.server.controller.setting.business.dto;
 
 import com.assetManager.server.domain.business.Business;
-import com.assetManager.server.domain.tableCount.TableCount;
+import com.assetManager.server.domain.tableInfo.TableInfo;
 import com.assetManager.server.utils.RandomIdCreator;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,8 +30,8 @@ public class AddBusinessRequestDto {
                 .build();
     }
 
-    public TableCount toTableCountEntity() {
-        return TableCount.builder()
+    public TableInfo toTableCountEntity() {
+        return TableInfo.builder()
 
                 .build();
     }

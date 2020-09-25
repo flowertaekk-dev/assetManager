@@ -1,4 +1,4 @@
-package com.assetManager.server.domain.tableCount;
+package com.assetManager.server.domain.tableInfo;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,10 +9,10 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class TableCount { // TODO 이거 TableInfo로 바꾸자
+public class TableInfo {
 
     @Id
-    private String tableCountId;
+    private String tableInfoId;
 
     @Column(nullable = false)
     private String userId;
@@ -24,8 +24,8 @@ public class TableCount { // TODO 이거 TableInfo로 바꾸자
     private int tableCount;
 
     @Builder
-    public TableCount(String tableCountId, String userId, String businessId, int tableCount) {
-        this.tableCountId = tableCountId;
+    public TableInfo(String tableInfoId, String userId, String businessId, int tableCount) {
+        this.tableInfoId = tableInfoId;
         this.userId = userId;
         this.businessId = businessId;
         this.tableCount = tableCount;
@@ -39,7 +39,7 @@ public class TableCount { // TODO 이거 TableInfo로 바꾸자
      *
      * @return 수정된 TableInfo 객체
      */
-    public TableCount updateTableCount(int tableCount) {
+    public TableInfo updateTableCount(int tableCount) {
         this.tableCount = tableCount;
         return this;
     }

@@ -1,6 +1,6 @@
 package com.assetManager.server.controller.setting.table.dto;
 
-import com.assetManager.server.domain.tableCount.TableCount;
+import com.assetManager.server.domain.tableInfo.TableInfo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +20,8 @@ public class UpdateTableCountRequestDto {
         this.tableCount = tableCount;
     }
 
-    public TableCount toTableCountEntity() {
-        return TableCount.builder()
+    public TableInfo toTableCountEntity() {
+        return TableInfo.builder()
                 .userId(this.userId)
                 .businessId(this.businessId)
                 .tableCount(this.tableCount)

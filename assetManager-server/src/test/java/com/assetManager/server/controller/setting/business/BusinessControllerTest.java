@@ -7,15 +7,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.Matchers.*;
 
+import com.assetManager.server.controller.setting.business.dto.AddBusinessRequestDto;
 import com.assetManager.server.controller.setting.business.dto.DeleteBusinessRequestDto;
 import com.assetManager.server.controller.setting.business.dto.ReadAllBusinessRequestDto;
 import com.assetManager.server.controller.setting.business.dto.UpdateBusinessRequestDto;
+import com.assetManager.server.controller.setting.menu.MenuTestUtil;
+import com.assetManager.server.controller.setting.table.TableTestUtil;
 import com.assetManager.server.controller.signup.UserTestUtil;
 import com.assetManager.server.controller.utils.TestDataUtil;
 import com.assetManager.server.domain.business.Business;
 import com.assetManager.server.domain.business.BusinessRepository;
-import com.assetManager.server.domain.tableCount.TableCount;
-import com.assetManager.server.domain.tableCount.TableCountRepository;
+import com.assetManager.server.domain.menu.Menu;
+import com.assetManager.server.domain.menu.MenuRepository;
+import com.assetManager.server.domain.tableInfo.TableInfo;
+import com.assetManager.server.domain.tableInfo.TableInfoRepository;
 import com.assetManager.server.domain.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -39,7 +44,8 @@ public class BusinessControllerTest {
     @Autowired private ObjectMapper objectMapper;
     @Autowired private UserRepository userRepository;
     @Autowired private BusinessRepository businessRepository;
-    @Autowired private TableCountRepository tableCountRepository;
+    @Autowired private TableInfoRepository tableInfoRepository;
+    @Autowired private MenuRepository menuRepository;
 
     private MockMvc mvc;
 
@@ -53,7 +59,7 @@ public class BusinessControllerTest {
 
     @AfterEach
     public void clean() {
-        tableCountRepository.deleteAll();
+        tableInfoRepository.deleteAll();
         businessRepository.deleteAll();
         userRepository.deleteAll();
     }
@@ -200,7 +206,95 @@ public class BusinessControllerTest {
 
     }
 
-    // TODO case: 상호명이 변경되면 관계가 있는 테이블 및 메뉴의 상호명도 함께 변경된다.
+    // case: 상호명이 삭제되면 해당되는 테이블 정보도 전부 삭제된다.
+    @Test
+    public void test_when_businessName_is_deleted_tableInfo_is_also_deleted() throws Exception {
+        // given
+        String businessName = "assetManager";
 
-    // TODO case: 상호명이 삭제되면 해당되는 메뉴도 전부 삭제된다.
+        // 상호명 생성
+        BusinessTestUtil.insertBusinessName(mvc, businessName);
+        Business businessResult = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, businessName)
+                .orElseThrow();
+        assertThat(businessResult.getBusinessName()).isEqualTo(businessName);
+
+        // 테이블 생성
+        TableTestUtil.insertTableInfo(this.mvc, businessResult.getBusinessId(), 10);
+        TableInfo tableInfoResult = tableInfoRepository.findByUserIdAndBusinessId(TestDataUtil.id, businessResult.getBusinessId())
+                .orElseThrow();
+        assertThat(tableInfoResult.getBusinessId()).isEqualTo(businessResult.getBusinessId());
+
+        // when
+        String content = objectMapper.writeValueAsString(
+                DeleteBusinessRequestDto.builder()
+                        .userId(TestDataUtil.id)
+                        .businessName(businessName)
+                        .build());
+
+        ResultActions action = mvc.perform(
+                post(TestDataUtil.businessControllerUrl + "/delete")
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
+
+        action
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
+                .andExpect(jsonPath("$.reason", nullValue()))
+                .andDo(print());
+
+        // then
+        Optional<TableInfo> tableAfterDeletingBusiness =
+                tableInfoRepository.findByUserIdAndBusinessId(TestDataUtil.id, businessResult.getBusinessId());
+
+        assertThat(tableAfterDeletingBusiness.isEmpty()).isTrue();
+    }
+
+    // case: 상호명이 삭제되면 해당되는 메뉴도 전부 삭제된다.
+    @Test
+    public void test_when_businessName_is_deleted_menus_are_also_deleted() throws Exception {
+        // given
+        String businessName = "assetManager";
+        String menu = "비빔냉면";
+        int price = 5000;
+
+        // 상호명 생성
+        BusinessTestUtil.insertBusinessName(mvc, businessName);
+        Business businessResult = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, businessName)
+                .orElseThrow();
+        assertThat(businessResult.getBusinessName()).isEqualTo(businessName);
+
+        // 메뉴 생성
+        MenuTestUtil.insertTableCount(this.mvc, businessResult.getBusinessId(), menu, price);
+        Menu menuResult = menuRepository.findByUserIdAndBusinessIdAndMenu(TestDataUtil.id, businessResult.getBusinessId(), menu)
+                .orElseThrow();
+        assertThat(menuResult).isNotNull();
+
+
+        // when
+        String content = objectMapper.writeValueAsString(
+                DeleteBusinessRequestDto.builder()
+                        .userId(TestDataUtil.id)
+                        .businessName(businessName)
+                        .build());
+
+        ResultActions action = mvc.perform(
+                post(TestDataUtil.businessControllerUrl + "/delete")
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
+
+        action
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
+                .andExpect(jsonPath("$.reason", nullValue()))
+                .andDo(print());
+
+        // then
+        Optional<Menu> menuAfterDeletingBusiness =
+                menuRepository.findByUserIdAndBusinessIdAndMenu(TestDataUtil.id, businessResult.getBusinessId(), menu);
+
+        assertThat(menuAfterDeletingBusiness.isEmpty()).isTrue();
+    }
+
 }

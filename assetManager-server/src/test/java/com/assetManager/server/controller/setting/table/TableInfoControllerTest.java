@@ -12,8 +12,8 @@ import com.assetManager.server.controller.setting.table.dto.UpdateTableCountRequ
 import com.assetManager.server.controller.signup.UserTestUtil;
 import com.assetManager.server.controller.utils.TestDataUtil;
 import com.assetManager.server.domain.business.BusinessRepository;
-import com.assetManager.server.domain.tableCount.TableCount;
-import com.assetManager.server.domain.tableCount.TableCountRepository;
+import com.assetManager.server.domain.tableInfo.TableInfo;
+import com.assetManager.server.domain.tableInfo.TableInfoRepository;
 import com.assetManager.server.domain.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -30,13 +30,13 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 
 @SpringBootTest
-public class TableControllerTest {
+public class TableInfoControllerTest {
 
     @Autowired private WebApplicationContext context;
     @Autowired private ObjectMapper objectMapper;
     @Autowired private UserRepository userRepository;
     @Autowired private BusinessRepository businessRepository;
-    @Autowired private TableCountRepository tableCountRepository;
+    @Autowired private TableInfoRepository tableInfoRepository;
 
     private MockMvc mvc;
 
@@ -54,7 +54,7 @@ public class TableControllerTest {
     public void clean() {
         userRepository.deleteAll();
         businessRepository.deleteAll();
-        tableCountRepository.deleteAll();
+        tableInfoRepository.deleteAll();
     }
 
     // case: 테이블 카운트 추가하기
@@ -68,7 +68,7 @@ public class TableControllerTest {
                 .getBusinessId();
 
         // when
-        ResultActions action = TableTestUtil.insertTableCount(mvc, businessId, tableCount);
+        ResultActions action = TableTestUtil.insertTableInfo(mvc, businessId, tableCount);
 
         // then
         action
@@ -77,12 +77,12 @@ public class TableControllerTest {
                 .andExpect(jsonPath("$.reason", nullValue()))
                 .andDo(print());
 
-        List<TableCount> tableCounts = tableCountRepository.findAll();
-        assertThat(tableCounts).isNotEmpty();
-        assertThat(tableCounts.get(0).getTableCountId()).isNotNull();
-        assertThat(tableCounts.get(0).getUserId()).isEqualTo(TestDataUtil.id);
-        assertThat(tableCounts.get(0).getBusinessId()).isEqualTo(businessId);
-        assertThat(tableCounts.get(0).getTableCount()).isEqualTo(10);
+        List<TableInfo> tableInfos = tableInfoRepository.findAll();
+        assertThat(tableInfos).isNotEmpty();
+        assertThat(tableInfos.get(0).getTableInfoId()).isNotNull();
+        assertThat(tableInfos.get(0).getUserId()).isEqualTo(TestDataUtil.id);
+        assertThat(tableInfos.get(0).getBusinessId()).isEqualTo(businessId);
+        assertThat(tableInfos.get(0).getTableCount()).isEqualTo(10);
     }
 
     // case: 동일한 상호명에 테이블 카운트가 이미 존재하면 실패
@@ -95,21 +95,21 @@ public class TableControllerTest {
                 .orElseThrow()
                 .getBusinessId();
 
-        TableTestUtil.insertTableCount(mvc, businessId, tableCount)
+        TableTestUtil.insertTableInfo(mvc, businessId, tableCount)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
                 .andExpect(jsonPath("$.reason", nullValue()))
                 .andDo(print());
 
-        List<TableCount> tableCounts = tableCountRepository.findAll();
-        assertThat(tableCounts).isNotEmpty();
-        assertThat(tableCounts.get(0).getTableCountId()).isNotNull();
-        assertThat(tableCounts.get(0).getUserId()).isEqualTo(TestDataUtil.id);
-        assertThat(tableCounts.get(0).getBusinessId()).isEqualTo(businessId);
-        assertThat(tableCounts.get(0).getTableCount()).isEqualTo(10);
+        List<TableInfo> tableInfos = tableInfoRepository.findAll();
+        assertThat(tableInfos).isNotEmpty();
+        assertThat(tableInfos.get(0).getTableInfoId()).isNotNull();
+        assertThat(tableInfos.get(0).getUserId()).isEqualTo(TestDataUtil.id);
+        assertThat(tableInfos.get(0).getBusinessId()).isEqualTo(businessId);
+        assertThat(tableInfos.get(0).getTableCount()).isEqualTo(10);
 
         // when
-        ResultActions action = TableTestUtil.insertTableCount(mvc, businessId, tableCount);
+        ResultActions action = TableTestUtil.insertTableInfo(mvc, businessId, tableCount);
 
         // then
         action
@@ -130,18 +130,18 @@ public class TableControllerTest {
                 .getBusinessId();
 
         // when
-        TableTestUtil.insertTableCount(mvc, businessId, tableCount)
+        TableTestUtil.insertTableInfo(mvc, businessId, tableCount)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
                 .andExpect(jsonPath("$.reason", nullValue()))
                 .andDo(print());
 
-        List<TableCount> tableCounts = tableCountRepository.findAll();
-        assertThat(tableCounts).isNotEmpty();
-        assertThat(tableCounts.get(0).getTableCountId()).isNotNull();
-        assertThat(tableCounts.get(0).getUserId()).isEqualTo(TestDataUtil.id);
-        assertThat(tableCounts.get(0).getBusinessId()).isEqualTo(businessId);
-        assertThat(tableCounts.get(0).getTableCount()).isEqualTo(10);
+        List<TableInfo> tableInfos = tableInfoRepository.findAll();
+        assertThat(tableInfos).isNotEmpty();
+        assertThat(tableInfos.get(0).getTableInfoId()).isNotNull();
+        assertThat(tableInfos.get(0).getUserId()).isEqualTo(TestDataUtil.id);
+        assertThat(tableInfos.get(0).getBusinessId()).isEqualTo(businessId);
+        assertThat(tableInfos.get(0).getTableCount()).isEqualTo(10);
 
         // then
         // 수정
@@ -154,7 +154,7 @@ public class TableControllerTest {
                         .build());
 
         ResultActions secondAction = mvc.perform(
-                post(TestDataUtil.tableCountControllerUrl + "/update")
+                post(TestDataUtil.tableInfoControllerUrl + "/update")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -165,11 +165,11 @@ public class TableControllerTest {
                 .andExpect(jsonPath("$.reason", nullValue()))
                 .andDo(print());
 
-        List<TableCount> secondTableCounts = tableCountRepository.findAll();
-        assertThat(secondTableCounts).isNotEmpty();
-        assertThat(secondTableCounts.get(0).getUserId()).isEqualTo(TestDataUtil.id);
-        assertThat(secondTableCounts.get(0).getBusinessId()).isEqualTo(businessId);
-        assertThat(secondTableCounts.get(0).getTableCount()).isEqualTo(secondTableCount);
+        List<TableInfo> secondTableInfos = tableInfoRepository.findAll();
+        assertThat(secondTableInfos).isNotEmpty();
+        assertThat(secondTableInfos.get(0).getUserId()).isEqualTo(TestDataUtil.id);
+        assertThat(secondTableInfos.get(0).getBusinessId()).isEqualTo(businessId);
+        assertThat(secondTableInfos.get(0).getTableCount()).isEqualTo(secondTableCount);
     }
 
     // case: 상호명이 존재하지 않으면 테이블 카운트 생성 실패 ( 정상적인 상황으로는 일어나지 않을지도 )
@@ -180,7 +180,7 @@ public class TableControllerTest {
         String fakeBusinessId = "BS-00000000-00000000";
 
         // when
-        ResultActions action = TableTestUtil.insertTableCount(mvc, fakeBusinessId, tableCount);
+        ResultActions action = TableTestUtil.insertTableInfo(mvc, fakeBusinessId, tableCount);
 
         // then
         action
@@ -202,7 +202,7 @@ public class TableControllerTest {
                 .orElseThrow()
                 .getBusinessId();
 
-        TableTestUtil.insertTableCount(mvc, businessId, tableCount);
+        TableTestUtil.insertTableInfo(mvc, businessId, tableCount);
 
         // when
         String content = objectMapper.writeValueAsString(
@@ -213,7 +213,7 @@ public class TableControllerTest {
                         .build());
 
         ResultActions action = mvc.perform(
-                post(TestDataUtil.tableCountControllerUrl + "/read")
+                post(TestDataUtil.tableInfoControllerUrl + "/read")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));

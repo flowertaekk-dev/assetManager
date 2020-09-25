@@ -4,12 +4,16 @@ import com.assetManager.server.controller.CommonResponseResult;
 import com.assetManager.server.controller.setting.business.dto.*;
 import com.assetManager.server.domain.business.Business;
 import com.assetManager.server.domain.business.BusinessRepository;
-import com.assetManager.server.domain.tableCount.TableCountRepository;
+import com.assetManager.server.domain.menu.Menu;
+import com.assetManager.server.domain.menu.MenuRepository;
+import com.assetManager.server.domain.tableInfo.TableInfo;
+import com.assetManager.server.domain.tableInfo.TableInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -18,6 +22,8 @@ import java.util.Optional;
 public class BusinessService {
 
     private final BusinessRepository businessRepository;
+    private final TableInfoRepository tableInfoRepository;
+    private final MenuRepository menuRepository;
 
     protected CommonBusinessResponseDto addNewBusinessName(AddBusinessRequestDto request) {
 
@@ -60,11 +66,16 @@ public class BusinessService {
             return CommonBusinessResponseDto.makeFailureResponse("존재하지 않는 상호명입니다.");
         }
 
+        String businessId = business.get().getBusinessId();
+
+        // 테이블 정보 삭제
+        deleteTableInfo(request.getUserId(), businessId);
+
+        // 메뉴 삭제 로직 구현
+        deleteMenu(request.getUserId(), businessId);
+
         // 상호명 삭제
         businessRepository.delete(business.get());
-
-        // TODO 테이블 카운트 삭제 로직 구현
-        // TODO 메뉴 삭제 로직 구현
 
         return CommonBusinessResponseDto.makeSuccessResponse(null);
     }
@@ -77,6 +88,35 @@ public class BusinessService {
                 .resultStatus(CommonResponseResult.SUCCESS)
                 .businessNames(businessNames)
                 .build();
+    }
+
+    // ---------------------------------------------------------------
+    // utils
+
+    /**
+     * 상호명을 삭제한다
+     */
+    private void deleteTableInfo(String userId, String businessId) {
+        Optional<TableInfo> tableInfo = tableInfoRepository.findByUserIdAndBusinessId(userId, businessId);
+
+        if (tableInfo.isEmpty()) {
+            return; // 테이블 정보가 없다.
+        }
+
+        tableInfoRepository.delete(tableInfo.get());
+    }
+
+    /**
+     * 상호명을 삭제한다
+     */
+    private void deleteMenu(String userId, String businessId) {
+        List<Menu> menus = menuRepository.findByUserIdAndBusinessId(userId, businessId);
+
+        if (Objects.isNull(menus) || menus.isEmpty()) {
+            return; // 테이블 정보가 없다.
+        }
+
+        menuRepository.deleteAll(menus);
     }
 
 }

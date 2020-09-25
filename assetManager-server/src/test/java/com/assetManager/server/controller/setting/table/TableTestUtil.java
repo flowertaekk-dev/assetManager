@@ -22,7 +22,7 @@ public class TableTestUtil extends TestDataUtil {
         staticObjectMapper = this.objectMapper;
     }
 
-    public static ResultActions insertTableCount(MockMvc mvc, String businessId, int tableCount) throws Exception {
+    public static ResultActions insertTableInfo(MockMvc mvc, String businessId, int tableCount) throws Exception {
         String content = staticObjectMapper.writeValueAsString(
                 UpdateTableCountRequestDto.builder()
                         .userId(TestDataUtil.id)
@@ -31,7 +31,7 @@ public class TableTestUtil extends TestDataUtil {
                         .build());
 
         return mvc.perform(
-                post(TestDataUtil.tableCountControllerUrl + "/add")
+                post(TestDataUtil.tableInfoControllerUrl + "/add")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));

@@ -1,7 +1,7 @@
 package com.assetManager.server.controller.setting.table.dto;
 
 import com.assetManager.server.controller.CommonResponseResult;
-import com.assetManager.server.domain.tableCount.TableCount;
+import com.assetManager.server.domain.tableInfo.TableInfo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +31,7 @@ public class ReadTableCountResponseDto {
     /**
      * SUCCESS Response를 반환
      */
-    public static ReadTableCountResponseDto makeSuccessResponse(TableCount entity) {
+    public static ReadTableCountResponseDto makeSuccessResponse(TableInfo entity) {
         return ReadTableCountResponseDto.builder()
                 .resultStatus(CommonResponseResult.SUCCESS)
                 .userId(entity.getUserId())

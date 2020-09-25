@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/table")
-public class TableController {
-    private static Logger logger = LoggerFactory.getLogger(TableController.class);
+public class TableInfoController {
+    private static Logger logger = LoggerFactory.getLogger(TableInfoController.class);
 
-    private final TableCountService tableCountService;
+    private final TableInfoService tableInfoService;
 
     @PostMapping("/add")
-    public ResponseEntity<AddTableCountResponseDto> addTableCount(@RequestBody AddTableCountRequestDto request) {
+    public ResponseEntity<AddTableInfoResponseDto> addTableInfo(@RequestBody AddTableInfoRequestDto request) {
         logger.info(String.format(
-                "addTableCount -> userId: %s, businessId: %s, tableCount: %s",
+                "addTableInfo -> userId: %s, businessId: %s, tableCount: %s",
                 request.getUserId(), request.getBusinessId(), request.getTableCount()));
-        return ResponseEntity.ok(tableCountService.addTableCount(request));
+        return ResponseEntity.ok(tableInfoService.addTableInfo(request));
     }
 
     @PostMapping("/update")
@@ -31,15 +31,14 @@ public class TableController {
         logger.info(String.format(
                 "updateTableCount -> userId: %s, businessId: %s, tableCount: %s",
                 request.getUserId(), request.getBusinessId(), request.getTableCount()));
-        return ResponseEntity.ok(tableCountService.updateTableCount(request));
+        return ResponseEntity.ok(tableInfoService.updateTableCount(request));
     }
 
     @PostMapping("/read")
     public ResponseEntity<ReadTableCountResponseDto> readTableCount(@RequestBody ReadTableCountRequestDto request) {
         logger.info(String.format(
                 "readTableCount -> userId: %s, businessId: %s", request.getUserId(), request.getBusinessId()));
-        return ResponseEntity.ok(tableCountService.readTableCount(request));
+        return ResponseEntity.ok(tableInfoService.readTableCount(request));
     }
-
 
 }
