@@ -142,8 +142,8 @@ const SettingBusiness = (props) => {
         // 선택된 상호명 색상 채우기
         setSelectedBusinessId(businessId)
 
-        // TODO LocalStorage에 저장
-        // TODO mobx store에 저장
+        // LocalStorage에 저장
+        // mobx store에 저장
         selectedBusiness.updateSelectedBusinessId(businessId)
     }
 
