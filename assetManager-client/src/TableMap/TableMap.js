@@ -11,12 +11,13 @@ const TableMap = () => {
     const { loginUser, selectedBusiness } = useStore()
 
     const [ theNumberOfTables, setTheNumberOfTables ] = useState(0)
+    const [ isRendering, setRenderingStatus ] = useState(true)
 
     useEffect(() => {
         customAxios("/table/read", (response) => {
             if (response.resultStatus === 'SUCCESS') {
-                // 카운트 저장
-                setTheNumberOfTables(response.tableCount)
+                setTheNumberOfTables(response.tableCount) // 카운트 저장
+                setRenderingStatus(false)                 // 랜더링 끝
             } else {
                 alert('ERROR', response.reason)
             }
@@ -47,8 +48,9 @@ const TableMap = () => {
         if (tables.length === 0) {
             tables.push(
                 <Table
-                    key={0}
-                    tableTitle={`주문내역`} />
+                    key={ 0 }
+                    tableTitle={ `주문내역` }
+                    isLast={ true } />
             )
         }
 
@@ -57,7 +59,7 @@ const TableMap = () => {
 
     return (
         <section className='TableMap'>
-            { renderTables(theNumberOfTables) }
+            { !isRendering && renderTables(theNumberOfTables) }
         </section>
     )
 }

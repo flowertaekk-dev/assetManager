@@ -22,7 +22,7 @@ const SettingMenu = observer(() => {
     }, [ selectedBusiness.selectedBusinessId ])
 
     /**
-     * 소유한 상호명(닉네임)을 전부 불러온다
+     * 상호에 해당하는 메뉴 전부 불러온다
      */
     const retrieveAllMenus = () =>{
         customAxios("/menu/readAll", (response) => {
