@@ -56,6 +56,11 @@ public class BusinessService {
         return CommonBusinessResponseDto.makeSuccessResponse(updatedBusiness);
     }
 
+    /**
+     * 상호명 삭제
+     *
+     * @return 삭제한 상호명 ID
+     */
     protected CommonBusinessResponseDto deleteBusinessName(DeleteBusinessRequestDto request) {
 
         // 해당 상호명 존재 확인
@@ -77,7 +82,10 @@ public class BusinessService {
         // 상호명 삭제
         businessRepository.delete(business.get());
 
-        return CommonBusinessResponseDto.makeSuccessResponse(null);
+        return CommonBusinessResponseDto.makeSuccessResponse(
+                Business.builder()
+                        .businessId(businessId)
+                        .build());
     }
 
     protected ReadAllBusinessResponseDto readAll(ReadAllBusinessRequestDto request) {

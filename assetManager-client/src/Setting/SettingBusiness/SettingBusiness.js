@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import CustomModal from '../../components/Modal/CustomModal'
 import customAxios from '../../customAxios'
 import useStore from '../../mobx/useStore'
+import KEYS from '../../utils/LocalStorageKeys'
 
 import './SettingBusiness.css'
 
@@ -43,11 +44,14 @@ const SettingBusiness = (props) => {
     const addBusinessNameHandler = (callback) => {
         customAxios("/business/add", (response) => {
             if (response.resultStatus === 'SUCCESS') {
-                addTableCountHandler(response.business.businessId)       // 테이블 정보 초기화
-                businessNameClickedHandler(response.business.businessId) // 생성한 상호명 자동 선택
-                retrieveAllBusinessNames()                               // refresh
-                setNewBusinessName('')                                   // 초기화
-                callback()                                               // 모달 닫기
+                const businessId = response.business.businessId
+
+                addBusinessIdToAccountBook(businessId) // LocalStorage 장부(AccountBook)에 상호명 추가
+                addTableCountHandler(businessId)       // 테이블 정보 초기화
+                businessNameClickedHandler(businessId) // 생성한 상호명 자동 선택
+                retrieveAllBusinessNames()             // refresh
+                setNewBusinessName('')                 // 초기화
+                callback()                             // 모달 닫기
             } else {
                 alert(response.reason)
             }
@@ -57,10 +61,16 @@ const SettingBusiness = (props) => {
         })
     }
 
+    /**
+     * DB에 테이블 카운트 row 등록
+     *
+     * @param {string} businessId
+     */
     const addTableCountHandler = (businessId) => {
         customAxios("/table/add", (response) => {
             if (response.resultStatus === 'SUCCESS') {
                 // do nothing
+                addTableInfoToAccountBook(response.tableInfo.businessId)
             } else {
                 alert('테이블 정보 초기화에 실패했습니다.')
             }
@@ -69,6 +79,54 @@ const SettingBusiness = (props) => {
             businessId: businessId,
             tableCount: 0 // 초기값
         })
+    }
+
+    /**
+     * 세션에 장부(accountBook) 생성 및 상호명ID 추가
+     *
+     * @param {string} businessId 
+     */
+    const addBusinessIdToAccountBook = (businessId) => {
+        let accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+
+        // 장부(accountBook) 데이터가 없으면 초기화
+        if (!accountBook) {
+            // TODO userId를 root로 하는게 좋으려나? 다수의 아이디를 하나의 컴퓨터에서 쓰러면?
+            accountBook = {}
+        }
+
+        // 공통 로직
+        accountBook = {...accountBook,
+            [ businessId ]: {}
+        }
+
+        localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
+    }
+
+    /**
+     * 세션에 장부(accountBook)에 테이블 정보 생성
+     *
+     * @param {string} businessId
+     */
+    const addTableInfoToAccountBook = (businessId) => {
+        let accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+
+        // 장부(accountBook) 데이터가 없으면 초기화
+        if (!accountBook) {
+            // TODO 이 에러메세지는 수정이 필요해. 지금은 귀찮아. 아마도 '상호명 추가 중에 에러가 발생했으니 다시 한 번 부탁드립니다' 정도?
+            alert('테이블 정보 등록을 위한 상호명 데이터를 못 찾았습니다.')
+            return
+        }
+
+        // 공통 로직
+        accountBook = {...accountBook,
+            [ businessId ]: [
+                {} // 테이블 하나 추가 (default)
+            ]
+        }
+
+        // 세션에 저장
+        window.localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
     }
 
     /**
@@ -101,6 +159,7 @@ const SettingBusiness = (props) => {
         return (callback) => customAxios("/business/delete", (response) => {
             if (response.resultStatus === 'SUCCESS') {
                 retrieveAllBusinessNames()  // refresh
+                deleteBusinessFromAccountBook(response.business.businessId)
                 callback()                  // 모달 닫기
             } else {
                 alert(response.reason)
@@ -109,6 +168,20 @@ const SettingBusiness = (props) => {
             userId: loginUser.loginUserId,
             businessName: deleteBusinessName
         })
+    }
+
+    /**
+     * AccountBook에서 비지니스를 삭제한다
+     *
+     * @param {string} businessId 
+     */
+    const deleteBusinessFromAccountBook = ( businessId ) => {
+        let accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+
+        // 삭제
+        delete accountBook[ businessId ]
+
+        localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
     }
 
     /**
