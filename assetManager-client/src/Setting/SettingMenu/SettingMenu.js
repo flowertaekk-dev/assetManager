@@ -4,10 +4,12 @@ import { observer } from 'mobx-react'
 import useStore from '../../mobx/useStore'
 import customAxios from '../../customAxios'
 import CustomModal from '../../components/Modal/CustomModal'
+import KEYS from '../../utils/LocalStorageKeys'
 
 import './SettingMenu.css'
 
 const SettingMenu = observer(() => {
+    // TODO 인터넷 접속이 안 되어 있으면 localStorage에서도 못 불러오도록 처리해야해. (healthCheck 이용하면 괜찮으려나?)
 
     const { loginUser, selectedBusiness } = useStore()
 
@@ -104,6 +106,8 @@ const SettingMenu = observer(() => {
             menu: deleteMenu
         })
     }
+
+    // ----------------------------------------------------------------------
 
     /**
      * newMenu, price state 값이 비어있는지 확인

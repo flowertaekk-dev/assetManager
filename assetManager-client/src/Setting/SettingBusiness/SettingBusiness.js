@@ -69,7 +69,6 @@ const SettingBusiness = (props) => {
     const addTableCountHandler = (businessId) => {
         customAxios("/table/add", (response) => {
             if (response.resultStatus === 'SUCCESS') {
-                // do nothing
                 addTableInfoToAccountBook(response.tableInfo.businessId)
             } else {
                 alert('테이블 정보 초기화에 실패했습니다.')
@@ -114,7 +113,7 @@ const SettingBusiness = (props) => {
         // 장부(accountBook) 데이터가 없으면 초기화
         if (!accountBook) {
             // TODO 이 에러메세지는 수정이 필요해. 지금은 귀찮아. 아마도 '상호명 추가 중에 에러가 발생했으니 다시 한 번 부탁드립니다' 정도?
-            alert('테이블 정보 등록을 위한 상호명 데이터를 못 찾았습니다.')
+            alert('테이블 정보 등록을 위한 데이터를 못 찾았습니다.')
             return
         }
 

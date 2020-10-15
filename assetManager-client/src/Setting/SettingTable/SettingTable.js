@@ -59,7 +59,7 @@ const SettingTable = observer(() => {
     const updateTableCountHandler = (callback) => {
         customAxios("/table/update", (response) => {
             if (response.resultStatus === 'SUCCESS') {
-                addTableInfoToAccountBook(response.tableInfo)
+                updateTableInfoToAccountBook(response.tableInfo)
                 callback()
             } else {
                 alert(response.reason)
@@ -77,11 +77,11 @@ const SettingTable = observer(() => {
      *
      * @param {object} tableInfo
      */
-    const addTableInfoToAccountBook = (tableInfo) => {
+    const updateTableInfoToAccountBook = (tableInfo) => {
         let accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
 
         if (!accountBook) {
-            alert('테이블 정보 등록을 위한 상호명 데이터를 못 찾았습니다.')
+            alert('테이블 정보 등록을 위한 데이터를 못 찾았습니다.')
             return
         }
 

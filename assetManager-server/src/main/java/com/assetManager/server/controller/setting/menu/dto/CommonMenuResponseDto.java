@@ -1,6 +1,7 @@
 package com.assetManager.server.controller.setting.menu.dto;
 
 import com.assetManager.server.controller.CommonResponseResult;
+import com.assetManager.server.domain.menu.Menu;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,12 +9,14 @@ import lombok.Getter;
 @Getter
 public class CommonMenuResponseDto {
 
+    private Menu menu;
     private CommonResponseResult resultStatus;
     private String reason;
 
     @Builder
     @JsonCreator
-    public CommonMenuResponseDto(CommonResponseResult resultStatus, String reason) {
+    public CommonMenuResponseDto(Menu menu, CommonResponseResult resultStatus, String reason) {
+        this.menu = menu;
         this.resultStatus = resultStatus;
         this.reason = reason;
     }
@@ -24,8 +27,9 @@ public class CommonMenuResponseDto {
     /**
      * SUCCESS Response를 반환
      */
-    public static CommonMenuResponseDto makeSuccessResponse() {
+    public static CommonMenuResponseDto makeSuccessResponse(Menu menu) {
         return CommonMenuResponseDto.builder()
+                .menu(menu)
                 .resultStatus(CommonResponseResult.SUCCESS)
                 .build();
     }

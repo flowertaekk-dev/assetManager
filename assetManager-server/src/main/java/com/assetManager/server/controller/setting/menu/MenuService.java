@@ -28,8 +28,7 @@ public class MenuService {
             return CommonMenuResponseDto.makeFailureResponse("이미 존재하는 메뉴입니다.");
         }
 
-        menuRepository.save(request.toMenuEntity());
-        return CommonMenuResponseDto.makeSuccessResponse();
+        return CommonMenuResponseDto.makeSuccessResponse(menuRepository.save(request.toMenuEntity()));
     }
 
     /**
@@ -46,11 +45,13 @@ public class MenuService {
             return CommonMenuResponseDto.makeFailureResponse("변경할 대상 데이터가 존재하지 않습니다.");
         }
 
+        Menu targetMenu = menu.get();
+
         // 업데이트
-        menu.get().updateMenu(request.toUpdatedMenuEntity());
+        targetMenu.updateMenu(request.toUpdatedMenuEntity());
 
         menuRepository.flush();
-        return CommonMenuResponseDto.makeSuccessResponse();
+        return CommonMenuResponseDto.makeSuccessResponse(targetMenu);
     }
 
     /**
@@ -67,10 +68,12 @@ public class MenuService {
             return CommonMenuResponseDto.makeFailureResponse("삭제할 대상 데이터가 존재하지 않습니다.");
         }
 
-        // 삭제
-        menuRepository.delete(menu.get());
+        Menu targetMenu = menu.get();
 
-        return CommonMenuResponseDto.makeSuccessResponse();
+        // 삭제
+        menuRepository.delete(targetMenu);
+
+        return CommonMenuResponseDto.makeSuccessResponse(targetMenu);
     }
 
     /**
