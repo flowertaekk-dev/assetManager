@@ -1,64 +1,87 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import _ from 'lodash'
 
 import Item from './Item/Item'
 import CustomModal from '../components/Modal/CustomModal'
-import useStore from '../mobx/useStore'
+import Menu from './Menu/Menu'
+// import useStore from '../mobx/useStore'
 import KEYS from '../utils/LocalStorageKeys'
-import { customAxiosWithResponse } from '../customAxios'
 
 import './Table.css'
 
 const Table = (props) => {
 
-    const { loginUser, selectedBusiness } = useStore()
+    // const { loginUser, selectedBusiness } = useStore()
+
+    const [ menus, setMenus ] = useState([])
+    const [ updatingInvoice, setUpdatingInvoice ] = useState({})
+    const [ finalInvoice, setFinalInvoice ] = useState({})
+    /**
+     * 구조
+     * {
+     *  menuId,
+     *  menu,
+     *  count,
+     *  totalPrice
+     * }
+     */
+
+    useEffect(() => {
+        setMenus(_.cloneDeep(props.menus))
+    }, [ props.menus ])
+    
+    useEffect(() => {
+        initFinalInvoice(menus)
+    }, [ menus ])
+
+    // -------------------------------------------------------------------
+    // 초기화 관련
+
+    const initFinalInvoice = (_menus) => {
+        setFinalInvoice(_.reduce(_menus, (result, _menu) => {
+
+            // 이미 등록된 메뉴는 Don't touch
+            if (!result[_menu.menuId]) {
+                _menu['totalPrice'] = 0
+                _menu['count'] = 0
+
+                result[_menu.menuId] = _menu
+            }
+
+            return result
+        }, finalInvoice))
+    }
+
+    const initUpdatingInvoice = () => {
+        setUpdatingInvoice({})
+    }
+
+
+    // -------------------------------------------------------------------
 
     /**
-     * 장부(accountBook)이 로컬에 등록되어 있지 않으면 등록한다
+     * 변경된 메뉴를 최종 인보이스에 적용한다
      */
-    // useEffect(() => {
-    //     //TODO 여기 테이블이 하나씩 밖에 등록이 안돼!!!
-    //     let accountBook = window.localStorage.getItem(KEYS.ACCOUNT_BOOK)
-    //     // accountBook이 없다
-    //     if ( !accountBook ) {
+    const okEditModalHandler = (callback) => {
+        _.forEach(updatingInvoice, (value, key) => {
+            finalInvoice[key].count += value
+        })
+        // TODO localStorage에도 저장할 필요있을까? 정전 또는 실수로 꺼버렸을 경우를 위해??
+        // 그렇다면 이런 느낌?
+        /**
+         * {
+         *      비지니스ID: {
+         *          테이블번호: {내용},
+         *          테이블번호: {내용},
+         *          .
+         *          .
+         *      }
+         * }
+         */
 
-    //         const response = customAxiosWithResponse("/menu/readAll", {
-    //             userId: loginUser.loginUserId,
-    //             businessId: selectedBusiness.selectedBusinessId
-    //         })
-
-    //         let accountBook = {};
-    //         response.then(res => {
-    //             const menus = res.data.menus
-
-    //             console.log('accountBook', accountBook)
-    //             accountBook = {...accountBook,
-    //                 [selectedBusiness.selectedBusinessId]: {
-    //                     [props.tableTitle]: menus.map(menu => {
-    //                         {
-    //                             return {
-    //                                 [menu.menu]: {
-    //                                 'id': menu.menuId,
-    //                                 'count': 0,
-    //                                 'price': menu.price
-    //                                 }
-    //                             }
-    //                         }
-    //                     })
-    //                 }
-    //             }
-
-    //             window.localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
-    //         })
-    //     } else {
-    //         //console.log('what', accountBook)    
-    //     }
-    //     window.localStorage.removeItem(KEYS.ACCOUNT_BOOK)
-    // }, [selectedBusiness.selectedBusinessId])
-
-    // useEffect(() => {
-    //     let accountBook = window.localStorage.getItem(KEYS.ACCOUNT_BOOK)
-    //     console.log('aa', accountBook)
-    // }, [ window.localStorage.getItem(KEYS.ACCOUNT_BOOK) ])
+        initUpdatingInvoice()
+        callback()
+    }
 
     /**
      * 모달을 닫는다
@@ -83,7 +106,6 @@ const Table = (props) => {
                             { props.tableTitle }
                     </label>
 
-                    {/* TODO */}
                     <CustomModal
                             modalTitle={`주문목록`}
                             toggleButton={
@@ -91,18 +113,44 @@ const Table = (props) => {
                                     <button>Edit</button>
                                 )
                             }
-                            preCheckHandler={ () => console.log('preCheck') }
-                            okButtonClickedHandler={ () => console.log('okButtonClicked') }
+                            // preCheckHandler={ () => console.log('preCheck') }
+                            okButtonClickedHandler={ okEditModalHandler }
                             cancelButtonClickedHandler={ cancelModalHandler } >
                                 {/* content */}
+                                <ul>
+                                    {
+                                        menus.map(menu =>
+                                            <li
+                                                key={ menu.menuId }
+                                                className='Table__modal__menu__item'>
+                                                    <Menu 
+                                                        menu={ menu }
+                                                        invoice={ updatingInvoice }
+                                                        setInvoice={ setUpdatingInvoice } />
+                                            </li>
+                                        )
+                                    }
+                                </ul>
+
                         </CustomModal>
 
-                    {/* /TODO */}
                 </div>
                 <ul>
-                    <Item />
-                    <Item />
-                    <Item />
+                    {
+                        // 메뉴의 카운트가 1 이상인 것만 화면에 표시
+                        _.map(
+                            _.filter(finalInvoice, invoice => {
+                                return invoice.count !== 0 
+                            }), invoice => {
+                                return (
+                                    <Item
+                                        key={ invoice.menuId }
+                                        menu={ invoice.menu }
+                                        count={ invoice.count }
+                                        totalPrice={ invoice.totalPrice } />
+                                )
+                        })
+                    }
                 </ul>
             </div>
         )

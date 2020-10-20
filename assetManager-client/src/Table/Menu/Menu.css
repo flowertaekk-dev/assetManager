@@ -1,0 +1,41 @@
+.Table__Menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    margin: 4px 0;
+}
+.Table__Menu > * {
+    margin: 0;
+    padding: 0;
+}
+.Table__Menu .Table__Menu__title {
+    font-size: 1.3em;
+}
+.Table__Menu .up__down__btn__container {
+    display: flex;
+    flex-direction: row;
+}
+.Table__Menu .up__down__btn__container .up__down__count {
+    margin-right: 24px;
+}
+.Table__Menu .up__down__btn__container .up__down__arrow {
+    margin: 12px;
+    cursor: pointer;
+}
+
+.Table__Menu .up__down__btn__container .arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+}
+.Table__Menu .up__down__btn__container .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+  
+.Table__Menu .up__down__btn__container .down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}

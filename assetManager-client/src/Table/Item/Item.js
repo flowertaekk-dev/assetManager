@@ -2,12 +2,13 @@ import React from 'react'
 
 import './Item.css'
 
-const Item = () => {
+const Item = (props) => {
 
-    // TODO 아이템 상세정보 출력: ex) 메뉴명, 가격, 수량
+    // TODO css 디자인
+    // TODO 삭제 및 수정 기능 추가
 
     return (
-        <li>Slabo</li>
+    <li>{`${props.menu} : ${props.count} : ${props.totalPrice}`}</li>
     )
 }
 

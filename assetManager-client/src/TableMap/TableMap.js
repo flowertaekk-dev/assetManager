@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import _ from 'lodash'
 
 import Table from '../Table/Table'
-import useStore from '../mobx/useStore';
+import useStore from '../mobx/useStore'
 import customAxios from '../customAxios'
+import KEYS from '../utils/LocalStorageKeys'
 
 import './TableMap.css'
 
@@ -11,13 +13,24 @@ const TableMap = () => {
     const { loginUser, selectedBusiness } = useStore()
 
     const [ theNumberOfTables, setTheNumberOfTables ] = useState(0)
+    const [ menus, setMenus ] = useState([])
     const [ isRendering, setRenderingStatus ] = useState(true)
 
     useEffect(() => {
-        customAxios("/table/read", (response) => {
+        const accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+        const currentAccountBook = accountBook[selectedBusiness.selectedBusinessId]
+
+        setTheNumberOfTables(_.size(currentAccountBook))
+        setRenderingStatus(false)
+
+    }, [ selectedBusiness.selectedBusinessId ])
+
+    useEffect(() => {
+        customAxios("/menu/readAll", (response) => {
             if (response.resultStatus === 'SUCCESS') {
-                setTheNumberOfTables(response.tableCount) // 카운트 저장
-                setRenderingStatus(false)                 // 랜더링 끝
+                // 메뉴 저장
+                setMenus(response.menus)
+
             } else {
                 alert('ERROR', response.reason)
             }
@@ -25,7 +38,7 @@ const TableMap = () => {
             userId: loginUser.loginUserId,
             businessId: selectedBusiness.selectedBusinessId
         })
-    }, [selectedBusiness.selectedBusinessId])
+    }, [])
 
     /**
      * 설정된 테이블 수 만큼의 테이블을 랜더링
@@ -39,7 +52,9 @@ const TableMap = () => {
             tables.push(
                 <Table
                     key={ shownTableNumber }
+                    tableId={ shownTableNumber }
                     tableTitle={ `Table${shownTableNumber}` }
+                    menus={ menus }
                     isLast={ shownTableNumber === theNumberOfTables } />
             )
         }
@@ -48,8 +63,10 @@ const TableMap = () => {
         if (tables.length === 0) {
             tables.push(
                 <Table
-                    key={ 0 }
+                    key={ 1 }
+                    tableId={ 1 }
                     tableTitle={ `주문내역` }
+                    menus={ menus }
                     isLast={ true } />
             )
         }

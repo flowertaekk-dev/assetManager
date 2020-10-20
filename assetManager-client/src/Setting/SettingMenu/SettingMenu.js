@@ -4,7 +4,6 @@ import { observer } from 'mobx-react'
 import useStore from '../../mobx/useStore'
 import customAxios from '../../customAxios'
 import CustomModal from '../../components/Modal/CustomModal'
-import KEYS from '../../utils/LocalStorageKeys'
 
 import './SettingMenu.css'
 
