@@ -4,11 +4,14 @@ import './Item.css'
 
 const Item = (props) => {
 
-    // TODO css 디자인
-    // TODO 삭제 및 수정 기능 추가
-
     return (
-    <li>{`${props.menu} : ${props.count} : ${props.totalPrice}`}</li>
+        <li className='Table__Item'>
+            <span className='Table__Item__name'>{props.menu}</span>
+            <div className='Table__Item__bills'>
+                <span className='Table__Item__count'>{`${props.count} 개`}</span>
+                <span className='Table__Item__totalPrice'>{`${props.totalPrice} 원`}</span>
+            </div>
+        </li>
     )
 }
 

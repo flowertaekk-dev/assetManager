@@ -64,7 +64,9 @@ const Table = (props) => {
      */
     const okEditModalHandler = (callback) => {
         _.forEach(updatingInvoice, (value, key) => {
+            // TODO 가격설정도 해야해! code from here
             finalInvoice[key].count += value
+            finalInvoice[key].totalPrice = ( finalInvoice[key].count * finalInvoice[key].price )
         })
         // TODO localStorage에도 저장할 필요있을까? 정전 또는 실수로 꺼버렸을 경우를 위해??
         // 그렇다면 이런 느낌?
@@ -131,7 +133,6 @@ const Table = (props) => {
                                         )
                                     }
                                 </ul>
-
                         </CustomModal>
 
                 </div>

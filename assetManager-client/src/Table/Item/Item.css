@@ -1,0 +1,22 @@
+.Table__Item {
+    padding: 12px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.Table__Item .Table__Item__name {
+    margin-right: 24px;
+    padding-left: 24px;
+}
+.Table__Item .Table__Item__bills {
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.Table__Item .Table__Item__bills > * {
+    padding-right: 36px;
+    width: 50%;
+    text-align: right;
+}
