@@ -4,14 +4,14 @@ import _ from 'lodash'
 import Item from './Item/Item'
 import CustomModal from '../components/Modal/CustomModal'
 import Menu from './Menu/Menu'
-// import useStore from '../mobx/useStore'
+import useStore from '../mobx/useStore'
 import KEYS from '../utils/LocalStorageKeys'
 
 import './Table.css'
 
 const Table = (props) => {
 
-    // const { loginUser, selectedBusiness } = useStore()
+    const { loginUser, selectedBusiness } = useStore()
 
     const [ menus, setMenus ] = useState([])
     const [ updatingInvoice, setUpdatingInvoice ] = useState({})
@@ -61,13 +61,26 @@ const Table = (props) => {
 
     /**
      * 변경된 메뉴를 최종 인보이스에 적용한다
+     * 
+     * @param {function} callback
      */
     const okEditModalHandler = (callback) => {
         _.forEach(updatingInvoice, (value, key) => {
-            // TODO 가격설정도 해야해! code from here
             finalInvoice[key].count += value
             finalInvoice[key].totalPrice = ( finalInvoice[key].count * finalInvoice[key].price )
         })
+
+        const accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+        const myAccountBook = accountBook[selectedBusiness.selectedBusinessId]
+        myAccountBook[props.tableId] = finalInvoice
+        console.log('okEdit', myAccountBook)
+        console.log(`okEdit:businessId: ${[props.tableId]}`, myAccountBook)
+
+        console.log('final', finalInvoice)
+
+
+        localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
+
         // TODO localStorage에도 저장할 필요있을까? 정전 또는 실수로 꺼버렸을 경우를 위해??
         // 그렇다면 이런 느낌?
         /**
@@ -83,6 +96,18 @@ const Table = (props) => {
 
         initUpdatingInvoice()
         callback()
+    }
+
+    /**
+     * 결제를 진행한다
+     * 
+     * @param {function} callback 
+     */
+    const okCalCulateModalHandler = (callback) => {
+        // TODO 결제 항목 DB 등록
+
+        // TODO finalInvoice 초기화
+
     }
 
     /**
@@ -131,6 +156,37 @@ const Table = (props) => {
                                                         setInvoice={ setUpdatingInvoice } />
                                             </li>
                                         )
+                                    }
+                                </ul>
+                        </CustomModal>
+
+                        <CustomModal
+                            modalTitle={`합계`}
+                            toggleButton={
+                                (
+                                    <button>Calculate</button>
+                                )
+                            }
+                            okBtnTitle={ '결제' }
+                            // preCheckHandler={ () => console.log('preCheck') }
+                            okButtonClickedHandler={ () => console.log('결제하기') }
+                            cancelButtonClickedHandler={ cancelModalHandler } >
+                                {/* content */}
+                                <ul>
+                                    {
+                                        // 메뉴의 카운트가 1 이상인 것만 화면에 표시
+                                        _.map(
+                                            _.filter(finalInvoice, invoice => {
+                                                return invoice.count !== 0 
+                                            }), invoice => {
+                                                return (
+                                                    <Item
+                                                        key={ invoice.menuId }
+                                                        menu={ invoice.menu }
+                                                        count={ invoice.count }
+                                                        totalPrice={ invoice.totalPrice } />
+                                                )
+                                        })
                                     }
                                 </ul>
                         </CustomModal>

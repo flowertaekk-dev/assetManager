@@ -61,7 +61,7 @@ const CustomModal = (props) => {
           </div>
 
           <div className='modal__buttons'>
-            <button className='modal__ok__btn' onClick={ okButtonClickedHandler }>OK</button>
+            <button className='modal__ok__btn' onClick={ okButtonClickedHandler }>{ props.okBtnTitle ? props.okBtnTitle : 'OK'}</button>
             <button className='modal__cancel__btn' onClick={ cancelButtonClickedHandler }>CANCEL</button>
           </div>
         </Modal>

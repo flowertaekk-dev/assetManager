@@ -52,7 +52,7 @@ const TableMap = () => {
             tables.push(
                 <Table
                     key={ shownTableNumber }
-                    tableId={ shownTableNumber }
+                    tableId={ i }
                     tableTitle={ `Table${shownTableNumber}` }
                     menus={ menus }
                     isLast={ shownTableNumber === theNumberOfTables } />
@@ -64,7 +64,7 @@ const TableMap = () => {
             tables.push(
                 <Table
                     key={ 1 }
-                    tableId={ 1 }
+                    tableId={ 0 }
                     tableTitle={ `주문내역` }
                     menus={ menus }
                     isLast={ true } />
