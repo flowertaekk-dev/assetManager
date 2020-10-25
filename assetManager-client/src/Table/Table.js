@@ -11,20 +11,11 @@ import './Table.css'
 
 const Table = (props) => {
 
-    const { loginUser, selectedBusiness } = useStore()
+    const { selectedBusiness } = useStore()
 
     const [ menus, setMenus ] = useState([])
     const [ updatingInvoice, setUpdatingInvoice ] = useState({})
     const [ finalInvoice, setFinalInvoice ] = useState({})
-    /**
-     * 구조
-     * {
-     *  menuId,
-     *  menu,
-     *  count,
-     *  totalPrice
-     * }
-     */
 
     useEffect(() => {
         setMenus(_.cloneDeep(props.menus))
@@ -37,27 +28,46 @@ const Table = (props) => {
     // -------------------------------------------------------------------
     // 초기화 관련
 
+    /**
+     * 새로운 메뉴가 있으면 추가하고, localStorage에서 기존 장부 정보를 불러온다.
+     * 
+     * @param {Array} _menus 메뉴리스트
+     */
     const initFinalInvoice = (_menus) => {
-        setFinalInvoice(_.reduce(_menus, (result, _menu) => {
+        // localStorage에서 불러온다.
+        const accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+            [selectedBusiness.selectedBusinessId]
+            [props.tableId]
 
-            // 이미 등록된 메뉴는 Don't touch
-            if (!result[_menu.menuId]) {
-                _menu['totalPrice'] = 0
-                _menu['count'] = 0
+        // 새로운 메뉴가 있으면 추가한다. (localStorage에)
+        const _menuList = _.reduce(_menus, (result, _menu) => {
+            // property 추가
+            _menu['totalPrice'] = 0
+            _menu['count'] = 0
 
-                result[_menu.menuId] = _menu
-            }
-
+            result[_menu.menuId] = _menu
             return result
-        }, finalInvoice))
+        }, {})
+
+        // 새로운 테이블에 메뉴 등록
+        _.forEach(_.filter(_menuList, (_menu) =>{
+                return !accountBook[_menu.menuId]
+            }), _menu => {
+                return accountBook[_menu.menuId] = _menu
+            }
+        )
+
+        // state에 세팅
+        setFinalInvoice(accountBook)
+
     }
 
     const initUpdatingInvoice = () => {
         setUpdatingInvoice({})
     }
 
-
     // -------------------------------------------------------------------
+    // Handlers
 
     /**
      * 변경된 메뉴를 최종 인보이스에 적용한다
@@ -65,34 +75,18 @@ const Table = (props) => {
      * @param {function} callback
      */
     const okEditModalHandler = (callback) => {
+        // finalInvoice의 내용 업데이트는 setter없이도 가능?!(한 듯 하다.)
         _.forEach(updatingInvoice, (value, key) => {
             finalInvoice[key].count += value
             finalInvoice[key].totalPrice = ( finalInvoice[key].count * finalInvoice[key].price )
         })
 
+        // localStorage에도 저장
         const accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
         const myAccountBook = accountBook[selectedBusiness.selectedBusinessId]
         myAccountBook[props.tableId] = finalInvoice
-        console.log('okEdit', myAccountBook)
-        console.log(`okEdit:businessId: ${[props.tableId]}`, myAccountBook)
-
-        console.log('final', finalInvoice)
-
 
         localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
-
-        // TODO localStorage에도 저장할 필요있을까? 정전 또는 실수로 꺼버렸을 경우를 위해??
-        // 그렇다면 이런 느낌?
-        /**
-         * {
-         *      비지니스ID: {
-         *          테이블번호: {내용},
-         *          테이블번호: {내용},
-         *          .
-         *          .
-         *      }
-         * }
-         */
 
         initUpdatingInvoice()
         callback()
@@ -118,6 +112,8 @@ const Table = (props) => {
     const cancelModalHandler = (callback) => {
         callback()              // 모달 닫기
     }
+
+    // -------------------------------------------------------------------
 
     /**
      * 테이블 정보 생성
