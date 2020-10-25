@@ -102,6 +102,7 @@ const Table = (props) => {
 
         // TODO finalInvoice 초기화
 
+        // TODO 해당 localStorage 초기화
     }
 
     /**
@@ -114,6 +115,7 @@ const Table = (props) => {
     }
 
     // -------------------------------------------------------------------
+    // 랜더링
 
     /**
      * 테이블 정보 생성
@@ -123,6 +125,7 @@ const Table = (props) => {
             <div className='Table'>
                 <input type="checkbox" id={ props.tableTitle } />
                 <div className={ `Table__header ${props.isLast ? 'last' : ''}` }>
+
                     <label
                         htmlFor={ props.tableTitle } 
                         className='Table__header__title' >
@@ -169,44 +172,34 @@ const Table = (props) => {
                             cancelButtonClickedHandler={ cancelModalHandler } >
                                 {/* content */}
                                 <ul>
-                                    {
-                                        // 메뉴의 카운트가 1 이상인 것만 화면에 표시
-                                        _.map(
-                                            _.filter(finalInvoice, invoice => {
-                                                return invoice.count !== 0 
-                                            }), invoice => {
-                                                return (
-                                                    <Item
-                                                        key={ invoice.menuId }
-                                                        menu={ invoice.menu }
-                                                        count={ invoice.count }
-                                                        totalPrice={ invoice.totalPrice } />
-                                                )
-                                        })
-                                    }
+                                    { renderCurrentMenu() }
                                 </ul>
                         </CustomModal>
 
                 </div>
                 <ul>
-                    {
-                        // 메뉴의 카운트가 1 이상인 것만 화면에 표시
-                        _.map(
-                            _.filter(finalInvoice, invoice => {
-                                return invoice.count !== 0 
-                            }), invoice => {
-                                return (
-                                    <Item
-                                        key={ invoice.menuId }
-                                        menu={ invoice.menu }
-                                        count={ invoice.count }
-                                        totalPrice={ invoice.totalPrice } />
-                                )
-                        })
-                    }
+                    { renderCurrentMenu() }
                 </ul>
             </div>
         )
+    }
+
+    /**
+     * 현재 메뉴 정보를 화면에 랜더링한다 (메뉴의 카운트가 1 이상인 것만)
+     */
+    const renderCurrentMenu = () => {
+       return  _.map(
+            _.filter(finalInvoice, invoice => {
+                return invoice.count !== 0 
+            }), invoice => {
+                return (
+                    <Item
+                        key={ invoice.menuId }
+                        menu={ invoice.menu }
+                        count={ invoice.count }
+                        totalPrice={ invoice.totalPrice } />
+                )
+        })
     }
 
 

@@ -31,6 +31,9 @@ const SettingTable = observer(() => {
         })
     }, [ selectedBusiness.selectedBusinessId ])
 
+    // --------------------------------------------------------
+    // Checkers
+
     /**
      * tableCount에 빈 값이 들어있는지 확인한다
      */
@@ -52,6 +55,9 @@ const SettingTable = observer(() => {
 
         return result
     }
+
+    // --------------------------------------------------------
+    // Handlers
 
     /**
      * TableCount update 쿼리
@@ -92,7 +98,6 @@ const SettingTable = observer(() => {
         // 테이블 수가 증가했으면 테이블 추가
         if ( currentNumberOfTableCount < updatedNumberOfTableCount ) {
             _.times(updatedNumberOfTableCount - currentNumberOfTableCount, () => {
-                // TODO 여기서 메뉴도 설정되어있는게 있는지 확인하고 추가
                 currentAccountBook.push({})
             })
         }
@@ -120,6 +125,8 @@ const SettingTable = observer(() => {
         setTableCount(_.cloneDeep(initTableCountValue))
         callback()              // 모달 닫기
     }
+
+    // --------------------------------------------------------
 
     return (
         <section className='SettingTable'>
