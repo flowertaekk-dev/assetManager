@@ -179,6 +179,7 @@ const SettingBusiness = (props) => {
 
         // 삭제
         delete accountBook[ businessId ]
+        selectedBusiness.deleteSelectedBusinessId()
 
         localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
     }

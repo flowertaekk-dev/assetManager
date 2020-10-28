@@ -22,7 +22,10 @@ const Table = (props) => {
     }, [ props.menus ])
     
     useEffect(() => {
-        initFinalInvoice(menus)
+        // 선택된 상호명이 있을경우에만 세팅
+        if (selectedBusiness.selectedBusinessId) {
+            initFinalInvoice(menus)
+        }
     }, [ menus ])
 
     // -------------------------------------------------------------------

@@ -17,12 +17,14 @@ const TableMap = () => {
     const [ isRendering, setRenderingStatus ] = useState(true)
 
     useEffect(() => {
-        const accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
-        const currentAccountBook = accountBook[selectedBusiness.selectedBusinessId]
-
-        setTheNumberOfTables(_.size(currentAccountBook))
+        // 선택된 상호명이 있을경우에만 세팅
+        if (selectedBusiness.selectedBusinessId) {
+            const accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+            const currentAccountBook = accountBook[selectedBusiness.selectedBusinessId]
+    
+            setTheNumberOfTables(_.size(currentAccountBook))
+        }
         setRenderingStatus(false)
-
     }, [ selectedBusiness.selectedBusinessId ])
 
     useEffect(() => {
@@ -75,8 +77,15 @@ const TableMap = () => {
     }
 
     return (
-        <section className='TableMap'>
-            { !isRendering && renderTables(theNumberOfTables) }
+        <section className={`TableMap${!selectedBusiness.selectedBusinessId ? '__empty' : ''}`}>
+            {
+                ( selectedBusiness.selectedBusinessId && !isRendering )
+                    && renderTables(theNumberOfTables)
+            }
+            {
+                ( !selectedBusiness.selectedBusinessId ) && 
+                    <h2>상호명을 등록 및 선택해주세요</h2>
+            }
         </section>
     )
 }
