@@ -15,9 +15,14 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
 
+    /**
+     * 장부 데이터를 DB에 저장한다
+     * @param request
+     * @return
+     */
     protected SaveAccountResponseDto saveAccountInfo(SaveAccountRequestDto request) {
-
         return SaveAccountResponseDto.builder()
+                .account(accountRepository.save(request.toAccountEntity()))
                 .resultStatus(CommonResponseResult.SUCCESS)
                 .build();
     }

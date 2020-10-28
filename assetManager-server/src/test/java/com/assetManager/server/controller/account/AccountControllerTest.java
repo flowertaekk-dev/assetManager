@@ -67,12 +67,13 @@ public class AccountControllerTest {
 
     @AfterEach
     public void clean() {
+        accountRepository.deleteAll();
         tableInfoRepository.deleteAll();
         businessRepository.deleteAll();
         userRepository.deleteAll();
     }
 
-    // TODO case: 장부데이터의 JSON 데이터를 받아서 DB에 저장한다.
+    // case: 장부데이터의 JSON 데이터를 받아서 DB에 저장한다.
     @Test
     public void test_can_save_account_data() throws Exception {
         // given
@@ -82,7 +83,7 @@ public class AccountControllerTest {
 
         final String jsonData =
                 "{"
-                    + "' "+ businessId +"': {"
+                    + "'" + businessId + "': {"
                             + "'businessID': '"+ businessId +"',"
                             + "'menuId': 'MU-00-00',"
                             + "'count': '2',"
@@ -110,14 +111,14 @@ public class AccountControllerTest {
         action.andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
                 .andExpect(jsonPath("$.reason", nullValue()))
+                .andExpect(jsonPath("$.account", notNullValue()))
                 .andDo(print());
 
         List<Account> accounts = accountRepository.findAll();
         assertThat(accounts).isNotEmpty();
         assertThat(accounts.get(0).getAccountId()).isNotNull();
-        assertThat(accounts.get(0).getBusinessId()).isEqualTo(BUSINESS_NAME);
-        assertThat(accounts.get(0).getContents()).isEqualTo(jsonData);
-
+        assertThat(accounts.get(0).getBusinessId()).isEqualTo(businessId);
+        assertThat(accounts.get(0).getContents()).isNotNull(); // TODO JSON데이터를 확인할 수는 없나?
     }
 
 }
