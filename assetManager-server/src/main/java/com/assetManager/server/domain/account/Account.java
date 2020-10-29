@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Getter
 @NoArgsConstructor
@@ -19,6 +20,7 @@ public class Account {
     @Column(nullable = false)
     private String businessId;
 
+    @Lob
     @Column(nullable = false)
     private String contents;
 

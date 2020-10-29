@@ -8,6 +8,7 @@ import useStore from '../mobx/useStore'
 import KEYS from '../utils/LocalStorageKeys'
 
 import './Table.css'
+import customAxios from '../customAxios'
 
 const Table = (props) => {
 
@@ -43,14 +44,7 @@ const Table = (props) => {
             [props.tableId]
 
         // 새로운 메뉴가 있으면 추가한다. (localStorage에)
-        const _menuList = _.reduce(_menus, (result, _menu) => {
-            // property 추가
-            _menu['totalPrice'] = 0
-            _menu['count'] = 0
-
-            result[_menu.menuId] = _menu
-            return result
-        }, {})
+        const _menuList = initMenuList(_menus)
 
         // 새로운 테이블에 메뉴 등록
         _.forEach(_.filter(_menuList, (_menu) =>{
@@ -65,9 +59,32 @@ const Table = (props) => {
 
     }
 
+    /**
+     * 초기 상태의 menuList를 반환한다
+     * 
+     * @param {Array} _menus 
+     */
+    const initMenuList = (_menus) => {
+        return _.reduce(_menus, (result, _menu) => {
+            // property 추가
+            _menu['totalPrice'] = 0
+            _menu['count'] = 0
+
+            result[_menu.menuId] = _menu
+            return result
+        }, {})
+    }
+
+    /**
+     * Edit용 인보이스를 초기화
+     */
     const initUpdatingInvoice = () => {
         setUpdatingInvoice({})
     }
+
+    // -------------------------------------------------------------------
+    // 공통화 메소드
+
 
     // -------------------------------------------------------------------
     // Handlers
@@ -101,11 +118,27 @@ const Table = (props) => {
      * @param {function} callback 
      */
     const okCalCulateModalHandler = (callback) => {
-        // TODO 결제 항목 DB 등록
+        // DB에 저장
+        customAxios("/account/save", (response) => {
+            if (response.resultStatus === 'SUCCESS') {
+                callback()
+            } else {
+                alert(response.reason)
+            }
+        }, {
+            businessId: selectedBusiness.selectedBusinessId,
+            contents: JSON.stringify(finalInvoice)
+        })
 
-        // TODO finalInvoice 초기화
+        // finalInvoice 초기화
+        setFinalInvoice(initMenuList(menus))
+        
+        // 해당 localStorage 초기화
+        const accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+        const myAccountBook = accountBook[selectedBusiness.selectedBusinessId]
+        myAccountBook[props.tableId] = finalInvoice
 
-        // TODO 해당 localStorage 초기화
+        localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
     }
 
     /**
@@ -171,11 +204,12 @@ const Table = (props) => {
                             }
                             okBtnTitle={ '결제' }
                             // preCheckHandler={ () => console.log('preCheck') }
-                            okButtonClickedHandler={ () => console.log('결제하기') }
+                            okButtonClickedHandler={ okCalCulateModalHandler }
                             cancelButtonClickedHandler={ cancelModalHandler } >
                                 {/* content */}
                                 <ul>
                                     { renderCurrentMenu() }
+                                    <li className='Table__sum'>합계: { calculateSum() } 원</li>
                                 </ul>
                         </CustomModal>
 
@@ -191,7 +225,7 @@ const Table = (props) => {
      * 현재 메뉴 정보를 화면에 랜더링한다 (메뉴의 카운트가 1 이상인 것만)
      */
     const renderCurrentMenu = () => {
-       return  _.map(
+        return _.map(
             _.filter(finalInvoice, invoice => {
                 return invoice.count !== 0 
             }), invoice => {
@@ -203,6 +237,18 @@ const Table = (props) => {
                         totalPrice={ invoice.totalPrice } />
                 )
         })
+    }
+
+    /**
+     * 총 합계 금액을 반환한다
+     */
+    const calculateSum = () => {
+        return _.reduce(
+            _.filter(finalInvoice, invoice => {
+                return invoice.count !== 0
+            }), (result, value, key) => {
+                return result += value.totalPrice
+            }, 0)
     }
 
 
