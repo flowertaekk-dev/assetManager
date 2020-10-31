@@ -1,5 +1,6 @@
 package com.assetManager.server.domain.business;
 
+import com.assetManager.server.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Business {
+public class Business extends BaseTimeEntity {
 
     @Id
     private String businessId;

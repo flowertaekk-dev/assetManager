@@ -1,5 +1,6 @@
 package com.assetManager.server.domain.user;
 
+import com.assetManager.server.domain.BaseTimeEntity;
 import com.assetManager.server.domain.user.converter.UserStatusConverter;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.util.Arrays;
 @Getter
 @NoArgsConstructor
 @Entity
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id
     @Column(nullable = false, unique = true)

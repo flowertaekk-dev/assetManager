@@ -1,5 +1,6 @@
 package com.assetManager.server.domain.tableInfo;
 
+import com.assetManager.server.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class TableInfo {
+public class TableInfo extends BaseTimeEntity {
 
     @Id
     private String tableInfoId;

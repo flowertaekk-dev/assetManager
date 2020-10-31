@@ -1,5 +1,6 @@
 package com.assetManager.server.domain.emailAuth;
 
+import com.assetManager.server.domain.BaseTimeEntity;
 import com.assetManager.server.domain.emailAuth.converter.EmailAuthStatusConverter;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.util.Arrays;
 @Getter
 @NoArgsConstructor
 @Entity
-public class EmailAuth {
+public class EmailAuth extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

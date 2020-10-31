@@ -1,5 +1,6 @@
 package com.assetManager.server.domain.account;
 
+import com.assetManager.server.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import javax.persistence.Lob;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Account {
+public class Account extends BaseTimeEntity {
 
     @Id
     private String accountId;
