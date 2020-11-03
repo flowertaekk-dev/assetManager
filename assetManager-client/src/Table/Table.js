@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import _ from 'lodash'
 
 import Item from './Item/Item'
@@ -193,25 +193,25 @@ const Table = (props) => {
                                         )
                                     }
                                 </ul>
-                        </CustomModal>
+                    </CustomModal>
 
-                        <CustomModal
-                            modalTitle={`합계`}
-                            toggleButton={
-                                (
-                                    <button>Calculate</button>
-                                )
-                            }
-                            okBtnTitle={ '결제' }
-                            // preCheckHandler={ () => console.log('preCheck') }
-                            okButtonClickedHandler={ okCalCulateModalHandler }
-                            cancelButtonClickedHandler={ cancelModalHandler } >
-                                {/* content */}
-                                <ul>
-                                    { renderCurrentMenu() }
-                                    <li className='Table__sum'>합계: { calculateSum() } 원</li>
-                                </ul>
-                        </CustomModal>
+                    <CustomModal
+                        modalTitle={`합계`}
+                        toggleButton={
+                            (
+                                <button>Calculate</button>
+                            )
+                        }
+                        okBtnTitle={ '결제' }
+                        // preCheckHandler={ () => console.log('preCheck') }
+                        okButtonClickedHandler={ okCalCulateModalHandler }
+                        cancelButtonClickedHandler={ cancelModalHandler } >
+                            {/* content */}
+                            <ul>
+                                { renderCurrentMenu() }
+                                <li className='Table__sum'>합계: { calculateSum() } 원</li>
+                            </ul>
+                    </CustomModal>
 
                 </div>
                 <ul>
@@ -232,9 +232,9 @@ const Table = (props) => {
                 return (
                     <Item
                         key={ invoice.menuId }
-                        menu={ invoice.menu }
-                        count={ invoice.count }
-                        totalPrice={ invoice.totalPrice } />
+                        tableId={ props.tableId }
+                        invoice={ invoice }
+                        updateInvoice={ setFinalInvoice }  />
                 )
         })
     }

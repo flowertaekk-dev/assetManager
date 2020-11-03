@@ -1,22 +1,37 @@
 .Table__Item {
-    padding: 12px 0;
+    /* padding: 12px 0; */
+    height: 48px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-.Table__Item .Table__Item__name {
-    margin-right: 24px;
-    padding-left: 24px;
+
+/* ----------------------------------------- */
+/* ----------------- MODAL ----------------- */
+/* ----------------------------------------- */
+
+.Table__Item .CustomModal,
+.Table__Item .CustomModal > span {
+    width: 100%;
 }
-.Table__Item .Table__Item__bills {
-    width: 30%;
+.Table__Item .CustomModal .Table__Item__bills {
+    height: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: flex-start;
+    align-items: center;
 }
-
-.Table__Item .Table__Item__bills > * {
-    padding-right: 36px;
+.Table__Item .CustomModal .Table__Item__bills:hover {
+    cursor: pointer;
+}
+.Table__Item .CustomModal .Table__Item__name {
     width: 50%;
+    /* margin-right: 24px; */
+    padding-left: 24px;
+}
+.Table__Item .CustomModal .Table__Item__bills > *:not(:first-child) {
+    padding-right: 12px;
+    /* width: 50%; */
+    flex: 1;
     text-align: right;
 }
