@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import CustomModal from '../../components/Modal/CustomModal'
 import customAxios from '../../customAxios'
 import useStore from '../../mobx/useStore'
-import KEYS from '../../utils/LocalStorageKeys'
+import { getAccountBook, setAccountBook } from '../../utils/localStorageManager'
 
 import './SettingBusiness.css'
 
@@ -86,7 +86,7 @@ const SettingBusiness = (props) => {
      * @param {string} businessId 
      */
     const addBusinessIdToAccountBook = (businessId) => {
-        let accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+        let accountBook = getAccountBook()
 
         // 장부(accountBook) 데이터가 없으면 초기화
         if (!accountBook) {
@@ -99,7 +99,7 @@ const SettingBusiness = (props) => {
             [ businessId ]: {}
         }
 
-        localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
+        setAccountBook(accountBook)
     }
 
     /**
@@ -108,7 +108,7 @@ const SettingBusiness = (props) => {
      * @param {string} businessId
      */
     const addTableInfoToAccountBook = (businessId) => {
-        let accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+        let accountBook = getAccountBook()
 
         // 장부(accountBook) 데이터가 없으면 초기화
         if (!accountBook) {
@@ -125,7 +125,7 @@ const SettingBusiness = (props) => {
         }
 
         // 세션에 저장
-        window.localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
+        setAccountBook(accountBook)
     }
 
     /**
@@ -175,13 +175,13 @@ const SettingBusiness = (props) => {
      * @param {string} businessId 
      */
     const deleteBusinessFromAccountBook = ( businessId ) => {
-        let accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+        let accountBook = getAccountBook()
 
         // 삭제
         delete accountBook[ businessId ]
         selectedBusiness.deleteSelectedBusinessId()
 
-        localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
+        setAccountBook(accountBook)
     }
 
     /**

@@ -4,7 +4,7 @@ import _ from 'lodash'
 import Table from '../Table/Table'
 import useStore from '../mobx/useStore'
 import customAxios from '../customAxios'
-import KEYS from '../utils/LocalStorageKeys'
+import { getAccountBook } from '../utils/localStorageManager'
 
 import './TableMap.css'
 
@@ -19,7 +19,7 @@ const TableMap = () => {
     useEffect(() => {
         // 선택된 상호명이 있을경우에만 세팅
         if (selectedBusiness.selectedBusinessId) {
-            const accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+            const accountBook = getAccountBook()
             const currentAccountBook = accountBook[selectedBusiness.selectedBusinessId]
     
             setTheNumberOfTables(_.size(currentAccountBook))

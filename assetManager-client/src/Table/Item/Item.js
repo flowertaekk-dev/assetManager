@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react'
 
 import useStore from '../../mobx/useStore'
 import CustomModal from '../../components/Modal/CustomModal'
-import KEYS from '../../utils/LocalStorageKeys'
+import { getAccountBook, setAccountBook } from '../../utils/localStorageManager'
 import './Item.css'
 
 const Item = (props) => {
@@ -20,7 +20,7 @@ const Item = (props) => {
      * @param {function} callback 
      */
     const okModalHandler = (callback) => {
-        let accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+        let accountBook = getAccountBook()
         let targetAccountBook = accountBook
             [selectedBusiness.selectedBusinessId]
             [props.tableId]
@@ -34,7 +34,7 @@ const Item = (props) => {
         props.invoice.totalPrice = count * props.invoice.price
 
         props.updateInvoice(prev => { return { ...prev, [props.invoice.menuId]: props.invoice } })
-        localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
+        setAccountBook(accountBook)
 
         callback() // 모달 닫기
     }

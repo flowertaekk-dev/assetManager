@@ -5,7 +5,7 @@ import Item from './Item/Item'
 import CustomModal from '../components/Modal/CustomModal'
 import Menu from './Menu/Menu'
 import useStore from '../mobx/useStore'
-import KEYS from '../utils/LocalStorageKeys'
+import { getAccountBook, setAccountBook } from '../utils/localStorageManager'
 
 import './Table.css'
 import customAxios from '../customAxios'
@@ -39,7 +39,7 @@ const Table = (props) => {
      */
     const initFinalInvoice = (_menus) => {
         // localStorage에서 불러온다.
-        const accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+        const accountBook = getAccountBook()
             [selectedBusiness.selectedBusinessId]
             [props.tableId]
 
@@ -102,11 +102,11 @@ const Table = (props) => {
         })
 
         // localStorage에도 저장
-        const accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+        const accountBook = getAccountBook()
         const myAccountBook = accountBook[selectedBusiness.selectedBusinessId]
         myAccountBook[props.tableId] = finalInvoice
 
-        localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
+        setAccountBook(accountBook)
 
         initUpdatingInvoice()
         callback()
@@ -134,11 +134,11 @@ const Table = (props) => {
         setFinalInvoice(initMenuList(menus))
         
         // 해당 localStorage 초기화
-        const accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+        const accountBook = getAccountBook()
         const myAccountBook = accountBook[selectedBusiness.selectedBusinessId]
         myAccountBook[props.tableId] = finalInvoice
 
-        localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
+        setAccountBook(accountBook)
     }
 
     /**

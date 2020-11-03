@@ -5,7 +5,7 @@ import _ from 'lodash'
 import useStore from '../../mobx/useStore'
 import customAxios from '../../customAxios'
 import CustomModal from '../../components/Modal/CustomModal'
-import KEYS from '../../utils/LocalStorageKeys'
+import { getAccountBook, setAccountBook } from '../../utils/localStorageManager'
 
 import './SettingTable.css'
 
@@ -84,7 +84,7 @@ const SettingTable = observer(() => {
      * @param {object} tableInfo
      */
     const updateTableInfoToAccountBook = (tableInfo) => {
-        let accountBook = JSON.parse(localStorage.getItem(KEYS.ACCOUNT_BOOK))
+        let accountBook = getAccountBook()
 
         if (!accountBook) {
             alert('테이블 정보 등록을 위한 데이터를 못 찾았습니다.')
@@ -113,7 +113,7 @@ const SettingTable = observer(() => {
         accountBook = {...accountBook,
             [ tableInfo.businessId ]: currentAccountBook
         }
-        localStorage.setItem(KEYS.ACCOUNT_BOOK, JSON.stringify(accountBook))
+        setAccountBook(accountBook)
     }
 
     /**
