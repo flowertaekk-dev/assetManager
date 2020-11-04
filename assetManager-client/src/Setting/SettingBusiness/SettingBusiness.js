@@ -7,6 +7,11 @@ import { getAccountBook, setAccountBook } from '../../utils/localStorageManager'
 
 import './SettingBusiness.css'
 
+/**
+ * 상호명 설정 화면
+ * 
+ * @param {*} props 
+ */
 const SettingBusiness = (props) => {
 
     const { loginUser, selectedBusiness } = useStore()
@@ -19,7 +24,11 @@ const SettingBusiness = (props) => {
 
     useEffect(() => {
         retrieveAllBusinessNames()
+        console.log('SettingBusiness IN')
     }, [])
+
+    // -------------------------------------------------------------
+    // Rest API 연동
 
     /**
      * 소유한 상호명(닉네임)을 전부 불러온다
@@ -103,32 +112,6 @@ const SettingBusiness = (props) => {
     }
 
     /**
-     * 세션에 장부(accountBook)에 테이블 정보 생성
-     *
-     * @param {string} businessId
-     */
-    const addTableInfoToAccountBook = (businessId) => {
-        let accountBook = getAccountBook()
-
-        // 장부(accountBook) 데이터가 없으면 초기화
-        if (!accountBook) {
-            // TODO 이 에러메세지는 수정이 필요해. 지금은 귀찮아. 아마도 '상호명 추가 중에 에러가 발생했으니 다시 한 번 부탁드립니다' 정도?
-            alert('테이블 정보 등록을 위한 데이터를 못 찾았습니다.')
-            return
-        }
-
-        // 공통 로직
-        accountBook = {...accountBook,
-            [ businessId ]: [
-                {} // 테이블 하나 추가 (default)
-            ]
-        }
-
-        // 세션에 저장
-        setAccountBook(accountBook)
-    }
-
-    /**
      * 상호명 갱신 쿼리
      * 
      * @param {string} existingBusinessName 기존 상호명
@@ -169,6 +152,35 @@ const SettingBusiness = (props) => {
         })
     }
 
+    // -------------------------------------------------------------
+    // 장부(accountBook) 관련
+
+    /**
+     * 세션에 장부(accountBook)에 테이블 정보 생성
+     *
+     * @param {string} businessId
+     */
+    const addTableInfoToAccountBook = (businessId) => {
+        let accountBook = getAccountBook()
+
+        // 장부(accountBook) 데이터가 없으면 초기화
+        if (!accountBook) {
+            // TODO 이 에러메세지는 수정이 필요해. 지금은 귀찮아. 아마도 '상호명 추가 중에 에러가 발생했으니 다시 한 번 부탁드립니다' 정도?
+            alert('테이블 정보 등록을 위한 데이터를 못 찾았습니다.')
+            return
+        }
+
+        // 공통 로직
+        accountBook = {...accountBook,
+            [ businessId ]: [
+                {} // 테이블 하나 추가 (default)
+            ]
+        }
+
+        // 세션에 저장
+        setAccountBook(accountBook)
+    }
+
     /**
      * AccountBook에서 비지니스를 삭제한다
      *
@@ -184,6 +196,9 @@ const SettingBusiness = (props) => {
         setAccountBook(accountBook)
     }
 
+    // -------------------------------------------------------------
+    // Handlers
+
     /**
      * 모달이 닫힐 때 newBusiness state를 초기화
      * 
@@ -193,6 +208,20 @@ const SettingBusiness = (props) => {
         setNewBusinessName('')  // 초기화
         callback()              // 모달 닫기
     }
+
+    /**
+     * 특정 상호명을 선택했을 때 이벤트
+     */
+    const businessNameClickedHandler = (businessId) => {
+        // 선택된 상호명 색상 채우기
+        setSelectedBusinessId(businessId)
+
+        // LocalStorage에 저장 & mobx store에 저장
+        selectedBusiness.updateSelectedBusinessId(businessId)
+    }
+
+    // -------------------------------------------------------------
+    // utils
 
     /**
      * newBusiness state 값이 비어있는지 확인
@@ -206,18 +235,6 @@ const SettingBusiness = (props) => {
         }
 
         return true
-    }
-
-    /**
-     * 특정 상호명을 선택했을 때 이벤트
-     */
-    const businessNameClickedHandler = (businessId) => {
-        // 선택된 상호명 색상 채우기
-        setSelectedBusinessId(businessId)
-
-        // LocalStorage에 저장
-        // mobx store에 저장
-        selectedBusiness.updateSelectedBusinessId(businessId)
     }
 
     /**
