@@ -2,14 +2,12 @@
 
 ## 프로젝트 설명
 
-* 마트나 식당 등에서 사용하는 정산시스템(?)의 무료화.
+* 포스(POS) 시스템의 무료화.
 
 ### 구조
 
 1. 유저는 web을 통해서 로그인한다.
     * assetManager는 웹서비스!
-2. Firebase를 유저가 직접 설정하도록 유도
-3. Firebase로 한다면, 유저는 딱 DB유지비용만을 지불하면 된다. (일반적으로 이런 서비스에 얼마정도씩 지출을 하나?)
 
 ### 이익구조
 
@@ -18,68 +16,21 @@
 * 유저가 광고를 직접 넣기를 원하는 경우가 있을까?
   * 있다면 이것도 대응하고 싶지만 우선은 보류.
 
-### 사용자 환경설정 (개발자가 아닌 사람도 쉽게 이해 가능하도록 설명할 방법을 찾아야 한다)
+### 프로젝트 진행 규칙
 
-1. [FireBase 콘솔에 접속](https://console.firebase.google.com/)
-2. [프로젝트 만들기] 클릭
-3. 프로젝트 이름 설정
-    * 자유롭게!
-4. [계속] 버튼 클릭
-5. [Firebase 프로젝트를 위한 Google 애널리틱스] 화면에서 [이 프로젝트에서 Google 애널리틱스 사용 설정]을 OFF로 설정
-6. [프로젝트 만들기] 클릭
-7. [새 프로젝트가 준비되었습니다.] 화면에서 [계속] 클릭
-8. </> 아이콘 클릭
-9. [웹 앱에 Firebase 추가] 앱 닉네임 등록
-    * 자유롭게!
-    * Firebase 호스팅 설정은 하지 말 것!
-10. `$npm install firebase`
-11. 다음과 같이 코드 설정 (src/firebase.js)
-      ```
-      import firebase from 'firebase'
-
-      const firebaseConfig = {
-          apiKey: "",
-          authDomain: "",
-          databaseURL: "",
-          projectId: "",
-          storageBucket: "",
-          messagingSenderId: "",
-          appId: "
-      }
-
-      let database;
-      export const fire = () => {
-          if (!firebase.apps.length) {
-              firebase.initializeApp(firebaseConfig)
-          }
-          database = firebase.database()
-      }
-
-      export const fireDB = () => {
-          return database.ref('/').once('value')
-      }
-      ```
-12. App.js
-      ```
-        import {fire, fireDB} from '../../firebase'
-      
-        useEffect(() => {
-          fire()
-        }, [])
-
-        const test = () => {
-          fireDB()
-            .then(res => {
-              console.log(res.val())
-            })
-        }
-      ```
-
-### 개발환경
-
-1. ~~[구글 클라우드 콘솔](https://console.cloud.google.com/)에 들어가기~~
-2. ~~[사용자 인증 정보] 화면 들어가기~~
-3. ~~API 키 만들기~~
-4. ~~OAuth2.0 클라이언트 ID 만들기~~
-5. ~~[샘플 코드](https://developers.google.com/drive/api/v3/quickstart/js)~~
-
+1. 코딩에 들어가기 전에 [Issue](https://github.com/flowertaekk-dev/assetManager/issues) 를 생성한다.
+    1. [Issue](https://github.com/flowertaekk-dev/assetManager/issues) 에 접속
+    2. 오른쪽 상단에 'New Issue' 버튼 클릭
+    3. 'Title'란에 관련된 프로젝트로 시작해서 간략한 코딩 내용을 기재한다.
+        * server/...
+        * client/...
+        * ... (공통인 경우는 기재 불필요)
+    4.'Leave a comment' 란에 자세한 구현 내용 기록
+    5. 오른쪽 사이드 바에서 'Assignees'를 본인으로 설정! 관련있는 다른 사람도 추가해도 OK!
+    6. 오른쪽 사이드 바에서 'Labels'를 설정
+    7. 하단의 'Submit new issue' 클릭해서 이슈를 생성한다.
+2. 생성된 이슈의 이슈번호를 확인한다.
+    * 이슈화면 타이틀에서 확인 할 수 있다. ex) `회원정보 관리 기능 추가 #8`
+3. dev branch로부터 새로운 branch를 생성한다.
+    * 네이밍 규칙은 feature/<이슈번호> ex) `feature/8 or fix/8 or hotfix/8`
+4. 프로젝트 진행관련 내용을 이슈 
