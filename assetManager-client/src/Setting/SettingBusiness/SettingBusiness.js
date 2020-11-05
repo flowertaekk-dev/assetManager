@@ -24,7 +24,6 @@ const SettingBusiness = (props) => {
 
     useEffect(() => {
         retrieveAllBusinessNames()
-        console.log('SettingBusiness IN')
     }, [])
 
     // -------------------------------------------------------------
@@ -303,6 +302,7 @@ const SettingBusiness = (props) => {
     }
 
     return (
+        // Header
         <section className='SettingBusiness'>
             <div className='SettingBusiness__header'>
                 <h1>상호명(닉네임) 설정</h1>
@@ -360,6 +360,7 @@ const SettingBusiness = (props) => {
                 </CustomModal>
             </div>
             
+            {/* 리스트 */}
             <div className='SettingBusiness__list'>
                 { businessNames.length === 0 && <h3>상호명을 등록해주세요!</h3>}
 
