@@ -9,6 +9,9 @@ import { getAccountBook, setAccountBook } from '../../utils/localStorageManager'
 
 import './SettingTable.css'
 
+/**
+ * 테이블 정보 설정 컴포넌트
+ */
 const SettingTable = observer(() => {
 
     const { loginUser, selectedBusiness } = useStore()
@@ -65,7 +68,7 @@ const SettingTable = observer(() => {
     const updateTableCountHandler = (callback) => {
         customAxios("/table/update", (response) => {
             if (response.resultStatus === 'SUCCESS') {
-                updateTableInfoToAccountBook(response.tableInfo)
+                updateTableInfoToAccountBook(response.tableInfo) // accountBook에 등록
                 callback()
             } else {
                 alert(response.reason)
