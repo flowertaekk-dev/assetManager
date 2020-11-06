@@ -22,6 +22,9 @@ const SettingMenu = observer(() => {
         retrieveAllMenus()
     }, [ selectedBusiness.selectedBusinessId ])
 
+    // ----------------------------------------------------------------------
+    // Rest API 관련
+
     /**
      * 상호에 해당하는 메뉴 전부 불러온다
      */
@@ -61,6 +64,9 @@ const SettingMenu = observer(() => {
             price: price
         })
     }
+
+    // ----------------------------------------------------------------------
+    // Handlers
 
     /**
      * 메뉴 및 가격 갱신 쿼리
@@ -106,7 +112,19 @@ const SettingMenu = observer(() => {
         })
     }
 
+    /**
+     * 모달이 닫힐 때 newBusiness state를 초기화
+     * 
+     * @param {function} callback 
+     */
+    const cancelModalHandler = (callback) => {
+        setNewMenu('')  // 초기화
+        setPrice(0)     // 초기화
+        callback()      // 모달 닫기
+    }
+
     // ----------------------------------------------------------------------
+    // utils
 
     /**
      * newMenu, price state 값이 비어있는지 확인
@@ -136,17 +154,6 @@ const SettingMenu = observer(() => {
     const setDefaultMenuAndPrice = (menu, price) => {
         setNewMenu(menu)
         setPrice(price)
-    }
-
-    /**
-     * 모달이 닫힐 때 newBusiness state를 초기화
-     * 
-     * @param {function} callback 
-     */
-    const cancelModalHandler = (callback) => {
-        setNewMenu('')  // 초기화
-        setPrice(0)     // 초기화
-        callback()      // 모달 닫기
     }
 
     /**
