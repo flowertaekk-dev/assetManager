@@ -21,7 +21,7 @@ const TableMap = () => {
         if (selectedBusiness.selectedBusinessId) {
             const accountBook = getAccountBook()
             const currentAccountBook = accountBook[selectedBusiness.selectedBusinessId]
-    
+
             setTheNumberOfTables(_.size(currentAccountBook))
         }
         setRenderingStatus(false)
@@ -42,34 +42,51 @@ const TableMap = () => {
         })
     }, [])
 
+    // ----------------------------------------------------------
+    // utils
+
+    /**
+     * Table 컴포넌트를 반환한다
+     *
+     * @param {string} key
+     * @param {string} tableId
+     * @param {string} tableTitle
+     * @param {Array} menus
+     * @param {Boolean} isLast
+     */
+    const createTableComponent = (key, tableId, tableTitle, menus, isLast) => {
+        return <Table
+            key={ key }
+            tableId={ tableId }
+            tableTitle={ tableTitle }
+            menus={ menus }
+            isLast={ isLast } />
+    }
+
     /**
      * 설정된 테이블 수 만큼의 테이블을 랜더링
+     *
+     * @param {Number} theNumberOfTables
      */
     const renderTables = ( theNumberOfTables ) => {
         const tables = []
 
-        for (let i=0; i < theNumberOfTables; i++) {
-            let shownTableNumber = i + 1
-
-            tables.push(
-                <Table
-                    key={ shownTableNumber }
-                    tableId={ i }
-                    tableTitle={ `Table${shownTableNumber}` }
-                    menus={ menus }
-                    isLast={ shownTableNumber === theNumberOfTables } />
-            )
+        // 설정된 테이블 수가 '0' 이라면, '주문내역'으로 테이블 하나 추가
+        if (theNumberOfTables === 0) {
+            tables.push(createTableComponent(1, 0, '주문내역', menus, true))
+            return tables
         }
 
-        // 설정된 테이블 수가 '0' 이라면, '주문내역'으로 테이블 하나 추가
-        if (tables.length === 0) {
+        // 설정된 테이블 수가 0이 아니면 Table 여러개 생성
+        for (let i=0; i < theNumberOfTables; i++) {
+            let shownTableNumber = i + 1
             tables.push(
-                <Table
-                    key={ 1 }
-                    tableId={ 0 }
-                    tableTitle={ `주문내역` }
-                    menus={ menus }
-                    isLast={ true } />
+                createTableComponent(
+                    shownTableNumber,                           // key
+                     i,                                         // tableId
+                     `Table${shownTableNumber}`,                // tableTitle
+                     menus,                                     // menus
+                     shownTableNumber === theNumberOfTables)    // isLast
             )
         }
 
@@ -83,7 +100,7 @@ const TableMap = () => {
                     && renderTables(theNumberOfTables)
             }
             {
-                ( !selectedBusiness.selectedBusinessId ) && 
+                ( !selectedBusiness.selectedBusinessId ) &&
                     <h2>상호명을 등록 및 선택해주세요</h2>
             }
         </section>
