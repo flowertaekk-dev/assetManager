@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import _ from 'lodash'
 
 import Item from './Item/Item'
 import CustomModal from '../components/Modal/CustomModal'
 import Menu from './Menu/Menu'
 import useStore from '../mobx/useStore'
-import { getAccountBook, setAccountBook } from '../utils/localStorageManager'
+import { getAccountBook,  updateSelectedBusienssAccountBook } from '../utils/localStorageManager'
 
 import './Table.css'
 import customAxios from '../customAxios'
@@ -21,7 +21,7 @@ const Table = (props) => {
     useEffect(() => {
         setMenus(_.cloneDeep(props.menus))
     }, [ props.menus ])
-    
+
     useEffect(() => {
         // 선택된 상호명이 있을경우에만 세팅
         if (selectedBusiness.selectedBusinessId) {
@@ -34,7 +34,7 @@ const Table = (props) => {
 
     /**
      * 새로운 메뉴가 있으면 추가하고, localStorage에서 기존 장부 정보를 불러온다.
-     * 
+     *
      * @param {Array} _menus 메뉴리스트
      */
     const initFinalInvoice = (_menus) => {
@@ -60,9 +60,10 @@ const Table = (props) => {
     }
 
     /**
-     * 초기 상태의 menuList를 반환한다
-     * 
-     * @param {Array} _menus 
+     * Array 상태의 _menus 를 Object로 변환하고,
+     * property에 'totalPrice', 'count'를 추가해서 반환
+     *
+     * @param {Array} _menus
      */
     const initMenuList = (_menus) => {
         return _.reduce(_menus, (result, _menu) => {
@@ -83,30 +84,27 @@ const Table = (props) => {
     }
 
     // -------------------------------------------------------------------
-    // 공통화 메소드
-
-
-    // -------------------------------------------------------------------
     // Handlers
 
     /**
      * 변경된 메뉴를 최종 인보이스에 적용한다
-     * 
+     *
      * @param {function} callback
      */
     const okEditModalHandler = (callback) => {
         // finalInvoice의 내용 업데이트는 setter없이도 가능?!(한 듯 하다.)
         _.forEach(updatingInvoice, (value, key) => {
-            finalInvoice[key].count += value
-            finalInvoice[key].totalPrice = ( finalInvoice[key].count * finalInvoice[key].price )
+            // 이래서 typescript 쓰나??
+            let count = parseInt(finalInvoice[key].count)
+            let price = parseInt(finalInvoice[key].price)
+            let totalCount = count + parseInt(value)
+
+            finalInvoice[key].count = totalCount
+            finalInvoice[key].totalPrice = ( totalCount * price )
         })
 
         // localStorage에도 저장
-        const accountBook = getAccountBook()
-        const myAccountBook = accountBook[selectedBusiness.selectedBusinessId]
-        myAccountBook[props.tableId] = finalInvoice
-
-        setAccountBook(accountBook)
+        updateSelectedBusienssAccountBook(selectedBusiness.selectedBusinessId, props.tableId, finalInvoice)
 
         initUpdatingInvoice()
         callback()
@@ -114,8 +112,8 @@ const Table = (props) => {
 
     /**
      * 결제를 진행한다
-     * 
-     * @param {function} callback 
+     *
+     * @param {function} callback
      */
     const okCalCulateModalHandler = (callback) => {
         // DB에 저장
@@ -132,22 +130,34 @@ const Table = (props) => {
 
         // finalInvoice 초기화
         setFinalInvoice(initMenuList(menus))
-        
-        // 해당 localStorage 초기화
-        const accountBook = getAccountBook()
-        const myAccountBook = accountBook[selectedBusiness.selectedBusinessId]
-        myAccountBook[props.tableId] = finalInvoice
 
-        setAccountBook(accountBook)
+        // 해당 localStorage 초기화
+        updateSelectedBusienssAccountBook(selectedBusiness.selectedBusinessId, props.tableId, finalInvoice)
+
     }
 
     /**
      * 모달을 닫는다
-     * 
-     * @param {function} callback 
+     *
+     * @param {function} callback
      */
     const cancelModalHandler = (callback) => {
         callback()              // 모달 닫기
+    }
+
+    // -------------------------------------------------------------------
+    // utils
+
+    /**
+     * 총 합계 금액을 반환한다
+     */
+    const calculateSum = () => {
+        return _.reduce(
+            _.filter(finalInvoice, invoice => {
+                return invoice.count !== 0
+            }), (result, value, key) => {
+                return result += value.totalPrice
+            }, 0)
     }
 
     // -------------------------------------------------------------------
@@ -163,7 +173,7 @@ const Table = (props) => {
                 <div className={ `Table__header ${props.isLast ? 'last' : ''}` }>
 
                     <label
-                        htmlFor={ props.tableTitle } 
+                        htmlFor={ props.tableTitle }
                         className='Table__header__title' >
                             { props.tableTitle }
                     </label>
@@ -185,7 +195,7 @@ const Table = (props) => {
                                             <li
                                                 key={ menu.menuId }
                                                 className='Table__modal__menu__item'>
-                                                    <Menu 
+                                                    <Menu
                                                         menu={ menu }
                                                         invoice={ updatingInvoice }
                                                         setInvoice={ setUpdatingInvoice } />
@@ -227,7 +237,7 @@ const Table = (props) => {
     const renderCurrentMenu = () => {
         return _.map(
             _.filter(finalInvoice, invoice => {
-                return invoice.count !== 0 
+                return invoice.count !== 0
             }), invoice => {
                 return (
                     <Item
@@ -238,19 +248,6 @@ const Table = (props) => {
                 )
         })
     }
-
-    /**
-     * 총 합계 금액을 반환한다
-     */
-    const calculateSum = () => {
-        return _.reduce(
-            _.filter(finalInvoice, invoice => {
-                return invoice.count !== 0
-            }), (result, value, key) => {
-                return result += value.totalPrice
-            }, 0)
-    }
-
 
     return (
         <React.Fragment>

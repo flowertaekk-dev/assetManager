@@ -7,17 +7,21 @@ import './Item.css'
 
 const Item = (props) => {
 
-    const { loginUser, selectedBusiness } = useStore()
-    
+    const { selectedBusiness } = useStore()
+
     const [count, setCount] = useState(props.invoice.count)
+
+    useEffect(() => {
+        setCount(props.invoice.count)
+    }, [ props.invoice.count ])
 
     // -------------------------------------------------------------------
     // Handlers
 
     /**
      * 주문 수량을 수정한다
-     * 
-     * @param {function} callback 
+     *
+     * @param {function} callback
      */
     const okModalHandler = (callback) => {
         let accountBook = getAccountBook()
@@ -41,8 +45,8 @@ const Item = (props) => {
 
     /**
      * 모달을 닫는다
-     * 
-     * @param {function} callback 
+     *
+     * @param {function} callback
      */
     const cancelModalHandler = (callback) => {
         callback() // 모달 닫기
