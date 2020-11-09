@@ -33,4 +33,22 @@
     * 이슈화면 타이틀에서 확인 할 수 있다. ex) `회원정보 관리 기능 추가 #8`
 3. dev branch로부터 새로운 branch를 생성한다.
     * 네이밍 규칙은 feature/<이슈번호> ex) `feature/8 or fix/8 or hotfix/8`
-4. 프로젝트 진행관련 내용을 이슈에 기록한다
+4. 해당 이슈에 'being handled' label을 설정한다.
+5. 프로젝트 진행관련 내용을 이슈에 기록한다.
+6. 작업이 끝나면 PR을 마음에 드는 누군가에게 날린다.
+7. PR까지 끝나면 'being handled'를 제거하고, 이슈를 close 한다.
+
+## 프로젝트 용어집
+
+* AccountBook:
+    * 장부 데이터. 해당 유저가 소유하고 있는 전체적인 인보이스를 의미한다.
+    * `{userId: {businessId:{menuId:{...}}, businessId:{menuId:{...}, menuId:{...}}}}` 이런 구조.
+* Business:
+    * 상호명 데이터. 유저가 소유하고 있는 상호명을 의미한다.
+* Table:
+    * 테이블 정보 데이터. 2020-11-09 시점에서는 '테이블 개수' 데이터만 관리하고 있다.
+* Menu:
+    * 메뉴 데이터. Business 데이터에 포함되어 있는 특정 메뉴.
+* Invoice:
+    * 특정 Business가 소유하고 있는 인보이스를 의미.
+    * Business와 Invoice는 1:N 관계이다.
