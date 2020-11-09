@@ -2,6 +2,20 @@
 
 ## 환경설정
 
+* npm version
+
+```
+6.14.4
+```
+
+* yarn version
+
+```
+1.22.5
+```
+
+### 프로젝트 환경구축
+
 1. `$git clone` 한다
 2. npm을 초기화한다
     * `$npm install`

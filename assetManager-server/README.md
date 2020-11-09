@@ -2,6 +2,16 @@
 
 ## 환경설정
 
+### Java version
+
+```
+openjdk 11.0.9 2020-10-20
+OpenJDK Runtime Environment (build 11.0.9+11-Ubuntu-0ubuntu1.20.04)
+OpenJDK 64-Bit Server VM (build 11.0.9+11-Ubuntu-0ubuntu1.20.04, mixed mode, sharing)
+```
+
+* 우분투가 아니어도 상관은 없지만, jdk는 11로!
+
 ### 프로젝트 환경구축
 
 1. `$git clone` 한다
