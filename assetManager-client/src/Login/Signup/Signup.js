@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
+import crypto from 'crypto'
 
 import Button from '../../components/Button/Button'
 import customAxios from '../../customAxios'
@@ -69,7 +70,7 @@ const Signup = (props) => {
 
         return VALIDATE_OK
     }
- 
+
     // ---------------------------------------------------------
     // Handlers
 
@@ -107,9 +108,12 @@ const Signup = (props) => {
     }
 
     /**
-     * OK 버튼 클릭 핸들러
+     * OK 버튼 클릭 핸들러; 회원가입
      */
-    const okButtonClickHandler = () => {
+    const okButtonClickHandler = async () => {
+        const [_salt, _password] = await encryptPassword(password)
+        console.log('salt', _salt)
+        console.log('password', _password)
         let result = [idStatus, passwordStatus, emailStatus, doubleCheckPasswordStatus]
             .filter(status => status !== VALIDATE_OK)
 
@@ -126,14 +130,14 @@ const Signup = (props) => {
 
             }, {
                 id,
-                password,
+                salt: _salt,
+                password: _password,
                 email,
                 emailAuthCode
             })
         } else {
             alert('틀린 항목이 없는지 확인해주세요!')
         }
-
     }
 
     const authEmailClickHandler = () => {
@@ -148,6 +152,30 @@ const Signup = (props) => {
             // do nothing
         }, {
             addressTo: email
+        })
+    }
+
+    // ---------------------------------------------------------
+    // Handlers
+
+    /**
+     * 패스워드 암호화
+     *
+     * @param {string} password
+     */
+    const encryptPassword = (password) => {
+        let _salt, _password;
+
+        return new Promise((resolve, reject) => {
+            crypto.randomBytes(64, (err, buffer) => {                                  // salt 생성
+                if (err) reject()
+
+                _salt = buffer.toString('base64')
+                crypto.pbkdf2(password, _salt, 103872, 64, 'sha512', (err, key) => {   // hash 생성
+                    _password = key.toString('base64')
+                    resolve([_salt, _password])
+                })
+            })
         })
     }
 
