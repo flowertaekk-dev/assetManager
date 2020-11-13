@@ -86,9 +86,12 @@ public class EmailAuthControllerTest {
     @Test
     public void test_cannot_use_registered_email() throws Exception {
         // given
+
+        // 기존 유저용 데이터 생성
         userRepository.save(
                 User.builder()
                         .id("test")
+                        .salt("salt")
                         .password("test")
                         .email(this.email)
                         .status(User.UserStatus.USING)

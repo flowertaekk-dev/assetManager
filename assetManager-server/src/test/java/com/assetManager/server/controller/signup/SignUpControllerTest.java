@@ -45,6 +45,7 @@ public class SignUpControllerTest {
     private MockMvc mvc;
 
     private final String id = "test";
+    private final String salt = "salt";
     private final String password = "test";
     private final String email = "test@email.com";
 
@@ -78,7 +79,7 @@ public class SignUpControllerTest {
 
         // when
 
-        String content = createContent(this.id, this.password, this.email, emailAuthCode);;
+        String content = createContent(this.id, this.salt, this.password, this.email, emailAuthCode);;
         ResultActions action = sendRequest(content);
 
         // then
@@ -106,12 +107,12 @@ public class SignUpControllerTest {
 
         // 기존에 이미 동일한 이메일로 회원가입 완료!
         {
-            String content = createContent(this.id, this.password, this.email, emailAuthCode);
+            String content = createContent(this.id, this.salt, this.password, this.email, emailAuthCode);
             sendRequest(content);
         }
 
         // when
-        String content = createContent(newId, newPassword, this.email, emailAuthCode);
+        String content = createContent(newId, this.salt, newPassword, this.email, emailAuthCode);
         ResultActions action = sendRequest(content);
 
         // then
@@ -139,7 +140,7 @@ public class SignUpControllerTest {
 
         String wrongAuthCode = "WrongCode";
 
-        String content = createContent(this.id, this.password, this.email, wrongAuthCode);
+        String content = createContent(this.id, this.salt, this.password, this.email, wrongAuthCode);
         ResultActions action = sendRequest(content);
 
         //then
@@ -164,7 +165,7 @@ public class SignUpControllerTest {
         String emailAuthCode = emailAuthData.get(0).getAuthCode();
 
         // when
-        String content = createContent(this.id, this.password, this.email, emailAuthCode);
+        String content = createContent(this.id, this.salt, this.password, this.email, emailAuthCode);
         ResultActions action = sendRequest(content);
 
         action
@@ -182,10 +183,11 @@ public class SignUpControllerTest {
     // ----------------------------------------------------------------
     // utils
 
-    protected String createContent(String id, String password, String email, String emailAuthCode) throws Exception {
+    protected String createContent(String id, String salt, String password, String email, String emailAuthCode) throws Exception {
         return objectMapper.writeValueAsString(
                 SignUpRequestDto.builder()
                         .id(id)
+                        .salt(salt)
                         .password(password)
                         .email(email)
                         .emailAuthCode(emailAuthCode)

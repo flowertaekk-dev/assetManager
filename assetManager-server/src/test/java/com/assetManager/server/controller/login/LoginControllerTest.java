@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.assetManager.server.controller.login.dto.LoginRequestDto;
+import com.assetManager.server.controller.login.dto.RequestSaltDto;
 import com.assetManager.server.controller.signup.UserTestUtil;
 import com.assetManager.server.domain.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,8 +58,7 @@ public class LoginControllerTest {
         userRepository.deleteAll();
     }
 
-    @Test
-    public void can_log_in() throws Exception {
+    @Test public void can_log_in() throws Exception {
         // given
         UserTestUtil.insertUser();
 
@@ -77,6 +77,33 @@ public class LoginControllerTest {
                 .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
                 .andExpect(jsonPath("$.reason", nullValue()))
                 .andDo(print());
+    }
+
+    @Test public void can_hand_over_salt_key_to_client() throws Exception {
+        // given
+        UserTestUtil.insertUser();
+
+        String url = "/api/v1/requestSalt";
+
+        // when
+        ResultActions action = mvc.perform(
+                post(url)
+                    .content(objectMapper.writeValueAsString(
+                            RequestSaltDto.builder()
+                                .id(id)
+                                .build()
+                    ))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        action
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
+                .andExpect(jsonPath("$.salt", is("salt")))
+                .andDo(print());
+
     }
 
     // TODO case: 로그인 실패 케이스.. 깜빡했다

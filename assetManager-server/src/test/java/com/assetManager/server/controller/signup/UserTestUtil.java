@@ -24,6 +24,7 @@ public class UserTestUtil extends TestDataUtil {
         staticUserRepository.save(
                 User.builder()
                         .id(id)
+                        .salt(salt)
                         .password(password)
                         .email(email)
                         .status(User.UserStatus.USING)

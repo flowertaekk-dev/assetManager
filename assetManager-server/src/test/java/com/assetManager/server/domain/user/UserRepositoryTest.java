@@ -21,6 +21,7 @@ public class UserRepositoryTest {
     }
 
     private String id = "test";
+    private String salt = "salt";
     private String password = "test";
     private String email = "test@test.com";
 
@@ -31,6 +32,7 @@ public class UserRepositoryTest {
         userRepository.save(
                 User.builder()
                         .id(id)
+                        .salt(salt)
                         .password(password)
                         .email(email)
                         .status(User.UserStatus.USING)
@@ -42,6 +44,7 @@ public class UserRepositoryTest {
 
         User targetUser = users.get(0);
         assertThat(targetUser.getId()).isEqualTo(id);
+        assertThat(targetUser.getSalt()).isEqualTo(salt);
         assertThat(targetUser.getPassword()).isEqualTo(password);
         assertThat(targetUser.getEmail()).isEqualTo(email);
     }
@@ -51,6 +54,7 @@ public class UserRepositoryTest {
         userRepository.save(
                 User.builder()
                         .id(id)
+                        .salt(salt)
                         .password(password)
                         .email(email)
                         .status(User.UserStatus.USING)
@@ -63,6 +67,7 @@ public class UserRepositoryTest {
         // then
         assertThat(loginUser).isNotNull();
         assertThat(loginUser.getId()).isEqualTo(id);
+        assertThat(loginUser.getSalt()).isEqualTo(salt);
         assertThat(loginUser.getPassword()).isEqualTo(password);
         assertThat(loginUser.getEmail()).isEqualTo(email);
     }
@@ -72,6 +77,7 @@ public class UserRepositoryTest {
         userRepository.save(
                 User.builder()
                         .id(id)
+                        .salt(salt)
                         .password(password)
                         .email(email)
                         .status(User.UserStatus.USING)
