@@ -4,6 +4,7 @@ import crypto from 'crypto'
 
 import Button from '../../components/Button/Button'
 import customAxios from '../../customAxios'
+import { REPEAT_COUNT, BYTE_LENGTH, ENCODING_TYPE, ENCRYPT_TYPE } from '../../utils/encryptUtils'
 
 import './Signup.css'
 
@@ -112,8 +113,6 @@ const Signup = (props) => {
      */
     const okButtonClickHandler = async () => {
         const [_salt, _password] = await encryptPassword(password)
-        console.log('salt', _salt)
-        console.log('password', _password)
         let result = [idStatus, passwordStatus, emailStatus, doubleCheckPasswordStatus]
             .filter(status => status !== VALIDATE_OK)
 
@@ -170,9 +169,9 @@ const Signup = (props) => {
             crypto.randomBytes(64, (err, buffer) => {                                  // salt 생성
                 if (err) reject()
 
-                _salt = buffer.toString('base64')
-                crypto.pbkdf2(password, _salt, 103872, 64, 'sha512', (err, key) => {   // hash 생성
-                    _password = key.toString('base64')
+                _salt = buffer.toString(ENCODING_TYPE)
+                crypto.pbkdf2(password, _salt, REPEAT_COUNT, BYTE_LENGTH, ENCRYPT_TYPE, (err, key) => {   // hash 생성
+                    _password = key.toString(ENCODING_TYPE)
                     resolve([_salt, _password])
                 })
             })
