@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
+import crypto from 'crypto'
 
 import Button from '../../components/Button/Button'
 import customAxios from '../../customAxios'
+import { REPEAT_COUNT, BYTE_LENGTH, ENCODING_TYPE, ENCRYPT_TYPE } from '../../utils/encryptUtils'
 
 import './Signup.css'
 
@@ -69,7 +71,7 @@ const Signup = (props) => {
 
         return VALIDATE_OK
     }
- 
+
     // ---------------------------------------------------------
     // Handlers
 
@@ -107,9 +109,10 @@ const Signup = (props) => {
     }
 
     /**
-     * OK 버튼 클릭 핸들러
+     * OK 버튼 클릭 핸들러; 회원가입
      */
-    const okButtonClickHandler = () => {
+    const okButtonClickHandler = async () => {
+        const [_salt, _password] = await encryptPassword(password)
         let result = [idStatus, passwordStatus, emailStatus, doubleCheckPasswordStatus]
             .filter(status => status !== VALIDATE_OK)
 
@@ -126,14 +129,14 @@ const Signup = (props) => {
 
             }, {
                 id,
-                password,
+                salt: _salt,
+                password: _password,
                 email,
                 emailAuthCode
             })
         } else {
             alert('틀린 항목이 없는지 확인해주세요!')
         }
-
     }
 
     const authEmailClickHandler = () => {
@@ -148,6 +151,30 @@ const Signup = (props) => {
             // do nothing
         }, {
             addressTo: email
+        })
+    }
+
+    // ---------------------------------------------------------
+    // Handlers
+
+    /**
+     * 패스워드 암호화
+     *
+     * @param {string} password
+     */
+    const encryptPassword = (password) => {
+        let _salt, _password;
+
+        return new Promise((resolve, reject) => {
+            crypto.randomBytes(64, (err, buffer) => {                                  // salt 생성
+                if (err) reject()
+
+                _salt = buffer.toString(ENCODING_TYPE)
+                crypto.pbkdf2(password, _salt, REPEAT_COUNT, BYTE_LENGTH, ENCRYPT_TYPE, (err, key) => {   // hash 생성
+                    _password = key.toString(ENCODING_TYPE)
+                    resolve([_salt, _password])
+                })
+            })
         })
     }
 

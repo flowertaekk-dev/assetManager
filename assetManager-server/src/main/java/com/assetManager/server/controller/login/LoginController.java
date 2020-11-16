@@ -2,6 +2,8 @@ package com.assetManager.server.controller.login;
 
 import com.assetManager.server.controller.login.dto.LoginRequestDto;
 import com.assetManager.server.controller.login.dto.LoginResponseDto;
+import com.assetManager.server.controller.login.dto.RequestSaltDto;
+import com.assetManager.server.controller.login.dto.ResponseSaltDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,12 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
         return ResponseEntity.ok(loginService.login(loginRequestDto));
+    }
+
+    @PostMapping("/requestSalt")
+    public ResponseEntity<ResponseSaltDto> querySalt(@RequestBody RequestSaltDto requestSaltDto) {
+        // TODO from here
+        return ResponseEntity.ok(loginService.querySalt(requestSaltDto));
     }
 
 }

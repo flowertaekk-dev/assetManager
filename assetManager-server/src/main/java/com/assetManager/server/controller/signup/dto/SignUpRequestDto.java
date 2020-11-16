@@ -12,13 +12,15 @@ import lombok.ToString;
 public class SignUpRequestDto {
 
     private String id;
+    private String salt;
     private String password;
     private String email;
     private String emailAuthCode;
 
     @Builder
-    public SignUpRequestDto(String id, String password, String email, String emailAuthCode) {
+    public SignUpRequestDto(String id, String salt, String password, String email, String emailAuthCode) {
         this.id = id;
+        this.salt = salt;
         this.password = password;
         this.email = email;
         this.emailAuthCode = emailAuthCode;
@@ -27,6 +29,7 @@ public class SignUpRequestDto {
     public User toUserEntity() {
         return User.builder()
                 .id(this.id)
+                .salt(this.salt)
                 .password(this.password)
                 .email(this.email)
                 .status(User.UserStatus.USING)
