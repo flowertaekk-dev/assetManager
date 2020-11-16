@@ -146,9 +146,11 @@ const Signup = (props) => {
         }
 
         customAxios('/email/requestCode', (data) => {
-            // console.log(data)
-            // console.log(data.resultStatus)
-            // do nothing
+            // 메일 발송 실패
+            if (data.resultStatus === 'FAILURE') {
+                alert(data.reason);
+            }
+
         }, {
             addressTo: email
         })
