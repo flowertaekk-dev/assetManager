@@ -69,7 +69,7 @@ const Signup = (props) => {
 
         return VALIDATE_OK
     }
- 
+
     // ---------------------------------------------------------
     // Handlers
 
@@ -143,7 +143,7 @@ const Signup = (props) => {
         }
 
         customAxios('/email/requestCode', (data) => {
-            // console.log(data)
+            console.log(data)
             // console.log(data.resultStatus)
             // do nothing
         }, {

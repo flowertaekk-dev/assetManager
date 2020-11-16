@@ -25,6 +25,9 @@ const Header = (props) => {
         setTitle(showTitle(location.pathname))
     }, [currentPage, loginUser.loginUserId])
 
+    // ---------------------------------------------------------
+    // utils
+
     /**
      * Header의 메뉴 설정
      */
@@ -36,17 +39,17 @@ const Header = (props) => {
             case "/":
 
                 if (!loginUser.loginUserId) {
-                    menus.push(<Link to="/login">로그인</Link>)                   
+                    menus.push(<Link to="/login">로그인</Link>)
                 }
 
                 break;
-            case "/login": 
+            case "/login":
                 menus.push(<Link to="/signup">회원가입</Link>)
                 break;
             case "/tableMap":
                 menus.push(<Link to="/setting">설정</Link>)
                 break;
-            
+
             case "setting":
                 break;
 
@@ -56,11 +59,15 @@ const Header = (props) => {
         }
 
         if (loginUser.loginUserId) {
-            menus.push(<span onClick={logoutHandler}>로그아웃</span>)
+            menus.push(<Link to="/updateUserData">회원정보수정</Link>)
+            menus.push(<span onClick={ logoutHandler }>로그아웃</span>)
         }
 
         return menus
     }
+
+    // ---------------------------------------------------------
+    // Handlers
 
     /**
      * 로그아웃 처리는 여기서! 딱히 로그아웃 로직만 따로 빼는 것도 낭비같다는 생각.
@@ -75,7 +82,7 @@ const Header = (props) => {
     }
 
     /**
-     * index 페이지에서는 title을 보여주지 않는다 
+     * index 페이지에서는 title을 보여주지 않는다
      */
     const showTitle = (path) => {
         let title = '';

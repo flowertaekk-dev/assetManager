@@ -11,6 +11,7 @@ import Login from './Login/Login'
 import Signup from './Login/Signup/Signup'
 import TableMap from './TableMap/TableMap'
 import Setting from './Setting/Setting'
+import UpdateUserData from './Login/UpdateUserData/UpdateUserData'
 
 import './index.css';
 
@@ -30,8 +31,9 @@ const Index = () => {
       <Route path="/signup" component={Signup}/>
       <Route path="/tableMap" component={TableMap} />
       <Route path="/setting" component={Setting} />
+      <Route path="/updateUserData" component={UpdateUserData} />
 
-      
+
 
       {/* 개발할 때는 주석처리 */}
       {/* <Redirect path="*" to="/" /> */}
