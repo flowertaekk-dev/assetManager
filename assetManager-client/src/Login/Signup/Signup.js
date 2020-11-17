@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
-import crypto from 'crypto'
 
 import Button from '../../components/Button/Button'
 import customAxios from '../../customAxios'
-import { REPEAT_COUNT, BYTE_LENGTH, ENCODING_TYPE, ENCRYPT_TYPE } from '../../utils/encryptUtils'
+import { createSalt, encryptPassword } from '../../utils/userUtils/userUtilities'
 
 import './Signup.css'
 
@@ -112,9 +111,11 @@ const Signup = (props) => {
      * OK 버튼 클릭 핸들러; 회원가입
      */
     const okButtonClickHandler = async () => {
-        const [_salt, _password] = await encryptPassword(password)
         let result = [idStatus, passwordStatus, emailStatus, doubleCheckPasswordStatus]
             .filter(status => status !== VALIDATE_OK)
+
+        const _salt = await createSalt()
+        const _password = await encryptPassword(_salt, password)
 
         // send request
         if (!result.length) {
@@ -157,30 +158,31 @@ const Signup = (props) => {
     // ---------------------------------------------------------
     // Handlers
 
-    /**
-     * 패스워드 암호화
-     *
-     * @param {string} password
-     */
-    const encryptPassword = (password) => {
-        let _salt, _password;
+    // /**
+    //  * 패스워드 암호화
+    //  *
+    //  * @param {string} password
+    //  */
+    // const encryptPassword = (password) => {
+    //     let _salt, _password;
 
-        return new Promise((resolve, reject) => {
-            crypto.randomBytes(64, (err, buffer) => {                                  // salt 생성
-                if (err) reject()
+    //     return new Promise((resolve, reject) => {
+    //         crypto.randomBytes(64, (err, buffer) => {                                  // salt 생성
+    //             if (err) reject()
 
-                _salt = buffer.toString(ENCODING_TYPE)
-                crypto.pbkdf2(password, _salt, REPEAT_COUNT, BYTE_LENGTH, ENCRYPT_TYPE, (err, key) => {   // hash 생성
-                    _password = key.toString(ENCODING_TYPE)
-                    resolve([_salt, _password])
-                })
-            })
-        })
-    }
+    //             _salt = buffer.toString(ENCODING_TYPE)
+    //             crypto.pbkdf2(password, _salt, REPEAT_COUNT, BYTE_LENGTH, ENCRYPT_TYPE, (err, key) => {   // hash 생성
+    //                 _password = key.toString(ENCODING_TYPE)
+    //                 resolve([_salt, _password])
+    //             })
+    //         })
+    //     })
+    // }
 
     // ---------------------------------------------------------
 
     return (
+        // TODO 여기 있는 label은 공통화 가능하지 않을까?
         <section className="Signup">
             <div className="Signup__field">
                 <div className="Signup__item">

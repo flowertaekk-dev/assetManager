@@ -25,7 +25,6 @@ public class LoginController {
 
     @PostMapping("/requestSalt")
     public ResponseEntity<ResponseSaltDto> querySalt(@RequestBody RequestSaltDto requestSaltDto) {
-        // TODO from here
         return ResponseEntity.ok(loginService.querySalt(requestSaltDto));
     }
 
