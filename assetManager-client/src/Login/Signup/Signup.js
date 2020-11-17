@@ -156,30 +156,6 @@ const Signup = (props) => {
     }
 
     // ---------------------------------------------------------
-    // Handlers
-
-    // /**
-    //  * 패스워드 암호화
-    //  *
-    //  * @param {string} password
-    //  */
-    // const encryptPassword = (password) => {
-    //     let _salt, _password;
-
-    //     return new Promise((resolve, reject) => {
-    //         crypto.randomBytes(64, (err, buffer) => {                                  // salt 생성
-    //             if (err) reject()
-
-    //             _salt = buffer.toString(ENCODING_TYPE)
-    //             crypto.pbkdf2(password, _salt, REPEAT_COUNT, BYTE_LENGTH, ENCRYPT_TYPE, (err, key) => {   // hash 생성
-    //                 _password = key.toString(ENCODING_TYPE)
-    //                 resolve([_salt, _password])
-    //             })
-    //         })
-    //     })
-    // }
-
-    // ---------------------------------------------------------
 
     return (
         // TODO 여기 있는 label은 공통화 가능하지 않을까?

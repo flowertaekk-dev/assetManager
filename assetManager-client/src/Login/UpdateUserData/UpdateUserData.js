@@ -9,7 +9,7 @@ const UpdateUserData = () => {
     const [validateStatus, setValidateStatus] = useState(false)
 
     return (
-        <section>
+        <section className='UpdateUserData'>
             {!validateStatus && <ValidatePassword />}
             {validateStatus && <h1>UpdateUserData</h1>}
             {/* <h1>UpdateUserData</h1> */}
