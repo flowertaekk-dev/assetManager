@@ -50,3 +50,71 @@ export const encryptPassword = (salt, password) => {
         })
     })
 }
+
+/**
+ * 로그인
+ *
+ * @param {Object} props
+ * @param {string} id
+ * @param {string} password
+ */
+export const logIn = async (props, id, password, loginUser) => {
+
+    const saltKey = await querySalt(id)
+    const _password = await encryptPassword(saltKey, password)
+
+    customAxios('/login', (response) => {
+        if (response.resultStatus === 'SUCCESS') {
+            // store에 저장
+            // session에 저장
+            loginUser.updateLoginUser(id)
+            // 메인 테이블화면으로 이동
+            props.history.push('/tableMap')
+        } else {
+            alert(response.reason)
+        }
+
+    }, {
+        id: id,
+        password: _password
+    })
+}
+
+/**
+ * 회원가입
+ *
+ * @param {Object} props
+ * @param {string} id
+ * @param {string} password
+ * @param {string} email
+ * @param {string} emailAuthCode
+ */
+export const signUp = async (props, id, password, email, emailAuthCode) => {
+    const _salt = await createSalt()
+    const _password = await encryptPassword(_salt, password)
+
+    customAxios('/signup', (data) => {
+
+        if (data.resultStatus === 'SUCCESS') {
+            props.history.goBack()
+            // props.history.replace('/login')
+        } else {
+            alert(data.reason)
+        }
+
+    }, {
+        id,
+        salt: _salt,
+        password: _password,
+        email,
+        emailAuthCode
+    })
+}
+
+export const sendAuthEmail = (emailTo) => {
+    customAxios('/email/requestCode', (data) => {
+        // do nothing
+    }, {
+        addressTo: emailTo
+    })
+}

@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import Button from '../../components/Button/Button'
-import customAxios from '../../customAxios'
-import { createSalt, encryptPassword } from '../../utils/userUtils/userUtilities'
+import { sendAuthEmail, signUp } from '../../utils/userUtils/userUtilities'
 
 import './Signup.css'
 
@@ -114,27 +113,9 @@ const Signup = (props) => {
         let result = [idStatus, passwordStatus, emailStatus, doubleCheckPasswordStatus]
             .filter(status => status !== VALIDATE_OK)
 
-        const _salt = await createSalt()
-        const _password = await encryptPassword(_salt, password)
-
         // send request
         if (!result.length) {
-            customAxios('/signup', (data) => {
-
-                if (data.resultStatus === 'SUCCESS') {
-                    props.history.goBack()
-                    // props.history.replace('/login')
-                } else {
-                    alert(data.reason)
-                }
-
-            }, {
-                id,
-                salt: _salt,
-                password: _password,
-                email,
-                emailAuthCode
-            })
+            signUp(props, id, password, email, emailAuthCode)
         } else {
             alert('틀린 항목이 없는지 확인해주세요!')
         }
@@ -146,13 +127,7 @@ const Signup = (props) => {
             return
         }
 
-        customAxios('/email/requestCode', (data) => {
-            console.log(data)
-            // console.log(data.resultStatus)
-            // do nothing
-        }, {
-            addressTo: email
-        })
+        sendAuthEmail(email)
     }
 
     // ---------------------------------------------------------
@@ -205,7 +180,6 @@ const Signup = (props) => {
                             onChange={(event) => onChangeHandler(event)}/>
                         <p className="auth__request__button" onClick={authEmailClickHandler}>인증코드 요청</p>
                     </div>
-
                 </div>
             </div>
 

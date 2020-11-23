@@ -33,7 +33,7 @@ const ValidatePassword = () => {
     // Handlers
 
     const onChangeHandler = (event) => {
-        setPassowrd(event.value)
+        setPassowrd(event.target.value)
     }
 
     return (

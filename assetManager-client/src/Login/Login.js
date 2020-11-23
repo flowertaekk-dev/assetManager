@@ -3,9 +3,8 @@ import { withRouter } from 'react-router-dom'
 import { useObserver } from 'mobx-react'
 
 import Button from '../components/Button/Button'
-import customAxios from '../customAxios'
 import useStore from '../mobx/useStore'
-import { encryptPassword, querySalt } from '../utils/userUtils/userUtilities'
+import { logIn } from '../utils/userUtils/userUtilities'
 
 import './Login.css'
 
@@ -19,24 +18,8 @@ const Login = (props) => {
     // ------------------------------------------------------
     // Handlers
 
-    const loginClickHandler = async () => {
-        const saltKey = await querySalt(id)
-        const _password = await encryptPassword(saltKey, password)
-        customAxios('/login', (response) => {
-            if (response.resultStatus === 'SUCCESS') {
-                // store에 저장
-                // session에 저장
-                loginUser.updateLoginUser(id)
-                // 메인 테이블화면으로 이동
-                props.history.push('/tableMap')
-            } else {
-                alert(response.reason)
-            }
-
-        }, {
-            id: id,
-            password: _password
-        })
+    const loginClickHandler = () => {
+        logIn(props, id, password, loginUser)
     }
 
     // ------------------------------------------------------
@@ -63,7 +46,7 @@ const Login = (props) => {
             </div>
 
             <div>
-                <Button clickHandler={loginClickHandler}>Sign in</Button>
+                <Button clickHandler={ loginClickHandler }>Sign in</Button>
                 <Button>Cancel</Button>
             </div>
         </section>
