@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import Button from '../../components/Button/Button'
+import Item from './Item/Item'
 import { sendAuthEmail, signUp } from '../../utils/userUtils/userUtilities'
 
 import './Signup.css'
@@ -133,44 +134,44 @@ const Signup = (props) => {
     // ---------------------------------------------------------
 
     return (
-        // TODO 여기 있는 label은 공통화 가능하지 않을까?
         <section className="Signup">
             <div className="Signup__field">
-                <div className="Signup__item">
-                    <label htmlFor="signupId">ID</label>
-                    <input type="text"
-                        id="signupId" name="signupId" placeholder="ID"
-                        className={idStatus}
-                        value={id}
-                        onChange={(event) => onChangeHandler(event)}/>
-                </div>
+                <Item
+                    componentId='signupId'
+                    inputType='text'
+                    labelTitle='ID'
+                    placeholder='ID'
+                    className={idStatus}
+                    val={id}
+                    onChangeHandler={(event) => onChangeHandler(event)} />
 
-                <div className="Signup__item">
-                    <label htmlFor="signupPw">PASSWORD</label>
-                    <input type="password"
-                        id="signupPw" name="signupPw" placeholder="PASSWORD"
-                        className={passwordStatus}
-                        value={password}
-                        onChange={(event) => onChangeHandler(event)}/>
-                </div>
+                <Item
+                    componentId='signupPw'
+                    inputType='password'
+                    labelTitle='PASSWORD'
+                    placeholder='PASSWORD'
+                    className={passwordStatus}
+                    val={password}
+                    onChangeHandler={(event) => onChangeHandler(event)} />
 
-                <div className="Signup__item">
-                    <label htmlFor="doubleCheckPassword">E-MAIL</label>
-                    <input type="password"
-                         id="doubleCheckPassword" name="doubleCheckPassword" placeholder="Password 확인"
-                         className={doubleCheckPasswordStatus}
-                         value={doubleCheckPassword}
-                         onChange={(event) => onChangeHandler(event)}/>
-                </div>
+                <Item
+                    componentId='doubleCheckPassword'
+                    inputType='password'
+                    labelTitle='Password double check'
+                    placeholder='Password 확인'
+                    className={doubleCheckPasswordStatus}
+                    val={doubleCheckPassword}
+                    onChangeHandler={(event) => onChangeHandler(event)} />
 
-                <div className="Signup__item">
-                    <label htmlFor="signupEmail">E-MAIL</label>
-                    <input type="email"
-                         id="signupEmail" name="signupEmail" placeholder="E-MAIL"
-                         className={emailStatus}
-                         value={email}
-                         onChange={(event) => onChangeHandler(event)}/>
-                </div>
+                <Item
+                    componentId='signupEmail'
+                    inputType='email'
+                    labelTitle='E-MAIL'
+                    placeholder='E-MAIL'
+                    className={emailStatus}
+                    val={email}
+                    onChangeHandler={(event) => onChangeHandler(event)} />
+
 
                 <div className="Signup__item">
                     <label htmlFor="signupEmailAuth">Email 인증코드</label>
