@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+
 import { querySalt } from '../../../utils/userUtils/userUtilities'
 import useStore from '../../../mobx/useStore'
+import RoundButton from '../../../components/Button/RoundButton/RoundButton'
 
 import './ValidatePassword.css'
 
@@ -37,6 +39,7 @@ const ValidatePassword = () => {
     }
 
     return (
+        // refactoring: 참고: https://github.com/flowertaekk-dev/assetManager/issues/20
         <section className='ValidatePassword'>
             <div className='input__group'>
                 <label htmlFor="validatePw" className='validatePw__label'>비밀번호</label>
@@ -46,7 +49,7 @@ const ValidatePassword = () => {
                     value={password}
                     onChange={(event) => onChangeHandler(event)}/>
             </div>
-            <button onClick={okButtonClieckedHandler}>OK</button>
+            <RoundButton clickHandler={okButtonClieckedHandler}>OK</RoundButton>
         </section>
     )
 }

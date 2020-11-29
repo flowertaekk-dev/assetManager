@@ -52,26 +52,6 @@
     border-bottom: 1px solid #61a3ff;
 }
 
-/* BUTTON */
-.Table .Table__header button {
-    background-color: white;
-    border: 2px solid #008CBA;
-    border-radius: 18px;
-    color: black;
-    padding: 8px 24px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1.3vw;
-    margin: 4px 2px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-}
-.Table .Table__header button:hover{
-    background-color: #008CBA;
-    color: white;
-}
-
 /* MODEL */
 
 .ReactModal__Content .modal__body ul {

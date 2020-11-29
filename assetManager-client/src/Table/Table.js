@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import _ from 'lodash'
 
 import Item from './Item/Item'
-import CustomModal from '../components/Modal/CustomModal'
 import Menu from './Menu/Menu'
+import RoundButton from '../components/Button/RoundButton/RoundButton'
+import CustomModal from '../components/Modal/CustomModal'
 import useStore from '../mobx/useStore'
 import { getAccountBook,  updateSelectedBusienssAccountBook } from '../utils/localStorageManager'
 
@@ -182,7 +183,7 @@ const Table = (props) => {
                             modalTitle={`주문목록`}
                             toggleButton={
                                 (
-                                    <button>Edit</button>
+                                    <RoundButton>Edit</RoundButton>
                                 )
                             }
                             // preCheckHandler={ () => console.log('preCheck') }
@@ -209,7 +210,7 @@ const Table = (props) => {
                         modalTitle={`합계`}
                         toggleButton={
                             (
-                                <button>Calculate</button>
+                                <RoundButton>Calculate</RoundButton>
                             )
                         }
                         okBtnTitle={ '결제' }

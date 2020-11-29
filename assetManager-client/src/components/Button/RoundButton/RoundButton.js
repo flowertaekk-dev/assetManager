@@ -1,15 +1,15 @@
 import React from 'react'
 
-import './Button.css'
+import './RoundButton.css'
 
-const Button = (props) => {
+const RoundButton = (props) => {
     return (
         <button
-            className="Button"
+            className="RoundButton"
             onClick={props.clickHandler}>
                 {props.children}
         </button>
     )
 }
 
-export default Button
+export default RoundButton
