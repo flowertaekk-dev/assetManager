@@ -15,7 +15,8 @@
 .Signup .Signup__field .Signup__item label {
     display: none;
 }
-.Signup .Signup__field .Signup__item input {
+.Signup .Signup__field .Signup__item input,
+.Signup .Signup__field .LabelInput .label__input {
     width: 100%;
     height: 3vh;
     margin: 4px 0;

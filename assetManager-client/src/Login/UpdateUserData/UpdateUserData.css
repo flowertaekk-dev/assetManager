@@ -2,3 +2,18 @@
     display: flex;
     flex: 1;
 }
+
+.UpdateUserData .userData__layout {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+.UpdateUserData .userData__layout .label__input {
+    width: 40vh;
+    display: flex;
+    justify-content: space-between;
+    /* flex-direction: column; */
+
+}

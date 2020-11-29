@@ -65,8 +65,9 @@ export const logIn = async (id, password, callback) => {
 
     customAxios('/login', (response) => {
         if (response.resultStatus === 'SUCCESS') {
-            callback()
+            callback(response.user)
         } else {
+            console.log('login util fail', response)
             alert(response.reason)
         }
 

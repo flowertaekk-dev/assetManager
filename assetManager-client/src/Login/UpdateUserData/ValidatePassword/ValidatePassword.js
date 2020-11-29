@@ -18,7 +18,7 @@ const ValidatePassword = (props) => {
     // Handlers
 
     const okButtonClieckedHandler = () => {
-        logIn(loginUser.loginUserId, password, () => {
+        logIn(loginUser.loginUser.id, password, () => {
             props.setValidateStatus(true)
         })
     }

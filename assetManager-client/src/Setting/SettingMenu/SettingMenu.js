@@ -37,14 +37,14 @@ const SettingMenu = observer(() => {
                 alert('ERROR', response.reason)
             }
         }, {
-            userId: loginUser.loginUserId,
+            userId: loginUser.loginUser.id,
             businessId: selectedBusiness.selectedBusinessId
         })
     }
 
     /**
      * 메뉴 추가 쿼리
-     * 
+     *
      * @param callback Modal를 닫는 콜백
      */
     const addMenuHandler = (callback) => {
@@ -58,7 +58,7 @@ const SettingMenu = observer(() => {
                 alert(response.reason)
             }
         }, {
-            userId: loginUser.loginUserId,
+            userId: loginUser.loginUser.id,
             businessId: selectedBusiness.selectedBusinessId,
             menu: newMenu,
             price: price
@@ -70,7 +70,7 @@ const SettingMenu = observer(() => {
 
     /**
      * 메뉴 및 가격 갱신 쿼리
-     * 
+     *
      * @param {string} existingMenu 기존 메뉴명
      */
     const updateMenuHandler = (existingMenu) => {
@@ -84,7 +84,7 @@ const SettingMenu = observer(() => {
                 alert(response.reason)
             }
         }, {
-            userId: loginUser.loginUserId,
+            userId: loginUser.loginUser.id,
             businessId: selectedBusiness.selectedBusinessId,
             existingMenu,
             newMenu,
@@ -94,7 +94,7 @@ const SettingMenu = observer(() => {
 
     /**
      * 메뉴 삭제 쿼리
-     * 
+     *
      * @param {string} deleteMenu 삭제할 메뉴
      */
     const deleteMenuHandler = (deleteMenu) => {
@@ -106,7 +106,7 @@ const SettingMenu = observer(() => {
                 alert(response.reason)
             }
         }, {
-            userId: loginUser.loginUserId,
+            userId: loginUser.loginUser.id,
             businessId: selectedBusiness.selectedBusinessId,
             menu: deleteMenu
         })
@@ -114,8 +114,8 @@ const SettingMenu = observer(() => {
 
     /**
      * 모달이 닫힐 때 newBusiness state를 초기화
-     * 
-     * @param {function} callback 
+     *
+     * @param {function} callback
      */
     const cancelModalHandler = (callback) => {
         setNewMenu('')  // 초기화
@@ -128,7 +128,7 @@ const SettingMenu = observer(() => {
 
     /**
      * newMenu, price state 값이 비어있는지 확인
-     * 
+     *
      * @returns {Boolean} preCheck에 문제가 없으면 true, 있으면 false
      */
     const checkNewMenuAndPriceAreEmpty = () => {
@@ -147,7 +147,7 @@ const SettingMenu = observer(() => {
 
     /**
      * 기존의 값들을 state에 세팅한다
-     * 
+     *
      * @param {string} menu 기존 메뉴명
      * @param {number} price 기존 가격
      */
@@ -247,7 +247,7 @@ const SettingMenu = observer(() => {
 
     return (
         <section className='SettingMenu'>
-            
+
             <div className='SettingMenu__header'>
                 <h1>메뉴 설정</h1>
                 <CustomModal
@@ -328,7 +328,7 @@ const SettingMenu = observer(() => {
                         </div>
                 </CustomModal>
             </div>
-            
+
             <div className='SettingMenu__list'>
                 <ul>
                     { renderMenus() }

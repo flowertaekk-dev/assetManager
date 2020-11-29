@@ -37,7 +37,7 @@ const TableMap = () => {
                 alert('ERROR', response.reason)
             }
         }, {
-            userId: loginUser.loginUserId,
+            userId: loginUser.loginUser.id,
             businessId: selectedBusiness.selectedBusinessId
         })
     }, [])

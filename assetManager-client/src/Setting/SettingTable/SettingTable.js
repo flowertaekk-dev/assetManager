@@ -29,7 +29,7 @@ const SettingTable = observer(() => {
                 alert('ERROR', response.reason)
             }
         }, {
-            userId: loginUser.loginUserId,
+            userId: loginUser.loginUser.id,
             businessId: selectedBusiness.selectedBusinessId
         })
     }, [ selectedBusiness.selectedBusinessId ])
@@ -74,7 +74,7 @@ const SettingTable = observer(() => {
                 alert(response.reason)
             }
         }, {
-            userId: loginUser.loginUserId,
+            userId: loginUser.loginUser.id,
             businessId: selectedBusiness.selectedBusinessId,
             tableCount
         })
@@ -133,7 +133,7 @@ const SettingTable = observer(() => {
 
     return (
         <section className='SettingTable'>
-            
+
             <div className='SettingTable__header'>
                 <h1>테이블 설정</h1>
             </div>

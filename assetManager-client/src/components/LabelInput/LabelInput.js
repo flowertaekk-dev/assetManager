@@ -8,7 +8,7 @@ const LabelInput = (props) => {
             <label htmlFor={props.componentId}>{props.labelTitle}</label>
             <input type={props.inputType}
                 id={props.componentId} name={props.componentId} placeholder={props.placeholder}
-                className={props._className}
+                className={`label__input ${props._className}`}
                 value={props._value}
                 onChange={props.onChangeHandler}/>
         </div>

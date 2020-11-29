@@ -9,8 +9,8 @@ import './SettingBusiness.css'
 
 /**
  * 상호명 설정 화면
- * 
- * @param {*} props 
+ *
+ * @param {*} props
  */
 const SettingBusiness = (props) => {
 
@@ -40,13 +40,13 @@ const SettingBusiness = (props) => {
                 alert('ERROR', response.reason)
             }
         }, {
-            userId: loginUser.loginUserId
+            userId: loginUser.loginUser.id
         })
     }
 
     /**
      * 상호명 추가 쿼리
-     * 
+     *
      * @param callback Modal를 닫는 콜백
      */
     const addBusinessNameHandler = (callback) => {
@@ -64,7 +64,7 @@ const SettingBusiness = (props) => {
                 alert(response.reason)
             }
         }, {
-            userId: loginUser.loginUserId,
+            userId: loginUser.loginUser.id,
             businessName: newBusinessName
         })
     }
@@ -82,7 +82,7 @@ const SettingBusiness = (props) => {
                 alert('테이블 정보 초기화에 실패했습니다.')
             }
         }, {
-            userId: loginUser.loginUserId,
+            userId: loginUser.loginUser.id,
             businessId: businessId,
             tableCount: 0 // 초기값
         })
@@ -91,7 +91,7 @@ const SettingBusiness = (props) => {
     /**
      * 세션에 장부(accountBook) 생성 및 상호명ID 추가
      *
-     * @param {string} businessId 
+     * @param {string} businessId
      */
     const addBusinessIdToAccountBook = (businessId) => {
         let accountBook = getAccountBook()
@@ -112,7 +112,7 @@ const SettingBusiness = (props) => {
 
     /**
      * 상호명 갱신 쿼리
-     * 
+     *
      * @param {string} existingBusinessName 기존 상호명
      */
     const updateBusinessNameHandler = (existingBusinessName) => {
@@ -125,7 +125,7 @@ const SettingBusiness = (props) => {
                 alert(response.reason)
             }
         }, {
-            userId: loginUser.loginUserId,
+            userId: loginUser.loginUser.id,
             existingBusinessName,
             newBusinessName
         })
@@ -133,7 +133,7 @@ const SettingBusiness = (props) => {
 
     /**
      * 상호명 삭제 쿼리
-     * 
+     *
      * @param {string} deleteBusinessName 삭제할 상호명
      */
     const deleteBusinessNameHandler = (deleteBusinessName) => {
@@ -146,7 +146,7 @@ const SettingBusiness = (props) => {
                 alert(response.reason)
             }
         }, {
-            userId: loginUser.loginUserId,
+            userId: loginUser.loginUser.id,
             businessName: deleteBusinessName
         })
     }
@@ -183,7 +183,7 @@ const SettingBusiness = (props) => {
     /**
      * AccountBook에서 비지니스를 삭제한다
      *
-     * @param {string} businessId 
+     * @param {string} businessId
      */
     const deleteBusinessFromAccountBook = ( businessId ) => {
         let accountBook = getAccountBook()
@@ -200,8 +200,8 @@ const SettingBusiness = (props) => {
 
     /**
      * 모달이 닫힐 때 newBusiness state를 초기화
-     * 
-     * @param {function} callback 
+     *
+     * @param {function} callback
      */
     const cancelModalHandler = (callback) => {
         setNewBusinessName('')  // 초기화
@@ -224,7 +224,7 @@ const SettingBusiness = (props) => {
 
     /**
      * newBusiness state 값이 비어있는지 확인
-     * 
+     *
      * @returns {Boolean} preCheck에 문제가 없으면 true, 있으면 false
      */
     const checkNewBusinessIsEmpty = () => {
@@ -359,7 +359,7 @@ const SettingBusiness = (props) => {
                             placeholder="상호명(닉네임)"/>
                 </CustomModal>
             </div>
-            
+
             {/* 리스트 */}
             <div className='SettingBusiness__list'>
                 { businessNames.length === 0 && <h3>상호명을 등록해주세요!</h3>}

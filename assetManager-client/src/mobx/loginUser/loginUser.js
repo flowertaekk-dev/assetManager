@@ -1,13 +1,13 @@
 import { observable } from 'mobx'
 
 const loginUser = observable({
-    loginUserId: window.localStorage.getItem('loginUser'),
-    updateLoginUser(id) {
-        this.loginUserId = id
-        window.localStorage.setItem('loginUser', id)
+    loginUser: JSON.parse(window.localStorage.getItem('loginUser')),
+    updateLoginUser(user) {
+        this.loginUser = user
+        window.localStorage.setItem('loginUser', JSON.stringify(user))
     },
     deleteLoginUser() {
-        this.loginUserId = undefined
+        this.loginUser = undefined
         window.localStorage.removeItem('loginUser')
     },
 })
