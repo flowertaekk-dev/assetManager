@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import Button from '../../components/Button/Button'
-import Item from './Item/Item'
+import LabelInput from '../../components/LabelInput/LabelInput'
 import { sendAuthEmail, signUp } from '../../utils/userUtils/userUtilities'
 
 import './Signup.css'
@@ -136,40 +136,40 @@ const Signup = (props) => {
     return (
         <section className="Signup">
             <div className="Signup__field">
-                <Item
+                <LabelInput
                     componentId='signupId'
                     inputType='text'
                     labelTitle='ID'
                     placeholder='ID'
-                    className={idStatus}
-                    val={id}
+                    _className={idStatus}
+                    _value={id}
                     onChangeHandler={(event) => onChangeHandler(event)} />
 
-                <Item
+                <LabelInput
                     componentId='signupPw'
                     inputType='password'
                     labelTitle='PASSWORD'
                     placeholder='PASSWORD'
-                    className={passwordStatus}
-                    val={password}
+                    _className={passwordStatus}
+                    _value={password}
                     onChangeHandler={(event) => onChangeHandler(event)} />
 
-                <Item
+                <LabelInput
                     componentId='doubleCheckPassword'
                     inputType='password'
                     labelTitle='Password double check'
                     placeholder='Password 확인'
-                    className={doubleCheckPasswordStatus}
-                    val={doubleCheckPassword}
+                    _className={doubleCheckPasswordStatus}
+                    _value={doubleCheckPassword}
                     onChangeHandler={(event) => onChangeHandler(event)} />
 
-                <Item
+                <LabelInput
                     componentId='signupEmail'
                     inputType='email'
                     labelTitle='E-MAIL'
                     placeholder='E-MAIL'
-                    className={emailStatus}
-                    val={email}
+                    _className={emailStatus}
+                    _value={email}
                     onChangeHandler={(event) => onChangeHandler(event)} />
 
 

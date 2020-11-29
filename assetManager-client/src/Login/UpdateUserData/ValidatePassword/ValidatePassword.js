@@ -5,6 +5,7 @@ import useStore from '../../../mobx/useStore'
 import RoundButton from '../../../components/Button/RoundButton/RoundButton'
 
 import './ValidatePassword.css'
+import LabelInput from '../../../components/LabelInput/LabelInput'
 
 const ValidatePassword = (props) => {
 
@@ -27,16 +28,15 @@ const ValidatePassword = (props) => {
     }
 
     return (
-        // refactoring: 참고: https://github.com/flowertaekk-dev/assetManager/issues/20
         <section className='ValidatePassword'>
-            <div className='input__group'>
-                <label htmlFor="validatePw" className='validatePw__label'>비밀번호</label>
-                <input type="password"
-                    id="validatePw" name="validatePw" placeholder="PASSWORD"
-                    className='validatePw__input'
-                    value={password}
-                    onChange={(event) => onChangeHandler(event)}/>
-            </div>
+            <LabelInput
+                    componentId='validatePw'
+                    inputType='password'
+                    labelTitle='Password'
+                    placeholder='Password'
+                    _className={'validatePw__input'}
+                    _value={password}
+                    onChangeHandler={(event) => onChangeHandler(event)} />
             <RoundButton clickHandler={okButtonClieckedHandler}>OK</RoundButton>
         </section>
     )

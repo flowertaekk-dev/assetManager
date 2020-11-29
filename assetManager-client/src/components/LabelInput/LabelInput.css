@@ -1,0 +1,8 @@
+.LabelInput label {
+    display: none;
+}
+.LabelInput input {
+    width: 100%;
+    height: 3vh;
+    margin: 4px 0;
+}
