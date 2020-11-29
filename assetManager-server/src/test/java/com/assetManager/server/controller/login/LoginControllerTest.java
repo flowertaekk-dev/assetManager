@@ -76,6 +76,10 @@ public class LoginControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("SUCCESS")))
                 .andExpect(jsonPath("$.reason", nullValue()))
+                .andExpect(jsonPath("$.user", notNullValue()))
+                .andExpect(jsonPath("$.user.id", notNullValue()))
+                .andExpect(jsonPath("$.user.password", nullValue()))
+                .andExpect(jsonPath("$.user.salt", nullValue()))
                 .andDo(print());
     }
 

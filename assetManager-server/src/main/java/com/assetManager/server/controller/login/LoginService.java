@@ -46,8 +46,12 @@ public class LoginService {
                     .build();
         }
 
+        // password, salt key는 반환하지 않는다.
+        loginUser.initPasswordAndSaltKey();
+
         return LoginResponseDto.builder()
                 .resultStatus(SUCCESS)
+                .user(loginUser)
                 .build();
     }
 

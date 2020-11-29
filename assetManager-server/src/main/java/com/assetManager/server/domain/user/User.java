@@ -40,6 +40,11 @@ public class User extends BaseTimeEntity {
         this.status = status;
     }
 
+    public void initPasswordAndSaltKey() {
+        this.password = null;
+        this.salt = null;
+    }
+
     @Getter
     public enum UserStatus {
         USING("사용중"),
