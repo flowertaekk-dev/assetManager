@@ -19,7 +19,16 @@ const Login = (props) => {
     // Handlers
 
     const loginClickHandler = () => {
-        logIn(props, id, password, loginUser)
+        // logIn(props, id, password, loginUser)
+        logIn(id, password, () => {
+            // store에 저장
+            // session에 저장
+            if (loginUser){
+                loginUser.updateLoginUser(id)
+            }
+            // 메인 테이블화면으로 이동
+            props.history.push('/tableMap')
+        })
     }
 
     // ------------------------------------------------------

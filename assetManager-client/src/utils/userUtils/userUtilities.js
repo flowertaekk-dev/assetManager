@@ -54,22 +54,18 @@ export const encryptPassword = (salt, password) => {
 /**
  * 로그인
  *
- * @param {Object} props
  * @param {string} id
  * @param {string} password
+ * @param {function} callback 로그인 성공시 콜백
  */
-export const logIn = async (props, id, password, loginUser) => {
+export const logIn = async (id, password, callback) => {
 
     const saltKey = await querySalt(id)
     const _password = await encryptPassword(saltKey, password)
 
     customAxios('/login', (response) => {
         if (response.resultStatus === 'SUCCESS') {
-            // store에 저장
-            // session에 저장
-            loginUser.updateLoginUser(id)
-            // 메인 테이블화면으로 이동
-            props.history.push('/tableMap')
+            callback()
         } else {
             alert(response.reason)
         }
