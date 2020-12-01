@@ -23,7 +23,7 @@ const Header = (props) => {
         // refresh 에서 생각대로 안 움직여서 우선은 DRY 위반.. 사실은 currentPage를 쓰고 싶었다.
         setMenus(shownMenu(location.pathname))
         setTitle(showTitle(location.pathname))
-    }, [currentPage, loginUser.loginUser.id])
+    }, [currentPage, loginUser.loginUser])
 
     // ---------------------------------------------------------
     // utils
@@ -38,7 +38,7 @@ const Header = (props) => {
             case "":
             case "/":
 
-                if (!loginUser.loginUser.id) {
+                if (!loginUser.loginUser) {
                     menus.push(<Link to="/login">로그인</Link>)
                 }
 
@@ -58,7 +58,7 @@ const Header = (props) => {
                 break;
         }
 
-        if (loginUser.loginUser.id) {
+        if (loginUser.loginUser) {
             if (path !== '/updateUserData')
                 menus.push(<Link to="/updateUserData">회원정보수정</Link>)
             menus.push(<span onClick={ logoutHandler }>로그아웃</span>)

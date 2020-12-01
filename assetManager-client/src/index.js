@@ -24,7 +24,7 @@ const Index = () => {
       <Header />
 
       {/* 로그인 중이 아니면 무조건 home 으로 리다이렉트 */}
-      { !loginUser.loginUser.id && <Redirect path="*" to="/" /> }
+      { !loginUser.loginUser && <Redirect path="*" to="/" /> }
 
       <Route exact path="/" component={App} />
       <Route path="/login" component={Login}/>

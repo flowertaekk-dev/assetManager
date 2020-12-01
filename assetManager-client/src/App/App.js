@@ -18,7 +18,7 @@ const App = (props) => {
 
   return (
     <section className="App">
-      { loginUser.loginUser.id && <Redirect to={'/tableMap'} /> }
+      { loginUser.loginUser && <Redirect to={'/tableMap'} /> }
       <h1 className="first__greeting">Hello AssetManager</h1>
     </section>
   );

@@ -11,9 +11,18 @@
     align-items: center;
 }
 .UpdateUserData .userData__layout .label__input {
-    width: 40vh;
+    width: 45vh;
     display: flex;
     justify-content: space-between;
     /* flex-direction: column; */
-
 }
+.UpdateUserData .userData__layout .label__input input {
+    width: 50%;
+    margin-bottom: 12px;
+
+    border: none;
+}
+.UpdateUserData .userData__layout .label__input input.enable__update {
+    border-bottom: 1px solid #ccc;
+}
+
