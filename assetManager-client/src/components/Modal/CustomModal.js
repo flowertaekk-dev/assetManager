@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal'
+import RectangleButton from '../Button/RectangleButton/RectangleButton';
 
 import './CustomModal.css'
 
@@ -61,8 +62,8 @@ const CustomModal = (props) => {
           </div>
 
           <div className='modal__buttons'>
-            <button className='modal__ok__btn' onClick={ okButtonClickedHandler }>{ props.okBtnTitle ? props.okBtnTitle : 'OK'}</button>
-            <button className='modal__cancel__btn' onClick={ cancelButtonClickedHandler }>CANCEL</button>
+            <RectangleButton colour='blue' clickHandler={okButtonClickedHandler}> { props.okBtnTitle ? props.okBtnTitle : 'OK'} </RectangleButton>
+            <RectangleButton colour='red' clickHandler={cancelButtonClickedHandler}> CANCEL </RectangleButton>
           </div>
         </Modal>
 

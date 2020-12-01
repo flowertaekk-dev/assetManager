@@ -19,7 +19,7 @@ div.CustomModal {
 
     display: flex;
     flex-direction: column;
-  
+
     border: 1px solid #ccc;
     background: #fff;
     overflow: auto;
@@ -60,35 +60,8 @@ div.CustomModal {
 }
 
 /* BUTTONS */
-.ReactModal__Content .modal__buttons button {
-    background-color: white;
-    border: 2px solid #008CBA;
-    color: black;
-    padding: 8px 24px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1.3vw;
-    margin: 4px 2px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    cursor: pointer;
-}
+
 .ReactModal__Content .modal__buttons {
     margin-top: 18px;
     align-self: center;
-}
-.ReactModal__Content .modal__buttons button.modal__ok__btn {
-    border: 2px solid #008CBA;
-}
-.ReactModal__Content .modal__buttons button.modal__ok__btn:hover {
-    background-color: #008CBA;
-    color: white;
-}
-.ReactModal__Content .modal__buttons button.modal__cancel__btn {
-    border: 2px solid #f44336;
-}
-.ReactModal__Content .modal__buttons button.modal__cancel__btn:hover {
-    background-color: #f44336;
-    color: white;
 }

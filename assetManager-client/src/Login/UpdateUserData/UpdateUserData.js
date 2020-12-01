@@ -4,7 +4,7 @@ import ValidatePassword from './ValidatePassword/ValidatePassword'
 
 import './UpdateUserData.css'
 import useStore from '../../mobx/useStore';
-import RoundButton from '../../components/Button/RoundButton/RoundButton';
+import RectangleButton from '../../components/Button/RectangleButton/RectangleButton';
 
 const UpdateUserData = () => {
 
@@ -47,9 +47,12 @@ const UpdateUserData = () => {
                 <label htmlFor='email'>E-Mail</label>
                 <input id='email' type='text' value={ email } readOnly />
             </div>
-            {/* 수정 버튼 */}
-            <RoundButton>OK</RoundButton>
-            {/* 회원탈퇴 버튼 */}
+            <div>
+                {/* 수정 버튼 */}
+                <RectangleButton colour='blue' clickHandler={from here}>Update</RectangleButton>
+                {/* 회원탈퇴 버튼 */}
+                <RectangleButton colour='red'>Delete Account</RectangleButton>
+            </div>
         </section>
     )
 
