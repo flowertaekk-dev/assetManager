@@ -45,6 +45,10 @@ public class User extends BaseTimeEntity {
         this.salt = null;
     }
 
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
+
     @Getter
     public enum UserStatus {
         USING("사용중"),
