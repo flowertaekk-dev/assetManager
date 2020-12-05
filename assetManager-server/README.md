@@ -53,6 +53,11 @@ spring.jpa.hibernate.ddl-auto=update
     * 리눅스인 경우 : `$sudo mysql`
 3. 데이터베이스 만들기
     * `> CREATE DATABASE assetManager;`
-4. 테이블 생성은 JPA 에게 맡긴다.
+4. 데이터베이스 접속하기
+    * `> use assetManager;`
+5. 데이터베이스 접속권한 설정하기
+    * `> GRANT ALL *.* TO '<user name>'@'%'`
+    * `> FLUSH PRIVILEGES;`
+6. 테이블 생성은 JPA 에게 맡긴다.
 
 
