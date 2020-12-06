@@ -67,7 +67,6 @@ export const logIn = async (id, password, callback) => {
         if (response.resultStatus === 'SUCCESS') {
             callback(response.user)
         } else {
-            console.log('login util fail', response)
             alert(response.reason)
         }
 
@@ -108,10 +107,61 @@ export const signUp = async (props, id, password, email, emailAuthCode) => {
     })
 }
 
+/**
+ * 패스워드 변경
+ *
+ * @param {string} id
+ * @param {string} email
+ * @param {string} newPassword
+ */
+export const updatePassword = async (id, email, newPassword, callback) => {
+    // salt 키를 불러온다
+    const salt = await querySalt(id)
+
+    // password 해쉬화
+    const updatingPassword = await encryptPassword(salt, newPassword)
+
+    customAxios('/updatePassword', (res) => {
+
+        if (res.resultStatus === 'SUCCESS') {
+            callback()
+        } else {
+            alert(res.reason)
+        }
+
+    }, {
+        id,
+        email,
+        updatingPassword
+    })
+
+}
+
+/**
+ * 이메일 주소 인증 메일을 전송
+ *
+ * @param {string} emailTo
+ */
 export const sendAuthEmail = (emailTo) => {
     customAxios('/email/requestCode', (data) => {
         // do nothing
     }, {
         addressTo: emailTo
     })
+}
+
+/**
+ * 패스워드 중복 체크
+ *
+ * @param {string} password
+ * @param {string} doubleCheckPassword
+ */
+export const doubleCheckPassword = (password, doubleCheckPassword) => {
+    if ( !doubleCheckPassword.length )
+        return ''
+
+    if ( password !== doubleCheckPassword)
+        return false
+
+    return true
 }

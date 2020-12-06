@@ -5,8 +5,10 @@ import ValidatePassword from './ValidatePassword/ValidatePassword'
 import './UpdateUserData.css'
 import useStore from '../../mobx/useStore';
 import RectangleButton from '../../components/Button/RectangleButton/RectangleButton';
+import { doubleCheckPassword, updatePassword } from '../../utils/userUtils/userUtilities';
+import { withRouter } from 'react-router-dom';
 
-const UpdateUserData = () => {
+const UpdateUserData = (props) => {
 
     const { loginUser } = useStore()
     const { id, email } = loginUser.loginUser
@@ -18,6 +20,26 @@ const UpdateUserData = () => {
 
     // -------------------------------------------------
     // Handlers
+
+    const updatePasswordHandler = async () => {
+
+        // password 조건 확인: 8자 이상
+        if (password.length < 8) {
+            alert('Password must be at least 8 characters')
+            return
+        }
+
+        // password 확인
+        if (!doubleCheckPassword(password, rePassword)) {
+            alert('Different password is entered for double check')
+            return
+        }
+
+        // TODO db 저장
+        updatePassword(id, email, password, () => {
+            props.history.push('/')
+        })
+    }
 
     const onChangeHandler = (value, setter) => {
         setter(value)
@@ -49,7 +71,7 @@ const UpdateUserData = () => {
             </div>
             <div>
                 {/* 수정 버튼 */}
-                <RectangleButton colour='blue' clickHandler={from here}>Update</RectangleButton>
+                <RectangleButton colour='blue' clickHandler={ updatePasswordHandler }>Update</RectangleButton>
                 {/* 회원탈퇴 버튼 */}
                 <RectangleButton colour='red'>Delete Account</RectangleButton>
             </div>
@@ -58,14 +80,13 @@ const UpdateUserData = () => {
 
     return (
         <section className='UpdateUserData'>
-            {/* { !validateStatus && <ValidatePassword */}
-                {/* setValidateStatus={setValidateStatus} /> } */}
 
-            {/* { validateStatus && mainLayout() } */}
-                {mainLayout()}
+            { !validateStatus && <ValidatePassword setValidateStatus={ setValidateStatus } /> }
+
+            { validateStatus && mainLayout() }
 
         </section>
     )
 }
 
-export default UpdateUserData
+export default withRouter(UpdateUserData)

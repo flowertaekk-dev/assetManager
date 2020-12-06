@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 
 import Button from '../../components/Button/Button'
 import LabelInput from '../../components/LabelInput/LabelInput'
-import { sendAuthEmail, signUp } from '../../utils/userUtils/userUtilities'
+import { sendAuthEmail, signUp, doubleCheckPassword as doubleCheckPasswordHandler } from '../../utils/userUtils/userUtilities'
 
 import './Signup.css'
 
@@ -62,13 +62,19 @@ const Signup = (props) => {
     }
 
     const validateDoubleCheckPassword = (doubleCheckPassword) => {
-        if ( !doubleCheckPassword.length )
-            return ''
 
-        if ( password !== doubleCheckPassword)
-            return VALIDATE_NOT_OK
+        return doubleCheckPasswordHandler(password, doubleCheckPassword) ? VALIDATE_OK : VALIDATE_NOT_OK
 
-        return VALIDATE_OK
+        // if ( doubleCheckPassword(password, doubleCheckPassword) )
+        //     return VALIDATE_NOT_OK
+
+        // if ( !doubleCheckPassword.length )
+        //     return ''
+
+        // if ( password !== doubleCheckPassword)
+        //     return VALIDATE_NOT_OK
+
+        // return VALIDATE_OK
     }
 
     // ---------------------------------------------------------
