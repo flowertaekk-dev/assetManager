@@ -1,5 +1,7 @@
 package com.assetManager.server.controller.utils;
 
+import java.net.URI;
+
 public class TestDataUtil {
     // TODO 아 이놈들 대문자로 바꿔야한다... 왜 이렇게 했지..!?
     public static final String id = "test";
@@ -13,4 +15,5 @@ public class TestDataUtil {
     public static final String menuControllerUrl = "/api/v1/menu";
     public static final String accountControllerUrl = "/api/v1/account";
     public static final String updateUserControllerUrl = "/api/v1/updatePassword";
+    public static final String deleteUserUrl = "/api/v1/deleteUser";
 }

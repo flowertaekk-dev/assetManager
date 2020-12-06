@@ -9,6 +9,7 @@ public interface MenuRepository extends JpaRepository<Menu, String> {
 
     Optional<Menu> findByUserIdAndBusinessIdAndMenu(String userId, String businessId, String menu);
 
-    List<Menu> findByUserIdAndBusinessId(String userId, String businessId);
+    void deleteByUserId(String userId);
 
+    List<Menu> findByUserIdAndBusinessId(String userId, String businessId);
 }

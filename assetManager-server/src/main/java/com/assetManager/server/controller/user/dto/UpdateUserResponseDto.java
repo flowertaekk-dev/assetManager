@@ -1,4 +1,4 @@
-package com.assetManager.server.controller.updateUser.dto;
+package com.assetManager.server.controller.user.dto;
 
 import com.assetManager.server.controller.CommonResponseResult;
 import com.assetManager.server.domain.user.User;

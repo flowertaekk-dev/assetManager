@@ -1,4 +1,4 @@
-package com.assetManager.server.controller.updateUser.dto;
+package com.assetManager.server.controller.user.dto;
 
 import com.assetManager.server.domain.user.User;
 import lombok.Builder;
@@ -7,24 +7,21 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UpdateUserRequestDto {
+public class DeleteUserRequestDto {
 
     private String id;
     private String email;
-    private String updatingPassword;
 
     @Builder
-    public UpdateUserRequestDto(String id, String email, String updatingPassword) {
+    public DeleteUserRequestDto(String id, String email) {
         this.id = id;
         this.email = email;
-        this.updatingPassword = updatingPassword;
     }
 
     public User toUserEntity() {
         return User.builder()
-                .id(id)
-                .password(updatingPassword)
-                .email(email)
+                .id(this.id)
+                .email(this.email)
                 .build();
     }
 }

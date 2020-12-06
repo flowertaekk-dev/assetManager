@@ -12,4 +12,6 @@ public interface BusinessRepository extends JpaRepository<Business, String> {
     Optional<Business> findByUserIdAndBusinessId(String userId, String businessId);
 
     List<Business> findByUserId(String userId);
+
+    void deleteByUserId(String userId);
 }

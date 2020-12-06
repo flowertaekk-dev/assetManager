@@ -8,4 +8,5 @@ public interface TableInfoRepository extends JpaRepository<TableInfo, Long> {
 
     Optional<TableInfo> findByUserIdAndBusinessId(String userId, String businessId);
 
+    void deleteByUserId(String userId);
 }
