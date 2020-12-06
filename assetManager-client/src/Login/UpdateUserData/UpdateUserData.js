@@ -5,7 +5,7 @@ import ValidatePassword from './ValidatePassword/ValidatePassword'
 import './UpdateUserData.css'
 import useStore from '../../mobx/useStore';
 import RectangleButton from '../../components/Button/RectangleButton/RectangleButton';
-import { doubleCheckPassword, updatePassword } from '../../utils/userUtils/userUtilities';
+import { deleteUser, doubleCheckPassword, updatePassword } from '../../utils/userUtils/userUtilities';
 import { withRouter } from 'react-router-dom';
 
 const UpdateUserData = (props) => {
@@ -41,6 +41,17 @@ const UpdateUserData = (props) => {
         })
     }
 
+    const deleteUserHandler = () => {
+        let answer = window.confirm('Are you sure to delete account?')
+
+        if (answer) {
+            deleteUser(id, () => {
+                loginUser.deleteLoginUser()
+                props.history.push('/')
+            })
+        }
+    }
+
     const onChangeHandler = (value, setter) => {
         setter(value)
     }
@@ -61,7 +72,7 @@ const UpdateUserData = (props) => {
             </div>
             {/* 패스워드 재확인 */}
             <div className='label__input'>
-                <label htmlFor='re_password'>Password double check</label>
+                <label htmlFor='re_password'>Confirm password</label>
                 <input id='re_password' type='password' className='enable__update' value={rePassword} onChange={(event) => onChangeHandler(event.target.value, setRePassword)} />
             </div>
             {/* email 변경불가 */}
@@ -73,7 +84,7 @@ const UpdateUserData = (props) => {
                 {/* 수정 버튼 */}
                 <RectangleButton colour='blue' clickHandler={ updatePasswordHandler }>Update</RectangleButton>
                 {/* 회원탈퇴 버튼 */}
-                <RectangleButton colour='red'>Delete Account</RectangleButton>
+                <RectangleButton colour='red' clickHandler={ deleteUserHandler }>Delete Account</RectangleButton>
             </div>
         </section>
     )

@@ -134,7 +134,16 @@ export const updatePassword = async (id, email, newPassword, callback) => {
         email,
         updatingPassword
     })
+}
 
+export const deleteUser = (id, callback) => {
+    customAxios('/deleteUser', (res) => {
+        if (res.resultStatus === 'SUCCESS')
+            alert('Account is deleted')
+            callback()
+    }, {
+        id
+    })
 }
 
 /**
