@@ -1,3 +1,4 @@
+/* HEADER COMMON */
 .Header {
     height: 60px;
     display: flex;
@@ -7,6 +8,7 @@
     background-color: white;
 }
 
+/* TITLE & HOME LINK*/
 .Header div.Header__home a {
     text-decoration: none;
     color: #000;
@@ -14,6 +16,7 @@
     font-weight: bold;
     margin-left: 24px;
 }
+
 
 .Header .Header__list {
     display: flex;
@@ -24,23 +27,27 @@
     color: #000;
     margin-left: 12px;
 }
-.Header .Header__list li a,
-.Header .Header__list {
+
+
+.Header .Header__list,
+.Header .Header__list li a {
     font-size: 2vh;
     color: #000;
     text-decoration: none;
     cursor: pointer;
 }
-
-.Header .Header__list li:after {
+.Header .Header__list li a {
+    height: 100%;
+}
+.Header .Header__list li a:after {
     display:block;
     content: '';
-    border-bottom: solid 3px #61A3FF;  
-    transform: scaleX(0);  
+    border-bottom: solid 3px #61A3FF;
+    transform: scaleX(0);
     transition: transform 250ms ease-in-out;
     transform-origin:  0% 50%;
 }
-.Header .Header__list li:hover:after {
+.Header .Header__list li a:hover:after {
     transform: scaleX(1);
 }
 
@@ -56,7 +63,7 @@
         margin-right: 24px;
     }
 }
-  
+
 /* TABLET */
 @media screen and (min-width: 768px) and (max-width: 1025px) {
 
