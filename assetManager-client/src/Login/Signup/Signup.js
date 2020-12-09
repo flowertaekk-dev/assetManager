@@ -135,6 +135,7 @@ const Signup = (props) => {
         }
 
         sendAuthEmail(email)
+        alert('Please check your email')
     }
 
     // ---------------------------------------------------------
