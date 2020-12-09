@@ -115,7 +115,7 @@ public class TableInfoControllerTest {
         action
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("FAILURE")))
-                .andExpect(jsonPath("$.reason", is("테이블 정보가 이미 존재합니다.")))
+                .andExpect(jsonPath("$.reason", notNullValue()))
                 .andDo(print());
     }
 
@@ -186,7 +186,7 @@ public class TableInfoControllerTest {
         action
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("FAILURE")))
-                .andExpect(jsonPath("$.reason", is("상호명(닉네임)이 존재하지 않습니다.")))
+                .andExpect(jsonPath("$.reason", notNullValue()))
                 .andDo(print());
 
     }

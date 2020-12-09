@@ -29,7 +29,7 @@ public class SignUpService {
         if (Objects.isNull(signUpRequestDto))
             return SignUpResponseDto.builder()
                     .resultStatus(FAILURE)
-                    .reason("잘못된 입력이에요.")
+                    .reason("Wrong input.")
                     .build();
 
         // 동일한 이메일로는 회원가입 불가!
@@ -37,7 +37,7 @@ public class SignUpService {
         if (emailCheckResult.isPresent()) {
             return SignUpResponseDto.builder()
                     .resultStatus(FAILURE)
-                    .reason("이미 동일한 이메일로 가입되어 있습니다.")
+                    .reason("This e-mail has already been registered.")
                     .build();
         }
 
@@ -46,7 +46,7 @@ public class SignUpService {
         if (emailAuth == null) {
             return SignUpResponseDto.builder()
                     .resultStatus(FAILURE)
-                    .reason("틀린 이메일 인증코드입니다.")
+                    .reason("Wrong authentication code.")
                     .build();
         }
 

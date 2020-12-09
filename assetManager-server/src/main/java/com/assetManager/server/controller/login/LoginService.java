@@ -34,7 +34,7 @@ public class LoginService {
         if (Objects.isNull(loginUser)) {
             return LoginResponseDto.builder()
                     .resultStatus(FAILURE)
-                    .reason("ID 또는 password를 확인해주세요")
+                    .reason("Please check ID or password")
                     .build();
         }
 
@@ -42,7 +42,7 @@ public class LoginService {
         if (loginUser.getStatus() != User.UserStatus.USING) {
             return LoginResponseDto.builder()
                     .resultStatus(FAILURE)
-                    .reason("탈퇴 처리 예약중인 아이디입니다.")
+                    .reason("Sorry. This account is invalid")
                     .build();
         }
 
@@ -61,7 +61,7 @@ public class LoginService {
         if (queryResult.isEmpty())
             return ResponseSaltDto.builder()
                     .resultStatus(FAILURE)
-                    .reason("올바른 ID를 입력했는지 확인해주세요")
+                    .reason("Please check ID again!")
                     .build();
 
         return ResponseSaltDto.builder()

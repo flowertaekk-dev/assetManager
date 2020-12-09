@@ -101,7 +101,7 @@ public class MenuControllerTest {
         action
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("FAILURE")))
-                .andExpect(jsonPath("$.reason", is("이미 존재하는 메뉴입니다.")))
+                .andExpect(jsonPath("$.reason", notNullValue()))
                 .andDo(print());
     }
 
@@ -224,7 +224,7 @@ public class MenuControllerTest {
         action
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("FAILURE")))
-                .andExpect(jsonPath("$.reason", is("변경할 대상 데이터가 존재하지 않습니다.")))
+                .andExpect(jsonPath("$.reason", notNullValue()))
                 .andDo(print());
     }
 

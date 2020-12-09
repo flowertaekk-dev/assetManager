@@ -32,7 +32,7 @@ public class BusinessService {
                 .findByUserIdAndBusinessName(request.getUserId(), request.getBusinessName());
 
         if (searchResult.isPresent()) {
-            return CommonBusinessResponseDto.makeFailureResponse("이미 등록된 상호명입니다.");
+            return CommonBusinessResponseDto.makeFailureResponse("This business name has already been registered.");
         }
 
         // 상호명 등록
@@ -46,7 +46,7 @@ public class BusinessService {
                 .findByUserIdAndBusinessName(request.getUserId(), request.getExistingBusinessName());
 
         if (!business.isPresent()) {
-            return CommonBusinessResponseDto.makeFailureResponse("존재하지 않는 상호명입니다.");
+            return CommonBusinessResponseDto.makeFailureResponse("Business not found");
         }
 
         // 상호명 변경
@@ -68,7 +68,7 @@ public class BusinessService {
                 .findByUserIdAndBusinessName(request.getUserId(), request.getBusinessName());
 
         if (!business.isPresent()) {
-            return CommonBusinessResponseDto.makeFailureResponse("존재하지 않는 상호명입니다.");
+            return CommonBusinessResponseDto.makeFailureResponse("Business not found");
         }
 
         String businessId = business.get().getBusinessId();

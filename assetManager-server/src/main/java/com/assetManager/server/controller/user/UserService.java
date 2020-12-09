@@ -32,7 +32,7 @@ public class UserService {
         if (user.isEmpty()) {
             return UpdateUserResponseDto.builder()
                     .resultStatus(CommonResponseResult.FAILURE)
-                    .reason("Not found user")
+                    .reason("User not found.")
                     .build();
         }
 

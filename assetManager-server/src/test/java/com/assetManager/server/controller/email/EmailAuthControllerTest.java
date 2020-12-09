@@ -1,8 +1,7 @@
 package com.assetManager.server.controller.email;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -104,7 +103,7 @@ public class EmailAuthControllerTest {
         action
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("FAILURE")))
-                .andExpect(jsonPath("$.reason", is("이미 사용중인 이메일입니다.")))
+                .andExpect(jsonPath("$.reason", notNullValue()))
                 .andDo(print());
 
         List<EmailAuth> emailAuthData = emailAuthRepository.findAll();

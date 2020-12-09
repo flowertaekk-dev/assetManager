@@ -33,7 +33,7 @@ public class EmailAuthService {
         if (isAlreadyOurMember(emailToSend)) {
             return EmailAuthResponseDto.builder()
                     .resultStatus(CommonResponseResult.FAILURE)
-                    .reason("이미 사용중인 이메일입니다.")
+                    .reason("This e-mail has already been registered.")
                     .build();
         }
 
@@ -45,15 +45,15 @@ public class EmailAuthService {
                     mailSender.createMimeMessage(), true, "UTF-8");
 
             mimeMessageHelper.setTo(emailToSend);
-            mimeMessageHelper.setSubject("AssetManager 인증코드입니다!");
+            mimeMessageHelper.setSubject("AssetManager Authentication code!");
 
             String html =
-                    "<h1>AssetManager 인증코드: " + authCode + "</h1>"
-                    + "<p>인증코드를 입력한 뒤 회원가입을 마무리해주세요!</p>";
+                    "<h1>AssetManager authentication code: " + authCode + "</h1>"
+                    + "<p>Please enter this code for sign up!</p>";
 
             mimeMessageHelper.setText(html, true);
         } catch (MessagingException e) {
-            throw new RuntimeException("이메일 발송 실패!");
+            throw new RuntimeException("Failed to send e-mail!");
         }
 
         mailSender.send(mimeMessageHelper.getMimeMessage());

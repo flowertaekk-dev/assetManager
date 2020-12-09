@@ -31,7 +31,7 @@ public class TableInfoService {
             logger.error(String.format(
                     "TableCountService > addTableCount -> userId : %s, businessId: %s : Business not found",
                     request.getUserId(), request.getBusinessId()));
-            return AddTableInfoResponseDto.makeFailureResponse("상호명(닉네임)이 존재하지 않습니다.");
+            return AddTableInfoResponseDto.makeFailureResponse("Business not found.");
         }
 
 
@@ -40,7 +40,7 @@ public class TableInfoService {
             logger.error(String.format(
                     "TableCountService > addTableCount -> userId : %s, businessId: %s : TableInfo does already exists",
                     request.getUserId(), request.getBusinessId()));
-            return AddTableInfoResponseDto.makeFailureResponse("테이블 정보가 이미 존재합니다.");
+            return AddTableInfoResponseDto.makeFailureResponse("Table info has already been registered.");
         }
 
         return AddTableInfoResponseDto.makeSuccessResponse(tableInfoRepository.save(request.toTableInfoEntity()));
@@ -54,7 +54,7 @@ public class TableInfoService {
             logger.error(String.format(
                     "TableCountService > updateTableCount -> userId : %s, businessId: %s : Business not found",
                     request.getUserId(), request.getBusinessId()));
-            return UpdateTableCountResponseDto.makeFailureResponse("상호명(닉네임)이 존재하지 않습니다.");
+            return UpdateTableCountResponseDto.makeFailureResponse("Business not found.");
         }
 
         Optional<TableInfo> tableCount = tableInfoRepository
@@ -64,7 +64,7 @@ public class TableInfoService {
             logger.error(String.format(
                     "TableCountService > updateTableCount -> userId : %s, businessId: %s : TableInfo not found",
                     request.getUserId(), request.getBusinessId()));
-            return UpdateTableCountResponseDto.makeFailureResponse("테이블 정보가 존재하지 않습니다.");
+            return UpdateTableCountResponseDto.makeFailureResponse("Table information not found.");
         }
 
         // 수정

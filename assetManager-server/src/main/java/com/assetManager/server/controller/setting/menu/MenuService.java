@@ -25,7 +25,7 @@ public class MenuService {
                 .findByUserIdAndBusinessIdAndMenu(request.getUserId(), request.getBusinessId(), request.getMenu());
 
         if (menu.isPresent()) {
-            return CommonMenuResponseDto.makeFailureResponse("이미 존재하는 메뉴입니다.");
+            return CommonMenuResponseDto.makeFailureResponse("This menu has already been registered.");
         }
 
         return CommonMenuResponseDto.makeSuccessResponse(menuRepository.save(request.toMenuEntity()));
@@ -42,7 +42,7 @@ public class MenuService {
 
         // 기존 데이터가 없으면 에러
         if (menu.isEmpty()) {
-            return CommonMenuResponseDto.makeFailureResponse("변경할 대상 데이터가 존재하지 않습니다.");
+            return CommonMenuResponseDto.makeFailureResponse("Menu not found.");
         }
 
         Menu targetMenu = menu.get();
@@ -65,7 +65,7 @@ public class MenuService {
 
         // 타겟 데이터가 없으면 실패
         if (menu.isEmpty()) {
-            return CommonMenuResponseDto.makeFailureResponse("삭제할 대상 데이터가 존재하지 않습니다.");
+            return CommonMenuResponseDto.makeFailureResponse("Menu not found.");
         }
 
         Menu targetMenu = menu.get();
