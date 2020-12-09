@@ -180,7 +180,7 @@ const Table = (props) => {
                     </label>
 
                     <CustomModal
-                            modalTitle={`주문목록`}
+                            modalTitle={`Items`}
                             toggleButton={
                                 (
                                     <RoundButton>Edit</RoundButton>
@@ -207,20 +207,20 @@ const Table = (props) => {
                     </CustomModal>
 
                     <CustomModal
-                        modalTitle={`합계`}
+                        modalTitle={`Bills`}
                         toggleButton={
                             (
                                 <RoundButton>Calculate</RoundButton>
                             )
                         }
-                        okBtnTitle={ '결제' }
+                        okBtnTitle={ 'Pay' }
                         // preCheckHandler={ () => console.log('preCheck') }
                         okButtonClickedHandler={ okCalCulateModalHandler }
                         cancelButtonClickedHandler={ cancelModalHandler } >
                             {/* content */}
                             <ul>
                                 { renderCurrentMenu() }
-                                <li className='Table__sum'>합계: { calculateSum() } 원</li>
+                                <li className='Table__sum'>Total: { calculateSum() }</li>
                             </ul>
                     </CustomModal>
 

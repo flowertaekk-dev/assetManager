@@ -133,12 +133,12 @@ const SettingMenu = observer(() => {
      */
     const checkNewMenuAndPriceAreEmpty = () => {
         if ( newMenu === '' ) {
-            alert('새로운 메뉴명을 입력해주세요!')
+            alert('Please enter new menu!')
             return false
         }
 
         if ( price === '' ) {
-            alert('가격을 입력해주세요!')
+            alert('Please decide price!')
             return false
         }
 
@@ -168,7 +168,7 @@ const SettingMenu = observer(() => {
                     <div className='SettingMenu__list__buttons'>
                         {/* EDIT */}
                         <CustomModal
-                            modalTitle={`메뉴 수정: ${menuJson.menu}`}
+                            modalTitle={`Edit menu: ${menuJson.menu}`}
                             toggleButton={
                                 (
                                     <button onClick={ () => setDefaultMenuAndPrice(menuJson.menu, menuJson.price) }>Edit</button>
@@ -186,7 +186,7 @@ const SettingMenu = observer(() => {
                                             "width": "96px",
                                             "fontSize": "1.4em"
                                         }}>
-                                            새 메뉴명:
+                                            New menu:
                                     </label>
                                     <input
                                         id="menu"
@@ -200,7 +200,7 @@ const SettingMenu = observer(() => {
                                         }}
                                         value={newMenu}
                                         onChange={(event) => {setNewMenu(event.target.value)}}
-                                        placeholder="새 메뉴명"/>
+                                        placeholder="New menu name"/>
                                 </div>
 
                                 <div className='modal__item'>
@@ -211,7 +211,7 @@ const SettingMenu = observer(() => {
                                             "width": "96px",
                                             "fontSize": "1.4em"
                                         }}>
-                                            가격:
+                                            Price:
                                     </label>
                                     <input
                                         id="price"
@@ -225,20 +225,20 @@ const SettingMenu = observer(() => {
                                         }}
                                         value={price}
                                         onChange={(event) => {setPrice(event.target.value)}}
-                                        placeholder="가격"/>
+                                        placeholder="Price"/>
                                 </div>
                         </CustomModal>
 
                         {/* DELETE */}
                         <CustomModal
-                            modalTitle={`삭제할 메뉴: ${menuJson.menu}`}
+                            modalTitle={`Deleting menu: ${menuJson.menu}`}
                             toggleButton={
                                 (
                                     <button>Delete</button>
                                 )
                             }
                             okButtonClickedHandler={ deleteMenuHandler(menuJson.menu) } >
-                                <p>정말 삭제할까요?</p>
+                                <p>Are you sure to delete it?</p>
                         </CustomModal>
                     </div>
             </li>
@@ -249,9 +249,9 @@ const SettingMenu = observer(() => {
         <section className='SettingMenu'>
 
             <div className='SettingMenu__header'>
-                <h1>메뉴 설정</h1>
+                <h1>Setting Menu</h1>
                 <CustomModal
-                    modalTitle='메뉴 추가'
+                    modalTitle='Add menu'
                     toggleButton={
                         (<button
                             onMouseEnter={() => setAddButtonHoverStatus(true)}
@@ -286,7 +286,7 @@ const SettingMenu = observer(() => {
                                 style={{
                                     "fontSize": "1.4em"
                                 }}>
-                                    메뉴:
+                                    Menu:
                             </label>
                             <input
                                 id="menu"
@@ -300,7 +300,7 @@ const SettingMenu = observer(() => {
                                 }}
                                 value={newMenu}
                                 onChange={(event) => { setNewMenu(event.target.value) }}
-                                placeholder="메뉴명"/>
+                                placeholder="Menu name"/>
                         </div>
 
                         {/* 가격 */}
@@ -310,7 +310,7 @@ const SettingMenu = observer(() => {
                                 style={{
                                     "fontSize": "1.4em"
                                 }}>
-                                    가격:
+                                    Price:
                             </label>
                             <input
                                 id="price"
@@ -324,7 +324,7 @@ const SettingMenu = observer(() => {
                                 }}
                                 value={price}
                                 onChange={(event) => { setPrice(event.target.value) }}
-                                placeholder="가격"/>
+                                placeholder="Price"/>
                         </div>
                 </CustomModal>
             </div>

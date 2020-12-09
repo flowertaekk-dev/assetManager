@@ -39,15 +39,15 @@ const Header = (props) => {
             case "/":
 
                 if (!loginUser.loginUser) {
-                    menus.push(<Link to="/login">로그인</Link>)
+                    menus.push(<Link to="/login">Log in</Link>)
                 }
 
                 break;
             case "/login":
-                menus.push(<Link to="/signup">회원가입</Link>)
+                menus.push(<Link to="/signup">Sign up</Link>)
                 break;
             case "/tableMap":
-                menus.push(<Link to="/setting">설정</Link>)
+                menus.push(<Link to="/setting">Setting</Link>)
                 break;
 
             case "/setting":
@@ -60,8 +60,8 @@ const Header = (props) => {
 
         if (loginUser.loginUser) {
             if (path !== '/updateUserData')
-                menus.push(<Link to="/updateUserData">회원정보수정</Link>)
-            menus.push(<span onClick={ logoutHandler }>로그아웃</span>)
+                menus.push(<Link to="/updateUserData">Edit Account</Link>)
+            menus.push(<span onClick={ logoutHandler }>Log out</span>)
         }
 
         return menus

@@ -79,7 +79,7 @@ const SettingBusiness = (props) => {
             if (response.resultStatus === 'SUCCESS') {
                 addTableInfoToAccountBook(response.tableInfo.businessId)
             } else {
-                alert('테이블 정보 초기화에 실패했습니다.')
+                alert('Failed to set initial information for table')
             }
         }, {
             userId: loginUser.loginUser.id,
@@ -165,7 +165,7 @@ const SettingBusiness = (props) => {
         // 장부(accountBook) 데이터가 없으면 초기화
         if (!accountBook) {
             // TODO 이 에러메세지는 수정이 필요해. 지금은 귀찮아. 아마도 '상호명 추가 중에 에러가 발생했으니 다시 한 번 부탁드립니다' 정도?
-            alert('테이블 정보 등록을 위한 데이터를 못 찾았습니다.')
+            alert('Could not find current business')
             return
         }
 
@@ -229,7 +229,7 @@ const SettingBusiness = (props) => {
      */
     const checkNewBusinessIsEmpty = () => {
         if ( newBusinessName === '' ) {
-            alert('새로운 상호명을 입력해주세요!')
+            alert('Please enter new Business name!')
             return false
         }
 
@@ -254,7 +254,7 @@ const SettingBusiness = (props) => {
                     <div className='SettingBusiness__list__buttons'>
                         {/* EDIT */}
                         <CustomModal
-                            modalTitle={`상호명(닉네임) 수정: ${businessNameJson.businessName}`}
+                            modalTitle={`Edit Business: ${businessNameJson.businessName}`}
                             toggleButton={
                                 (
                                     <button>Edit</button>
@@ -268,7 +268,7 @@ const SettingBusiness = (props) => {
                                     style={{
                                         "fontSize": "1.4em"
                                     }}>
-                                        새 상호명(닉네임):
+                                        New Business:
                                 </label>
                                 <input
                                     id="businessName"
@@ -282,19 +282,19 @@ const SettingBusiness = (props) => {
                                     }}
                                     value={newBusinessName}
                                     onChange={(event) => {setNewBusinessName(event.target.value)}}
-                                    placeholder="새 상호명(닉네임)"/>
+                                    placeholder="New Business name"/>
                         </CustomModal>
 
                         {/* DELETE */}
                         <CustomModal
-                            modalTitle={`삭제할 상호명: ${businessNameJson.businessName}`}
+                            modalTitle={`Deleting Business: ${businessNameJson.businessName}`}
                             toggleButton={
                                 (
                                     <button>Delete</button>
                                 )
                             }
                             okButtonClickedHandler={ deleteBusinessNameHandler(businessNameJson.businessName) } >
-                                <p>정말 삭제할까요?</p>
+                                <p>Are you sure to delete it?</p>
                         </CustomModal>
                     </div>
             </li>
@@ -305,9 +305,9 @@ const SettingBusiness = (props) => {
         // Header
         <section className='SettingBusiness'>
             <div className='SettingBusiness__header'>
-                <h1>상호명(닉네임) 설정</h1>
+                <h1>Setting Business</h1>
                 <CustomModal
-                    modalTitle='상호명(닉네임) 추가'
+                    modalTitle='Add Business'
                     toggleButton={
                         (<button
                             onMouseEnter={() => setAddButtonHoverStatus(true)}
@@ -342,7 +342,7 @@ const SettingBusiness = (props) => {
                             style={{
                                 "fontSize": "1.4em"
                             }}>
-                                상호명(닉네임):
+                                Business :
                         </label>
                         <input
                             id="businessName"
@@ -354,15 +354,15 @@ const SettingBusiness = (props) => {
                                 "height": "4vh",
                                 "fontSize": "1.2em"
                             }}
-                            value={newBusinessName}
+                            value={ newBusinessName }
                             onChange={(event) => { setNewBusinessName(event.target.value) }}
-                            placeholder="상호명(닉네임)"/>
+                            placeholder="Business Name"/>
                 </CustomModal>
             </div>
 
             {/* 리스트 */}
             <div className='SettingBusiness__list'>
-                { businessNames.length === 0 && <h3>상호명을 등록해주세요!</h3>}
+                { businessNames.length === 0 && <h3>Please add business</h3>}
 
                 <ul>
                     { renderBusinessNames() }

@@ -73,7 +73,7 @@ const TableMap = () => {
 
         // 설정된 테이블 수가 '0' 이라면, '주문내역'으로 테이블 하나 추가
         if (theNumberOfTables === 0) {
-            tables.push(createTableComponent(1, 0, '주문내역', menus, true))
+            tables.push(createTableComponent(1, 0, 'Bills', menus, true))
             return tables
         }
 
@@ -101,7 +101,7 @@ const TableMap = () => {
             }
             {
                 ( !selectedBusiness.selectedBusinessId ) &&
-                    <h2>상호명을 등록 및 선택해주세요</h2>
+                    <h2>Add or select business</h2>
             }
         </section>
     )

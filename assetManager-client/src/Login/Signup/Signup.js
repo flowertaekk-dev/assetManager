@@ -62,19 +62,7 @@ const Signup = (props) => {
     }
 
     const validateDoubleCheckPassword = (doubleCheckPassword) => {
-
         return doubleCheckPasswordHandler(password, doubleCheckPassword) ? VALIDATE_OK : VALIDATE_NOT_OK
-
-        // if ( doubleCheckPassword(password, doubleCheckPassword) )
-        //     return VALIDATE_NOT_OK
-
-        // if ( !doubleCheckPassword.length )
-        //     return ''
-
-        // if ( password !== doubleCheckPassword)
-        //     return VALIDATE_NOT_OK
-
-        // return VALIDATE_OK
     }
 
     // ---------------------------------------------------------
@@ -124,13 +112,13 @@ const Signup = (props) => {
         if (!result.length) {
             signUp(props, id, password, email, emailAuthCode)
         } else {
-            alert('틀린 항목이 없는지 확인해주세요!')
+            alert('Please check your account information!')
         }
     }
 
     const authEmailClickHandler = () => {
         if ( emailStatus !== VALIDATE_OK ) {
-            alert('먼저 E-mail을 입력해주세요!')
+            alert('Please enter your e-mail first!')
             return
         }
 
@@ -165,7 +153,7 @@ const Signup = (props) => {
                     componentId='doubleCheckPassword'
                     inputType='password'
                     labelTitle='Password double check'
-                    placeholder='Password 확인'
+                    placeholder='Confirm password'
                     _className={doubleCheckPasswordStatus}
                     _value={doubleCheckPassword}
                     onChangeHandler={(event) => onChangeHandler(event)} />
@@ -181,12 +169,12 @@ const Signup = (props) => {
 
 
                 <div className="Signup__item">
-                    <label htmlFor="signupEmailAuth">Email 인증코드</label>
+                    <label htmlFor="signupEmailAuth">e-mail authentication code</label>
                     <div className="auth__container">
-                        <input type="text" id="signupEmailAuth" name="signupEmailAuth" placeholder="이메일 인증코드"
+                        <input type="text" id="signupEmailAuth" name="signupEmailAuth" placeholder="E-mail authentication code"
                             value={emailAuthCode}
                             onChange={(event) => onChangeHandler(event)}/>
-                        <p className="auth__request__button" onClick={authEmailClickHandler}>인증코드 요청</p>
+                        <p className="auth__request__button" onClick={authEmailClickHandler}>Send e-mail</p>
                     </div>
                 </div>
             </div>

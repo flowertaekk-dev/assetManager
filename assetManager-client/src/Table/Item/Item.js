@@ -57,17 +57,17 @@ const Item = (props) => {
     return (
         <li className='Table__Item'>
             <CustomModal
-                modalTitle={`주문 수량 수정`}
+                modalTitle={`Edit bills`}
                 toggleButton={
                     (
                         <div className='Table__Item__bills'>
                             <span className='Table__Item__name'>{props.invoice.menu}</span>
-                            <span className='Table__Item__count'>{`${props.invoice.count} 개`}</span>
-                            <span className='Table__Item__totalPrice'>{`${props.invoice.totalPrice} 원`}</span>
+                            <span className='Table__Item__count'>{`count: ${props.invoice.count}`}</span>
+                            <span className='Table__Item__totalPrice'>{`price: ${props.invoice.totalPrice}`}</span>
                         </div>
                     )
                 }
-                okBtnTitle={ '수정' }
+                okBtnTitle={ 'Edit' }
                 // preCheckHandler={ () => console.log('preCheck') }
                 okButtonClickedHandler={ okModalHandler }
                 cancelButtonClickedHandler={ cancelModalHandler } >
@@ -93,7 +93,7 @@ const Item = (props) => {
                         value={ count }
                         onChange={(event) => { setCount(event.target.value) }}
                         min='0'
-                        placeholder="주문 수량" />
+                        placeholder="Edit count" />
             </CustomModal>
         </li>
     )

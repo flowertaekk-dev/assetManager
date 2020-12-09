@@ -45,12 +45,12 @@ const SettingTable = observer(() => {
         let result = true
 
         if (tableCount === '') {
-            alert('값을 입력해주세요!')
+            alert('Enter Price!')
             result = false
         }
 
         if (tableCount < 0) {
-            alert('정확한 테이블 개수를 등록해주세요!')
+            alert('Table count must be larger than 0')
             result = false
         }
         if (!result)
@@ -90,7 +90,7 @@ const SettingTable = observer(() => {
         let accountBook = getAccountBook()
 
         if (!accountBook) {
-            alert('테이블 정보 등록을 위한 데이터를 못 찾았습니다.')
+            alert('Could not find target business')
             return
         }
 
@@ -111,6 +111,8 @@ const SettingTable = observer(() => {
                 currentAccountBook.pop()
             })
         }
+
+        // TODO DB도 갱신이 필요하잖아!!!! 왜 안 했지 어떻게..!?
 
         // accountBook 갱신
         accountBook = {...accountBook,
@@ -135,16 +137,16 @@ const SettingTable = observer(() => {
         <section className='SettingTable'>
 
             <div className='SettingTable__header'>
-                <h1>테이블 설정</h1>
+                <h1>Setting Table</h1>
             </div>
 
             <div className='SettingTable__list'>
                 <ul>
                     <li className='SettingTable__list__item'>
-                        <p>개수: { tableCount }</p>
+                        <p>Count: { tableCount }</p>
                         <div className='SettingTable__list__buttons'>
                             <CustomModal
-                                modalTitle='테이블 개수 수정'
+                                modalTitle='Edit table count'
                                 toggleButton={
                                     (
                                         <button >Edit</button>
@@ -158,7 +160,7 @@ const SettingTable = observer(() => {
                                         style={{
                                             "fontSize": "1.4em"
                                         }}>
-                                            개수:
+                                            Count:
                                     </label>
                                     <input
                                         id="tableCount"
@@ -173,7 +175,7 @@ const SettingTable = observer(() => {
                                         value={ tableCount }
                                         onChange={(event) => { setTableCount(event.target.value) }}
                                         min='0'
-                                        placeholder="테이블 개수"/>
+                                        placeholder="Table count"/>
                             </CustomModal>
                         </div>
                     </li>
