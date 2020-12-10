@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddTableInfoRequestDto {
 
-    private final String identityCode = "TC-";
+    private final String identityCode = "TI-";
 
     private String userId;
     private String businessId;
