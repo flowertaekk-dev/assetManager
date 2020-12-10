@@ -126,6 +126,10 @@ const Signup = (props) => {
         alert('Please check your email')
     }
 
+    const cancelButtonHandler = () => {
+        props.history.goBack()
+    }
+
     // ---------------------------------------------------------
 
     return (
@@ -180,8 +184,8 @@ const Signup = (props) => {
             </div>
 
             <div className="btn__container">
-                <Button clickHandler={okButtonClickHandler}>OK</Button>
-                <Button>Cancel</Button>
+                <Button clickHandler={ okButtonClickHandler }>OK</Button>
+                <Button clickHandler={ cancelButtonHandler }>Cancel</Button>
             </div>
         </section>
     )

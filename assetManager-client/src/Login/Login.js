@@ -30,6 +30,10 @@ const Login = (props) => {
         })
     }
 
+    const cancelButtonHandler = () => {
+        props.history.goBack()
+    }
+
     // ------------------------------------------------------
 
     return useObserver(() => (
@@ -56,7 +60,7 @@ const Login = (props) => {
 
             <div>
                 <Button clickHandler={ loginClickHandler }>Sign in</Button>
-                <Button>Cancel</Button>
+                <Button clickHandler={ cancelButtonHandler }>Cancel</Button>
             </div>
         </section>
     ))
