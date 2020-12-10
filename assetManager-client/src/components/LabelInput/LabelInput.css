@@ -6,3 +6,12 @@
     height: 3vh;
     margin: 4px 0;
 }
+
+/* VALIDATION */
+
+.LabelInput input.validate__ok {
+    border: 3px solid greenyellow;
+}
+.LabelInput input.validate__not__ok {
+    border: 3px solid red;
+}

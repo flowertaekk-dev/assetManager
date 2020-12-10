@@ -53,15 +53,6 @@
     width: 10vw;
 }
 
-
-/* ID Validation */
-.Signup .Signup__field .Signup__item input.validate__ok {
-    border: 3px solid greenyellow;
-}
-.Signup .Signup__field .Signup__item input.validate__not__ok {
-    border: 3px solid red;
-}
-
 /* TABLET */
 @media screen and (min-width: 768px) and (max-width: 1025px) {
     .Signup .btn__container .Button {
