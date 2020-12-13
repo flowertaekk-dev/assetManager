@@ -1,6 +1,6 @@
 package com.assetManager.server.controller.account;
 
-import static com.assetManager.server.controller.utils.TestDataUtil.accountControllerUrl;
+import static com.assetManager.server.utils.TestDataUtil.ACCOUNT_CONTROLLER_URL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -12,7 +12,7 @@ import com.assetManager.server.controller.account.dto.SaveAccountRequestDto;
 import com.assetManager.server.controller.setting.business.BusinessTestUtil;
 import com.assetManager.server.controller.setting.table.TableTestUtil;
 import com.assetManager.server.controller.signup.UserTestUtil;
-import com.assetManager.server.controller.utils.TestDataUtil;
+import com.assetManager.server.utils.TestDataUtil;
 import com.assetManager.server.domain.account.Account;
 import com.assetManager.server.domain.account.AccountRepository;
 import com.assetManager.server.domain.business.BusinessRepository;
@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -33,6 +34,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
+@ActiveProfiles(profiles = "dev")
 @SpringBootTest
 public class AccountControllerTest {
 
@@ -54,7 +56,7 @@ public class AccountControllerTest {
 
         UserTestUtil.insertUser();
         BusinessTestUtil.insertBusinessName(mvc, this.BUSINESS_NAME);
-        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, this.BUSINESS_NAME)
+        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.USER_ID, this.BUSINESS_NAME)
                 .orElseThrow()
                 .getBusinessId();
 
@@ -77,7 +79,7 @@ public class AccountControllerTest {
     @Test
     public void test_can_save_account_data() throws Exception {
         // given
-        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, this.BUSINESS_NAME)
+        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.USER_ID, this.BUSINESS_NAME)
                 .orElseThrow()
                 .getBusinessId();
 
@@ -90,7 +92,7 @@ public class AccountControllerTest {
                             + "'menu': '냉면',"
                             + "'price': '6000',"
                             + "'totalPrice': '12000',"
-                            + "'userId': '" + TestDataUtil.id + "'"
+                            + "'userId': '" + TestDataUtil.USER_ID + "'"
                         + "}"
                 + "}";
 
@@ -102,7 +104,7 @@ public class AccountControllerTest {
                         .build());
 
         ResultActions action = mvc.perform(
-                post(accountControllerUrl + "/save")
+                post(ACCOUNT_CONTROLLER_URL + "/save")
                     .content(content)
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON));

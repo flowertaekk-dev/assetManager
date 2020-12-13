@@ -12,7 +12,7 @@ import com.assetManager.server.controller.setting.table.TableTestUtil;
 import com.assetManager.server.controller.signup.UserTestUtil;
 import com.assetManager.server.controller.user.dto.DeleteUserRequestDto;
 import com.assetManager.server.controller.user.dto.UpdateUserRequestDto;
-import com.assetManager.server.controller.utils.TestDataUtil;
+import com.assetManager.server.utils.TestDataUtil;
 import com.assetManager.server.domain.business.BusinessRepository;
 import com.assetManager.server.domain.menu.Menu;
 import com.assetManager.server.domain.menu.MenuRepository;
@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -34,6 +35,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
+@ActiveProfiles(profiles = "dev")
 @SpringBootTest
 public class UserControllerTest {
 
@@ -66,14 +68,14 @@ public class UserControllerTest {
     @Test public void test_can_update_password_through_api() throws Exception {
         // given
         UpdateUserRequestDto requestDto = UpdateUserRequestDto.builder()
-                .id(TestDataUtil.id)
-                .email(TestDataUtil.email)
+                .id(TestDataUtil.USER_ID)
+                .email(TestDataUtil.EMAIL)
                 .updatingPassword(newPassword)
                 .build();
 
         // when
         ResultActions action = mvc.perform(
-                post(TestDataUtil.updateUserControllerUrl)
+                post(TestDataUtil.UPDATE_USER_CONTROLLER_URL)
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -86,7 +88,7 @@ public class UserControllerTest {
                 .andDo(print());
 
         // DB 데이터 확인
-        User resultUser = userRepository.findByIdAndEmail(TestDataUtil.id, TestDataUtil.email)
+        User resultUser = userRepository.findByIdAndEmail(TestDataUtil.USER_ID, TestDataUtil.EMAIL)
                 .orElseThrow();
 
         assertThat(resultUser.getPassword()).isEqualTo(newPassword);
@@ -102,7 +104,7 @@ public class UserControllerTest {
 
         // business 생성
         BusinessTestUtil.insertBusinessName(mvc, businessName);
-        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, businessName)
+        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.USER_ID, businessName)
                 .orElseThrow()
                 .getBusinessId();
 
@@ -124,12 +126,12 @@ public class UserControllerTest {
 
         // when
         DeleteUserRequestDto requestDto = DeleteUserRequestDto.builder()
-                .id(TestDataUtil.id)
-                .email(TestDataUtil.email)
+                .id(TestDataUtil.USER_ID)
+                .email(TestDataUtil.EMAIL)
                 .build();
 
         ResultActions action = mvc.perform(
-                post(TestDataUtil.deleteUserUrl)
+                post(TestDataUtil.DELETE_USER_URL)
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));

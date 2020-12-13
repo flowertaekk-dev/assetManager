@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface TableInfoRepository extends JpaRepository<TableInfo, Long> {
+public interface TableInfoRepository extends JpaRepository<TableInfo, String> {
 
     Optional<TableInfo> findByUserIdAndBusinessId(String userId, String businessId);
 

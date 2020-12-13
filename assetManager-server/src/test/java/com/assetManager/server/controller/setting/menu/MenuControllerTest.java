@@ -12,7 +12,7 @@ import com.assetManager.server.controller.setting.menu.dto.DeleteMenuRequestDto;
 import com.assetManager.server.controller.setting.menu.dto.ReadAllMenuRequestDto;
 import com.assetManager.server.controller.setting.menu.dto.UpdateMenuRequestDto;
 import com.assetManager.server.controller.signup.UserTestUtil;
-import com.assetManager.server.controller.utils.TestDataUtil;
+import com.assetManager.server.utils.TestDataUtil;
 import com.assetManager.server.domain.business.BusinessRepository;
 import com.assetManager.server.domain.menu.Menu;
 import com.assetManager.server.domain.menu.MenuRepository;
@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -31,6 +32,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
+@ActiveProfiles(profiles = "dev")
 @SpringBootTest
 public class MenuControllerTest {
 
@@ -54,7 +56,7 @@ public class MenuControllerTest {
         // 유저 데이터 초기화
         UserTestUtil.insertUser();
         BusinessTestUtil.insertBusinessName(this.mvc, this.businessName);
-        this.businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, this.businessName)
+        this.businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.USER_ID, this.businessName)
                 .orElseThrow()
                 .getBusinessId();
     }
@@ -120,14 +122,14 @@ public class MenuControllerTest {
         List<Menu> menus2 = menuRepository.findAll();
         System.out.println(menus2.size());
 
-        String menuId = menuRepository.findByUserIdAndBusinessIdAndMenu(TestDataUtil.id, this.businessId, this.menu)
+        String menuId = menuRepository.findByUserIdAndBusinessIdAndMenu(TestDataUtil.USER_ID, this.businessId, this.menu)
                 .orElseThrow()
                 .getMenuId();
 
         // when
         String content = objectMapper.writeValueAsString(
                 UpdateMenuRequestDto.builder()
-                        .userId(TestDataUtil.id)
+                        .userId(TestDataUtil.USER_ID)
                         .businessId(this.businessId)
                         .existingMenu(this.menu)
                         .newMenu(newMenu)
@@ -135,7 +137,7 @@ public class MenuControllerTest {
                         .build());
 
         ResultActions action = mvc.perform(
-                post(TestDataUtil.menuControllerUrl + "/update")
+                post(TestDataUtil.MENU_CONTROLLER_URL + "/update")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -150,7 +152,7 @@ public class MenuControllerTest {
 
         List<Menu> menus = menuRepository.findAll();
         assertThat(menus).isNotEmpty();
-        assertThat(menus.get(0).getUserId()).isEqualTo(TestDataUtil.id);
+        assertThat(menus.get(0).getUserId()).isEqualTo(TestDataUtil.USER_ID);
         assertThat(menus.get(0).getBusinessId()).isEqualTo(this.businessId);
         assertThat(menus.get(0).getMenu()).isEqualTo(newMenu);
         assertThat(menus.get(0).getPrice()).isEqualTo(price);
@@ -171,14 +173,14 @@ public class MenuControllerTest {
         // when
         String content = objectMapper.writeValueAsString(
                 UpdateMenuRequestDto.builder()
-                        .userId(TestDataUtil.id)
+                        .userId(TestDataUtil.USER_ID)
                         .businessId(this.businessId)
                         .existingMenu(this.menu)
                         .price(price)
                         .build());
 
         ResultActions action = mvc.perform(
-                post(TestDataUtil.menuControllerUrl + "/update")
+                post(TestDataUtil.MENU_CONTROLLER_URL + "/update")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -193,7 +195,7 @@ public class MenuControllerTest {
 
         List<Menu> menus = menuRepository.findAll();
         assertThat(menus).isNotEmpty();
-        assertThat(menus.get(0).getUserId()).isEqualTo(TestDataUtil.id);
+        assertThat(menus.get(0).getUserId()).isEqualTo(TestDataUtil.USER_ID);
         assertThat(menus.get(0).getBusinessId()).isEqualTo(this.businessId);
         assertThat(menus.get(0).getMenu()).isEqualTo(this.menu);
         assertThat(menus.get(0).getPrice()).isEqualTo(price);
@@ -208,14 +210,14 @@ public class MenuControllerTest {
         // when
         String content = objectMapper.writeValueAsString(
                 UpdateMenuRequestDto.builder()
-                        .userId(TestDataUtil.id)
+                        .userId(TestDataUtil.USER_ID)
                         .businessId(this.businessId)
                         .existingMenu(this.menu)
                         .price(price)
                         .build());
 
         ResultActions action = mvc.perform(
-                post(TestDataUtil.menuControllerUrl + "/update")
+                post(TestDataUtil.MENU_CONTROLLER_URL + "/update")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -241,13 +243,13 @@ public class MenuControllerTest {
         // when
         String content = objectMapper.writeValueAsString(
                 DeleteMenuRequestDto.builder()
-                        .userId(TestDataUtil.id)
+                        .userId(TestDataUtil.USER_ID)
                         .businessId(this.businessId)
                         .menu(this.menu)
                         .build());
 
         ResultActions action = mvc.perform(
-                post(TestDataUtil.menuControllerUrl + "/delete")
+                post(TestDataUtil.MENU_CONTROLLER_URL + "/delete")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -286,12 +288,12 @@ public class MenuControllerTest {
 
         String content = objectMapper.writeValueAsString(
                 ReadAllMenuRequestDto.builder()
-                        .userId(TestDataUtil.id)
+                        .userId(TestDataUtil.USER_ID)
                         .businessId(this.businessId)
                         .build());
 
         ResultActions action = mvc.perform(
-                post(TestDataUtil.menuControllerUrl + "/readAll")
+                post(TestDataUtil.MENU_CONTROLLER_URL + "/readAll")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));

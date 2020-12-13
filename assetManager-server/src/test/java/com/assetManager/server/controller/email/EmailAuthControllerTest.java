@@ -22,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -31,6 +32,7 @@ import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 import java.util.List;
 
+@ActiveProfiles(profiles = "dev")
 @SpringBootTest
 public class EmailAuthControllerTest {
 

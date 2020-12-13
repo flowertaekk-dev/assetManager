@@ -13,7 +13,7 @@ import com.assetManager.server.controller.setting.business.dto.UpdateBusinessReq
 import com.assetManager.server.controller.setting.menu.MenuTestUtil;
 import com.assetManager.server.controller.setting.table.TableTestUtil;
 import com.assetManager.server.controller.signup.UserTestUtil;
-import com.assetManager.server.controller.utils.TestDataUtil;
+import com.assetManager.server.utils.TestDataUtil;
 import com.assetManager.server.domain.business.Business;
 import com.assetManager.server.domain.business.BusinessRepository;
 import com.assetManager.server.domain.menu.Menu;
@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -36,6 +37,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 import java.util.Optional;
 
+@ActiveProfiles(profiles = "dev")
 @SpringBootTest
 public class BusinessControllerTest {
 
@@ -81,7 +83,7 @@ public class BusinessControllerTest {
 
         List<Business> businesses = businessRepository.findAll();
         assertThat(businesses).isNotEmpty();
-        assertThat(businesses.get(0).getUserId()).isEqualTo(TestDataUtil.id);
+        assertThat(businesses.get(0).getUserId()).isEqualTo(TestDataUtil.USER_ID);
         assertThat(businesses.get(0).getBusinessName()).isEqualTo(businessName);
     }
 
@@ -96,7 +98,7 @@ public class BusinessControllerTest {
         // 상호명 추가
         BusinessTestUtil.insertBusinessName(mvc, originalBusinessName);
 
-        String businessName = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, originalBusinessName)
+        String businessName = businessRepository.findByUserIdAndBusinessName(TestDataUtil.USER_ID, originalBusinessName)
                 .orElseThrow()
                 .getBusinessName();
         assertThat(businessName).isEqualTo(originalBusinessName);
@@ -106,13 +108,13 @@ public class BusinessControllerTest {
         // 상호명 편집
         String content = objectMapper.writeValueAsString(
                 UpdateBusinessRequestDto.builder()
-                        .userId(TestDataUtil.id)
+                        .userId(TestDataUtil.USER_ID)
                         .existingBusinessName(originalBusinessName)
                         .newBusinessName(newBusinessName)
                         .build());
 
         ResultActions action = mvc.perform(
-                post(TestDataUtil.businessControllerUrl + "/update")
+                post(TestDataUtil.BUSINESS_CONTROLLER_URL + "/update")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -125,7 +127,7 @@ public class BusinessControllerTest {
                 .andExpect(jsonPath("$.reason", nullValue()))
                 .andDo(print());
 
-        String updatedBusinessName = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, newBusinessName)
+        String updatedBusinessName = businessRepository.findByUserIdAndBusinessName(TestDataUtil.USER_ID, newBusinessName)
                 .orElseThrow()
                 .getBusinessName();
         assertThat(updatedBusinessName).isEqualTo(newBusinessName);
@@ -147,12 +149,12 @@ public class BusinessControllerTest {
 
         String content = objectMapper.writeValueAsString(
                 DeleteBusinessRequestDto.builder()
-                        .userId(TestDataUtil.id)
+                        .userId(TestDataUtil.USER_ID)
                         .businessName(businessName)
                         .build());
 
         ResultActions action = mvc.perform(
-                post(TestDataUtil.businessControllerUrl + "/delete")
+                post(TestDataUtil.BUSINESS_CONTROLLER_URL + "/delete")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -165,7 +167,7 @@ public class BusinessControllerTest {
                 .andExpect(jsonPath("$.reason", nullValue()))
                 .andDo(print());
 
-        Optional<Business> resultBusiness = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, businessName);
+        Optional<Business> resultBusiness = businessRepository.findByUserIdAndBusinessName(TestDataUtil.USER_ID, businessName);
         assertThat(resultBusiness.isPresent()).isFalse();
 
     }
@@ -185,11 +187,11 @@ public class BusinessControllerTest {
         // when
         String content = objectMapper.writeValueAsString(
                 ReadAllBusinessRequestDto.builder()
-                        .userId(TestDataUtil.id)
+                        .userId(TestDataUtil.USER_ID)
                         .build());
 
         ResultActions action = mvc.perform(
-                post(TestDataUtil.businessControllerUrl + "/readAll")
+                post(TestDataUtil.BUSINESS_CONTROLLER_URL + "/readAll")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -213,25 +215,25 @@ public class BusinessControllerTest {
 
         // 상호명 생성
         BusinessTestUtil.insertBusinessName(mvc, businessName);
-        Business businessResult = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, businessName)
+        Business businessResult = businessRepository.findByUserIdAndBusinessName(TestDataUtil.USER_ID, businessName)
                 .orElseThrow();
         assertThat(businessResult.getBusinessName()).isEqualTo(businessName);
 
         // 테이블 생성
         TableTestUtil.insertTableInfo(this.mvc, businessResult.getBusinessId(), 10);
-        TableInfo tableInfoResult = tableInfoRepository.findByUserIdAndBusinessId(TestDataUtil.id, businessResult.getBusinessId())
+        TableInfo tableInfoResult = tableInfoRepository.findByUserIdAndBusinessId(TestDataUtil.USER_ID, businessResult.getBusinessId())
                 .orElseThrow();
         assertThat(tableInfoResult.getBusinessId()).isEqualTo(businessResult.getBusinessId());
 
         // when
         String content = objectMapper.writeValueAsString(
                 DeleteBusinessRequestDto.builder()
-                        .userId(TestDataUtil.id)
+                        .userId(TestDataUtil.USER_ID)
                         .businessName(businessName)
                         .build());
 
         ResultActions action = mvc.perform(
-                post(TestDataUtil.businessControllerUrl + "/delete")
+                post(TestDataUtil.BUSINESS_CONTROLLER_URL + "/delete")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -244,7 +246,7 @@ public class BusinessControllerTest {
 
         // then
         Optional<TableInfo> tableAfterDeletingBusiness =
-                tableInfoRepository.findByUserIdAndBusinessId(TestDataUtil.id, businessResult.getBusinessId());
+                tableInfoRepository.findByUserIdAndBusinessId(TestDataUtil.USER_ID, businessResult.getBusinessId());
 
         assertThat(tableAfterDeletingBusiness.isEmpty()).isTrue();
     }
@@ -259,13 +261,13 @@ public class BusinessControllerTest {
 
         // 상호명 생성
         BusinessTestUtil.insertBusinessName(mvc, businessName);
-        Business businessResult = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, businessName)
+        Business businessResult = businessRepository.findByUserIdAndBusinessName(TestDataUtil.USER_ID, businessName)
                 .orElseThrow();
         assertThat(businessResult.getBusinessName()).isEqualTo(businessName);
 
         // 메뉴 생성
         MenuTestUtil.insertTableCount(this.mvc, businessResult.getBusinessId(), menu, price);
-        Menu menuResult = menuRepository.findByUserIdAndBusinessIdAndMenu(TestDataUtil.id, businessResult.getBusinessId(), menu)
+        Menu menuResult = menuRepository.findByUserIdAndBusinessIdAndMenu(TestDataUtil.USER_ID, businessResult.getBusinessId(), menu)
                 .orElseThrow();
         assertThat(menuResult).isNotNull();
 
@@ -273,12 +275,12 @@ public class BusinessControllerTest {
         // when
         String content = objectMapper.writeValueAsString(
                 DeleteBusinessRequestDto.builder()
-                        .userId(TestDataUtil.id)
+                        .userId(TestDataUtil.USER_ID)
                         .businessName(businessName)
                         .build());
 
         ResultActions action = mvc.perform(
-                post(TestDataUtil.businessControllerUrl + "/delete")
+                post(TestDataUtil.BUSINESS_CONTROLLER_URL + "/delete")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -291,7 +293,7 @@ public class BusinessControllerTest {
 
         // then
         Optional<Menu> menuAfterDeletingBusiness =
-                menuRepository.findByUserIdAndBusinessIdAndMenu(TestDataUtil.id, businessResult.getBusinessId(), menu);
+                menuRepository.findByUserIdAndBusinessIdAndMenu(TestDataUtil.USER_ID, businessResult.getBusinessId(), menu);
 
         assertThat(menuAfterDeletingBusiness.isEmpty()).isTrue();
     }

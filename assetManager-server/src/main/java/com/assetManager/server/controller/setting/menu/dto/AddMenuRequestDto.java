@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class AddMenuRequestDto {
-    private final String identityCode = "MN-";
 
     private String userId;
     private String businessId;
@@ -26,7 +25,7 @@ public class AddMenuRequestDto {
 
     public Menu toMenuEntity() {
         return Menu.builder()
-                .menuId(identityCode + RandomIdCreator.create())
+                .menuId(RandomIdCreator.createMenuId())
                 .userId(this.userId)
                 .businessId(this.businessId)
                 .menu(this.menu)

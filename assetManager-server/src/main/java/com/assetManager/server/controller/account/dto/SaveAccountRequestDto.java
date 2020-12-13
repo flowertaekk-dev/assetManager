@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class SaveAccountRequestDto {
-    private final String identityCode = "AC-";
 
     private String businessId;
     private String contents;
@@ -22,7 +21,7 @@ public class SaveAccountRequestDto {
 
     public Account toAccountEntity() {
         return Account.builder()
-                .accountId(identityCode + RandomIdCreator.create())
+                .accountId(RandomIdCreator.createAccountId())
                 .businessId(this.businessId)
                 .contents(this.contents)
                 .build();

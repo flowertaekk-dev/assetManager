@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddTableInfoRequestDto {
 
-    private final String identityCode = "TI-";
-
     private String userId;
     private String businessId;
     private int tableCount;
@@ -25,7 +23,7 @@ public class AddTableInfoRequestDto {
 
     public TableInfo toTableInfoEntity() {
         return TableInfo.builder()
-                .tableInfoId(identityCode + RandomIdCreator.create())
+                .tableInfoId(RandomIdCreator.createTableInfoId())
                 .userId(this.userId)
                 .businessId(this.businessId)
                 .tableCount(this.tableCount)

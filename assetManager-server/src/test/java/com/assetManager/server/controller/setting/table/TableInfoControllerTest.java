@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.*;
 import com.assetManager.server.controller.setting.business.BusinessTestUtil;
 import com.assetManager.server.controller.setting.table.dto.UpdateTableCountRequestDto;
 import com.assetManager.server.controller.signup.UserTestUtil;
-import com.assetManager.server.controller.utils.TestDataUtil;
+import com.assetManager.server.utils.TestDataUtil;
 import com.assetManager.server.domain.business.BusinessRepository;
 import com.assetManager.server.domain.tableInfo.TableInfo;
 import com.assetManager.server.domain.tableInfo.TableInfoRepository;
@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,6 +30,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
+@ActiveProfiles(profiles = "dev")
 @SpringBootTest
 public class TableInfoControllerTest {
 
@@ -63,7 +65,7 @@ public class TableInfoControllerTest {
         // given
         int tableCount = 10;
         BusinessTestUtil.insertBusinessName(mvc, this.businessName);
-        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, this.businessName)
+        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.USER_ID, this.businessName)
                 .orElseThrow()
                 .getBusinessId();
 
@@ -80,7 +82,7 @@ public class TableInfoControllerTest {
         List<TableInfo> tableInfos = tableInfoRepository.findAll();
         assertThat(tableInfos).isNotEmpty();
         assertThat(tableInfos.get(0).getTableInfoId()).isNotNull();
-        assertThat(tableInfos.get(0).getUserId()).isEqualTo(TestDataUtil.id);
+        assertThat(tableInfos.get(0).getUserId()).isEqualTo(TestDataUtil.USER_ID);
         assertThat(tableInfos.get(0).getBusinessId()).isEqualTo(businessId);
         assertThat(tableInfos.get(0).getTableCount()).isEqualTo(10);
     }
@@ -91,7 +93,7 @@ public class TableInfoControllerTest {
         // given
         int tableCount = 10;
         BusinessTestUtil.insertBusinessName(mvc, this.businessName);
-        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, this.businessName)
+        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.USER_ID, this.businessName)
                 .orElseThrow()
                 .getBusinessId();
 
@@ -104,7 +106,7 @@ public class TableInfoControllerTest {
         List<TableInfo> tableInfos = tableInfoRepository.findAll();
         assertThat(tableInfos).isNotEmpty();
         assertThat(tableInfos.get(0).getTableInfoId()).isNotNull();
-        assertThat(tableInfos.get(0).getUserId()).isEqualTo(TestDataUtil.id);
+        assertThat(tableInfos.get(0).getUserId()).isEqualTo(TestDataUtil.USER_ID);
         assertThat(tableInfos.get(0).getBusinessId()).isEqualTo(businessId);
         assertThat(tableInfos.get(0).getTableCount()).isEqualTo(10);
 
@@ -125,7 +127,7 @@ public class TableInfoControllerTest {
         // given
         int tableCount = 10;
         BusinessTestUtil.insertBusinessName(mvc, this.businessName);
-        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, this.businessName)
+        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.USER_ID, this.businessName)
                 .orElseThrow()
                 .getBusinessId();
 
@@ -139,7 +141,7 @@ public class TableInfoControllerTest {
         List<TableInfo> tableInfos = tableInfoRepository.findAll();
         assertThat(tableInfos).isNotEmpty();
         assertThat(tableInfos.get(0).getTableInfoId()).isNotNull();
-        assertThat(tableInfos.get(0).getUserId()).isEqualTo(TestDataUtil.id);
+        assertThat(tableInfos.get(0).getUserId()).isEqualTo(TestDataUtil.USER_ID);
         assertThat(tableInfos.get(0).getBusinessId()).isEqualTo(businessId);
         assertThat(tableInfos.get(0).getTableCount()).isEqualTo(10);
 
@@ -148,13 +150,13 @@ public class TableInfoControllerTest {
         int secondTableCount = 20;
         String content = objectMapper.writeValueAsString(
                 UpdateTableCountRequestDto.builder()
-                        .userId(TestDataUtil.id)
+                        .userId(TestDataUtil.USER_ID)
                         .businessId(businessId)
                         .tableCount(secondTableCount)
                         .build());
 
         ResultActions secondAction = mvc.perform(
-                post(TestDataUtil.tableInfoControllerUrl + "/update")
+                post(TestDataUtil.TABLE_INFO_CONTROLLER_URL + "/update")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -167,7 +169,7 @@ public class TableInfoControllerTest {
 
         List<TableInfo> secondTableInfos = tableInfoRepository.findAll();
         assertThat(secondTableInfos).isNotEmpty();
-        assertThat(secondTableInfos.get(0).getUserId()).isEqualTo(TestDataUtil.id);
+        assertThat(secondTableInfos.get(0).getUserId()).isEqualTo(TestDataUtil.USER_ID);
         assertThat(secondTableInfos.get(0).getBusinessId()).isEqualTo(businessId);
         assertThat(secondTableInfos.get(0).getTableCount()).isEqualTo(secondTableCount);
     }
@@ -198,7 +200,7 @@ public class TableInfoControllerTest {
         int tableCount = 20;
 
         BusinessTestUtil.insertBusinessName(mvc, businessName);
-        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.id, this.businessName)
+        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.USER_ID, this.businessName)
                 .orElseThrow()
                 .getBusinessId();
 
@@ -207,13 +209,13 @@ public class TableInfoControllerTest {
         // when
         String content = objectMapper.writeValueAsString(
                 UpdateTableCountRequestDto.builder()
-                        .userId(TestDataUtil.id)
+                        .userId(TestDataUtil.USER_ID)
                         .businessId(businessId)
                         .tableCount(tableCount)
                         .build());
 
         ResultActions action = mvc.perform(
-                post(TestDataUtil.tableInfoControllerUrl + "/read")
+                post(TestDataUtil.TABLE_INFO_CONTROLLER_URL + "/read")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -221,7 +223,7 @@ public class TableInfoControllerTest {
         // then
         action
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userId", is(TestDataUtil.id)))
+                .andExpect(jsonPath("$.userId", is(TestDataUtil.USER_ID)))
                 .andExpect(jsonPath("$.businessId", is(businessId)))
                 .andExpect(jsonPath("$.tableCount", is(tableCount)))
                 .andDo(print());

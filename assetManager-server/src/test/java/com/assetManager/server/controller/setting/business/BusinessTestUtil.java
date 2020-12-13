@@ -1,7 +1,7 @@
 package com.assetManager.server.controller.setting.business;
 
 import com.assetManager.server.controller.setting.business.dto.AddBusinessRequestDto;
-import com.assetManager.server.controller.utils.TestDataUtil;
+import com.assetManager.server.utils.TestDataUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,12 +28,12 @@ public class BusinessTestUtil extends TestDataUtil {
     public static ResultActions insertBusinessName(MockMvc mvc, String businessName) throws Exception {
         String content = staticObjectMapper.writeValueAsString(
                 AddBusinessRequestDto.builder()
-                        .userId(id)
+                        .userId(USER_ID)
                         .businessName(businessName)
                         .build());
 
         return mvc.perform(
-                post(businessControllerUrl + "/add")
+                post(BUSINESS_CONTROLLER_URL + "/add")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));

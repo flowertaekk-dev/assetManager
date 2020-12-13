@@ -1,7 +1,7 @@
 package com.assetManager.server.controller.setting.menu;
 
 import com.assetManager.server.controller.setting.menu.dto.AddMenuRequestDto;
-import com.assetManager.server.controller.utils.TestDataUtil;
+import com.assetManager.server.utils.TestDataUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,14 +25,14 @@ public class MenuTestUtil {
     public static ResultActions insertTableCount(MockMvc mvc, String businessId, String menu, int price) throws Exception {
         String content = staticObjectMapper.writeValueAsString(
                 AddMenuRequestDto.builder()
-                        .userId(TestDataUtil.id)
+                        .userId(TestDataUtil.USER_ID)
                         .businessId(businessId)
                         .menu(menu)
                         .price(price)
                         .build());
 
         return mvc.perform(
-                post(TestDataUtil.menuControllerUrl + "/add")
+                post(TestDataUtil.MENU_CONTROLLER_URL + "/add")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));

@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddBusinessRequestDto {
 
-    private final String IdentityCode = "BS-";
-
     private String userId;
     private String businessName;
 
@@ -24,7 +22,7 @@ public class AddBusinessRequestDto {
 
     public Business toBusinessEntity() {
         return Business.builder()
-                .businessId(IdentityCode + RandomIdCreator.create())
+                .businessId(RandomIdCreator.createBusinessId())
                 .userId(this.userId)
                 .businessName(this.businessName)
                 .build();

@@ -1,6 +1,6 @@
 package com.assetManager.server.controller.signup;
 
-import com.assetManager.server.controller.utils.TestDataUtil;
+import com.assetManager.server.utils.TestDataUtil;
 import com.assetManager.server.domain.user.User;
 import com.assetManager.server.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +23,10 @@ public class UserTestUtil extends TestDataUtil {
     public static void insertUser() {
         staticUserRepository.save(
                 User.builder()
-                        .id(id)
-                        .salt(salt)
-                        .password(password)
-                        .email(email)
+                        .id(USER_ID)
+                        .salt(SALT)
+                        .password(PASSWORD)
+                        .email(EMAIL)
                         .status(User.UserStatus.USING)
                         .build());
     }
