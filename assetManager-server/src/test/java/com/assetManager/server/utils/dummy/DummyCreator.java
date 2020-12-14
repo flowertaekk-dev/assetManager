@@ -20,6 +20,8 @@ import org.checkerframework.checker.units.qual.K;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -36,6 +38,10 @@ public class DummyCreator extends TestDataUtil {
     // -------------------------------------------------------------------
 
     public User createUser() {
+        Optional<User> user = userRepository.findById(USER_ID);
+        if (user.isPresent()) {
+            return user.get();
+        }
         return userRepository.save(
                 User.builder()
                         .id(USER_ID)
@@ -48,6 +54,12 @@ public class DummyCreator extends TestDataUtil {
 
     public Business createBusiness() {
         var user = createUser();
+
+        List<Business> business = businessRepository.findByUserId(USER_ID);
+        if (!business.isEmpty()) {
+            return business.get(0);
+        }
+
         return businessRepository.save(
                 Business.builder()
                         .businessId(RandomIdCreator.createBusinessId())
@@ -58,6 +70,12 @@ public class DummyCreator extends TestDataUtil {
 
     public TableInfo createTableInfo(int tableCount) {
         var business = createBusiness();
+
+        Optional<TableInfo> tableInfo = tableInfoRepository.findByUserIdAndBusinessId(USER_ID, business.getBusinessId());
+        if (tableInfo.isPresent()) {
+            return tableInfo.get();
+        }
+
         return tableInfoRepository.save(
                 TableInfo.builder()
                         .tableInfoId(RandomIdCreator.createTableInfoId())
@@ -67,14 +85,20 @@ public class DummyCreator extends TestDataUtil {
                         .build());
     }
 
-    public Menu createMenu(String menu, int price) {
+    public Menu createMenu(String menuName, int price) {
         var business = createBusiness();
-        return menuCreator.apply(business, menu, price);
+
+        List<Menu> menus = menuRepository.findByUserIdAndBusinessId(USER_ID, business.getBusinessId());
+        if (!menus.isEmpty()) {
+            return menus.get(0);
+        }
+
+        return menuCreator.apply(business, menuName, price);
     }
 
     public void createTableInfoWithMenu(int tableCount, String menu, int price) {
         var business = createBusiness();
-        createTableInfo(1);
+        createTableInfo(tableCount);
         menuCreator.apply(business, menu, price);
     }
 

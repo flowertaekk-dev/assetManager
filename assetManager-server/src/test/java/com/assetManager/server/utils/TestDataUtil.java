@@ -11,6 +11,9 @@ public class TestDataUtil {
     public static final String BUSINESS = "testBusiness";
 
     public static final String LOGIN_CONTROLLER_URL = "/api/v1/login";
+    public static final String SIGN_UP_CONTROLLER_URL = "/api/v1/signup";
+    public static final String EMAIL_AUTH_CONTROLLER_URL = "/api/v1/email/requestCode";
+    public static final String REQUEST_SALT_CONTROLLER_URL = "/api/v1/requestSalt";
     public static final String BUSINESS_CONTROLLER_URL = "/api/v1/business";
     public static final String TABLE_INFO_CONTROLLER_URL = "/api/v1/table";
     public static final String MENU_CONTROLLER_URL = "/api/v1/menu";

@@ -1,25 +1,15 @@
-package com.assetManager.server.controller.user;
+package com.assetManager.server.user;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.assetManager.server.controller.setting.business.BusinessTestUtil;
-import com.assetManager.server.controller.setting.menu.MenuTestUtil;
-import com.assetManager.server.controller.setting.table.TableTestUtil;
-import com.assetManager.server.controller.signup.UserTestUtil;
 import com.assetManager.server.controller.user.dto.DeleteUserRequestDto;
 import com.assetManager.server.controller.user.dto.UpdateUserRequestDto;
+import com.assetManager.server.domain.menu.MenuRepository;
+import com.assetManager.server.domain.tableInfo.TableInfoRepository;
 import com.assetManager.server.utils.TestDataUtil;
 import com.assetManager.server.domain.business.BusinessRepository;
-import com.assetManager.server.domain.menu.Menu;
-import com.assetManager.server.domain.menu.MenuRepository;
-import com.assetManager.server.domain.tableInfo.TableInfo;
-import com.assetManager.server.domain.tableInfo.TableInfoRepository;
 import com.assetManager.server.domain.user.User;
 import com.assetManager.server.domain.user.UserRepository;
+import com.assetManager.server.utils.BaseTestUtils;
+import com.assetManager.server.utils.dummy.DummyCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,40 +23,47 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ActiveProfiles(profiles = "dev")
+@ActiveProfiles(profiles = "local")
 @SpringBootTest
-public class UserControllerTest {
+public class UserUpdateDataTest extends BaseTestUtils {
 
-    @Autowired private UserRepository userRepository;
-    @Autowired private BusinessRepository businessRepository;
-    @Autowired private TableInfoRepository tableInfoRepository;
-    @Autowired private MenuRepository menuRepository;
-    @Autowired private UserController userController;
-    @Autowired private UserService userService;
     @Autowired private WebApplicationContext context;
     @Autowired private ObjectMapper objectMapper;
 
+    @Autowired private UserRepository userRepository;
+
+    @Autowired private BusinessRepository businessRepository;
+    @Autowired private TableInfoRepository tableInfoRepository;
+    @Autowired private MenuRepository menuRepository;
+
+    @Autowired private DummyCreator dummyCreator;
+
     private MockMvc mvc;
-    private String newPassword = "helloworld";
 
     @BeforeEach public void setUp() {
-        this.mvc = MockMvcBuilders.webAppContextSetup(context).build();
-
-        UserTestUtil.insertUser();
+        mvc = MockMvcBuilders.webAppContextSetup(context).build();
+        dummyCreator.createUser();
     }
 
     @AfterEach public void tearDown() {
-        userRepository.deleteAll();
-        businessRepository.deleteAll();
-        tableInfoRepository.deleteAll();
-        menuRepository.deleteAll();
+        deleteAllDataBase();
     }
 
-    // 패스워드 업데이트가 잘 이루어진다
-    @Test public void test_can_update_password_through_api() throws Exception {
+    /**
+     * Can update password
+     *
+     * @throws Exception
+     */
+    @Test public void test_can_update_password() throws Exception {
         // given
+        var newPassword = "newPassword";
         UpdateUserRequestDto requestDto = UpdateUserRequestDto.builder()
                 .id(TestDataUtil.USER_ID)
                 .email(TestDataUtil.EMAIL)
@@ -94,35 +91,17 @@ public class UserControllerTest {
         assertThat(resultUser.getPassword()).isEqualTo(newPassword);
     }
 
-
+    /**
+     * Can delete user data as well as all related data
+     *
+     * @throws Exception
+     */
     @Test public void test_can_delete_user_data_with_related_data() throws Exception {
         // given
-        String businessName = "assetManager";
-        int tableCount = 3;
         String menu = "testMenu";
         int price = 2000;
 
-        // business 생성
-        BusinessTestUtil.insertBusinessName(mvc, businessName);
-        String businessId = businessRepository.findByUserIdAndBusinessName(TestDataUtil.USER_ID, businessName)
-                .orElseThrow()
-                .getBusinessId();
-
-        // tableInfo 생성
-        TableTestUtil.insertTableInfo(mvc, businessId, tableCount);
-        List<TableInfo> tables = tableInfoRepository.findAll();
-        TableInfo table = tables.stream()
-                .findFirst()
-                .orElseThrow();
-        assertThat(table.getTableCount()).isEqualTo(tableCount);
-
-        // menu 생성
-        MenuTestUtil.insertTableCount(this.mvc, businessId, menu, price);
-        List<Menu> menus = menuRepository.findAll();
-        Menu menuSample = menus.stream()
-                .findFirst()
-                .orElseThrow();
-        assertThat(menuSample.getMenu()).isEqualTo(menu);
+        dummyCreator.createMenu(menu, price);
 
         // when
         DeleteUserRequestDto requestDto = DeleteUserRequestDto.builder()

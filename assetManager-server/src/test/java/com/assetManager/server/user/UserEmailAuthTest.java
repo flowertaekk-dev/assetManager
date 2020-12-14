@@ -1,18 +1,13 @@
-package com.assetManager.server.controller.email;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.mockito.Mockito.when;
+package com.assetManager.server.user;
 
 import com.assetManager.server.controller.email.dto.EmailAuthRequestDto;
 import com.assetManager.server.domain.emailAuth.EmailAuth;
 import com.assetManager.server.domain.emailAuth.EmailAuthRepository;
 import com.assetManager.server.domain.user.User;
 import com.assetManager.server.domain.user.UserRepository;
+import com.assetManager.server.utils.BaseTestUtils;
+import com.assetManager.server.utils.TestDataUtil;
+import com.assetManager.server.utils.dummy.DummyCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,23 +25,33 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
+
 import java.util.List;
 
-@ActiveProfiles(profiles = "dev")
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static com.assetManager.server.utils.TestDataUtil.*;
+
+@ActiveProfiles(profiles = "local")
 @SpringBootTest
-public class EmailAuthControllerTest {
+public class UserEmailAuthTest extends BaseTestUtils {
 
     @Autowired private WebApplicationContext webApplicationContext;
     @Autowired private ObjectMapper objectMapper;
     @Autowired private EmailAuthRepository emailAuthRepository;
     @Autowired private UserRepository userRepository;
 
-    @MockBean private JavaMailSender mockMailSender;
+    @Autowired private DummyCreator dummyCreator;
+
+    @MockBean
+    private JavaMailSender mockMailSender;
 
     private MockMvc mvc;
-
-    private final String email = "test@email.com";
-    private final String url = "/api/v1/email/requestCode";
 
     @BeforeEach
     public void setup() {
@@ -57,14 +62,12 @@ public class EmailAuthControllerTest {
     }
 
     @AfterEach
-    public void clean() {
-        emailAuthRepository.deleteAll();
-        userRepository.deleteAll();
+    public void tearDown() {
+        deleteAllDataBase();
     }
 
     // case: EmailAuth 테이블에 데이터를 등록할 수 있다.
-    @Test
-    public void test_can_save_emailAuth() throws Exception {
+    @Test public void test_can_save_emailAuth() throws Exception {
         // given
 
         // when
@@ -79,24 +82,16 @@ public class EmailAuthControllerTest {
 
         List<EmailAuth> emailAuthData = emailAuthRepository.findAll();
         assertThat(emailAuthData).isNotEmpty();
-        assertThat(emailAuthData.get(0).getEmail()).isEqualTo(this.email);
+        assertThat(emailAuthData.get(0).getEmail()).isEqualTo(EMAIL);
         assertThat(emailAuthData.get(0).getStatus()).isEqualTo(EmailAuth.EmailAuthStatus.SENT);
     }
 
     // case: 유저가 입력한 이메일이 이미 등록이 되어있는 이메일이라면 인증코드 발급 실패한다.
-    @Test
-    public void test_cannot_use_registered_email() throws Exception {
+    @Test public void test_fail_with_registered_email() throws Exception {
         // given
 
         // 기존 유저용 데이터 생성
-        userRepository.save(
-                User.builder()
-                        .id("test")
-                        .salt("salt")
-                        .password("test")
-                        .email(this.email)
-                        .status(User.UserStatus.USING)
-                        .build());
+        dummyCreator.createUser();
 
         // when
         ResultActions action = sendRequest();
@@ -113,8 +108,7 @@ public class EmailAuthControllerTest {
     }
 
     // case: 동일한 이메일로 두 번 요청이 들어왔을 때 마지막 코드가 디비에 들어있어서 마지막 코드가 아니면 인증 실패한다.
-    @Test
-    public void test_the_last_auth_code_is_used_to_authenticate_email() throws Exception {
+    @Test public void test_the_last_auth_code_is_used_to_authenticate_email() throws Exception {
         // given
 
         // when
@@ -123,9 +117,9 @@ public class EmailAuthControllerTest {
         sendRequest();
 
         String firstAuthCode =
-                emailAuthRepository.findByEmail(this.email)
-                    .orElseThrow()
-                    .getAuthCode();
+                emailAuthRepository.findByEmail(EMAIL)
+                        .orElseThrow()
+                        .getAuthCode();
 
         // 두 번째 리퀘스트
         ResultActions action = sendRequest();
@@ -137,7 +131,7 @@ public class EmailAuthControllerTest {
                 .andDo(print());
 
         String secondAuthCode =
-                emailAuthRepository.findByEmail(this.email)
+                emailAuthRepository.findByEmail(EMAIL)
                         .orElseThrow()
                         .getAuthCode();
 
@@ -145,18 +139,18 @@ public class EmailAuthControllerTest {
         assertThat(firstAuthCode).isNotEqualTo(secondAuthCode);
     }
 
-    // ---------------------------------------------------------------------------
-    // utils
+    // ----------------------------------------------------------------
 
-    protected ResultActions sendRequest() throws Exception {
+    private ResultActions sendRequest() throws Exception {
         return mvc.perform(
-                post(this.url)
+                post(TestDataUtil.EMAIL_AUTH_CONTROLLER_URL)
                         .content(
                                 objectMapper.writeValueAsString(
                                         EmailAuthRequestDto.builder()
-                                                .addressTo(this.email)
+                                                .addressTo(TestDataUtil.EMAIL)
                                                 .build()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
     }
+
 }

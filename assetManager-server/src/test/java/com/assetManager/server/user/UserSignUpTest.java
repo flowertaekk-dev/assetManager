@@ -1,20 +1,14 @@
-package com.assetManager.server.controller.signup;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.hamcrest.Matchers.*;
+package com.assetManager.server.user;
 
 import com.assetManager.server.controller.email.dto.EmailAuthRequestDto;
 import com.assetManager.server.controller.signup.dto.SignUpRequestDto;
 import com.assetManager.server.domain.emailAuth.EmailAuth;
 import com.assetManager.server.domain.emailAuth.EmailAuthRepository;
-import com.assetManager.server.domain.user.UserRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.assetManager.server.utils.BaseTestUtils;
+import com.assetManager.server.utils.TestDataUtil;
+import com.assetManager.server.utils.dummy.DummyCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,41 +25,43 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
-import java.util.List;
 
-@ActiveProfiles(profiles = "dev")
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static com.assetManager.server.utils.TestDataUtil.*;
+
+@ActiveProfiles(profiles = "local")
 @SpringBootTest
-public class SignUpControllerTest {
+public class UserSignUpTest extends BaseTestUtils {
+
+    @Autowired EmailAuthRepository emailAuthRepository;
 
     @Autowired private WebApplicationContext context;
     @Autowired private ObjectMapper objectMapper;
-    @Autowired private UserRepository userRepository;
-    @Autowired private EmailAuthRepository emailAuthRepository;
+
+    @Autowired private DummyCreator dummyCreator;
 
     @MockBean private JavaMailSender mockMailSender;
 
     private MockMvc mvc;
 
-    private final String id = "test";
-    private final String salt = "salt";
-    private final String password = "test";
-    private final String email = "test@email.com";
-
-    private final String url = "/api/v1/signup";
-
-
-    @BeforeEach
-    public void setup() {
+    @BeforeEach public void setUp() {
         this.mvc = MockMvcBuilders.webAppContextSetup(context).build();
 
         // mock javaMailSender
         when(mockMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
     }
 
-    @AfterEach
-    public void clean() {
-        userRepository.deleteAll();
-        emailAuthRepository.deleteAll();
+    @AfterEach public void tearDown() {
+        deleteAllDataBase();
     }
 
     @Test public void can_signup() throws Exception {
@@ -81,8 +77,8 @@ public class SignUpControllerTest {
 
         // when
 
-        String content = createContent(this.id, this.salt, this.password, this.email, emailAuthCode);;
-        ResultActions action = sendRequest(content);
+        String content = createContent(USER_ID, SALT, PASSWORD, EMAIL, emailAuthCode);
+        ResultActions action = sendSignUpRequest(content);
 
         // then
 
@@ -93,32 +89,18 @@ public class SignUpControllerTest {
                 .andDo(print());
     }
 
-    // case: 이미 존재하는 이메일이 있는 경우에 회원가입 실패
     @Test public void cannot_signup_multiple_times_with_the_same_email() throws Exception {
         //given
-        String newId = "newTest";
+        dummyCreator.createUser();
+
+        String newId = "newId";
         String newPassword = "newPassword";
 
-        // 이메일 인증코드를 발급받는다
-        sendEmailAuthRequest();
-
-        List<EmailAuth> emailAuthData = emailAuthRepository.findAll();
-        assertThat(emailAuthData).isNotEmpty();
-
-        String emailAuthCode = emailAuthData.get(0).getAuthCode();
-
-        // 기존에 이미 동일한 이메일로 회원가입 완료!
-        {
-            String content = createContent(this.id, this.salt, this.password, this.email, emailAuthCode);
-            sendRequest(content);
-        }
-
         // when
-        String content = createContent(newId, this.salt, newPassword, this.email, emailAuthCode);
-        ResultActions action = sendRequest(content);
+        String content = createContent(newId, SALT, newPassword, EMAIL, RandomString.make());
+        ResultActions action = sendSignUpRequest(content);
 
         // then
-
         action
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("FAILURE")))
@@ -126,27 +108,17 @@ public class SignUpControllerTest {
                 .andDo(print());
     }
 
-    // case: EmailAuthCode가 틀리면 회원가입 실패한다
     @Test public void test_fail_when_receive_wrong_authCode() throws Exception {
         // given
-
-        // 이메일 인증코드를 발급받는다
-        sendEmailAuthRequest();
-
-        List<EmailAuth> emailAuthData = emailAuthRepository.findAll();
-        assertThat(emailAuthData).isNotEmpty();
-
-        String emailAuthCode = emailAuthData.get(0).getAuthCode();
+        dummyCreator.createEmailAuth(EmailAuth.EmailAuthStatus.SENT);
 
         // when
-
         String wrongAuthCode = "WrongCode";
 
-        String content = createContent(this.id, this.salt, this.password, this.email, wrongAuthCode);
-        ResultActions action = sendRequest(content);
+        String content = createContent(USER_ID, SALT, PASSWORD, EMAIL, wrongAuthCode);
+        ResultActions action = sendSignUpRequest(content);
 
         //then
-
         action
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultStatus", is("FAILURE")))
@@ -154,21 +126,20 @@ public class SignUpControllerTest {
                 .andDo(print());
     }
 
-    // case: signup 성공시 emailAuth status를 '인증완료'로 갱신한다
     @Test public void test_change_emailAuth_status_to_COMPLETED_when_sign_up_succeeded() throws Exception {
         // given
 
         // 이메일 인증코드를 발급받는다
         sendEmailAuthRequest();
 
-        List<EmailAuth> emailAuthData = emailAuthRepository.findAll();
-        assertThat(emailAuthData).isNotEmpty();
+        Optional<EmailAuth> emailAuthData = emailAuthRepository.findByEmail(EMAIL);
+        assertThat(emailAuthData.isPresent()).isTrue();
 
-        String emailAuthCode = emailAuthData.get(0).getAuthCode();
+        String emailAuthCode = emailAuthData.get().getAuthCode();
 
         // when
-        String content = createContent(this.id, this.salt, this.password, this.email, emailAuthCode);
-        ResultActions action = sendRequest(content);
+        String content = createContent(USER_ID, SALT, PASSWORD, EMAIL, emailAuthCode);
+        ResultActions action = sendSignUpRequest(content);
 
         action
                 .andExpect(status().isOk())
@@ -182,10 +153,10 @@ public class SignUpControllerTest {
         assertThat(emailAuth.getStatus()).isEqualTo(EmailAuth.EmailAuthStatus.COMPLETED);
     }
 
-    // ----------------------------------------------------------------
-    // utils
 
-    protected String createContent(String id, String salt, String password, String email, String emailAuthCode) throws Exception {
+    // ----------------------------------------------------------------------------
+
+    private String createContent(String id, String salt, String password, String email, String emailAuthCode) throws Exception {
         return objectMapper.writeValueAsString(
                 SignUpRequestDto.builder()
                         .id(id)
@@ -196,21 +167,13 @@ public class SignUpControllerTest {
                         .build());
     }
 
-    protected ResultActions sendRequest(String content) throws Exception {
-        return mvc.perform(
-                post(this.url)
-                        .content(content)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON));
-    }
-
     private void sendEmailAuthRequest() throws Exception {
         mvc.perform(
-                post("/api/v1/email/requestCode")
+                post(EMAIL_AUTH_CONTROLLER_URL)
                         .content(
                                 objectMapper.writeValueAsString(
                                         EmailAuthRequestDto.builder()
-                                                .addressTo(this.email)
+                                                .addressTo(TestDataUtil.EMAIL)
                                                 .build()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -219,4 +182,14 @@ public class SignUpControllerTest {
                 .andExpect(jsonPath("$.reason", nullValue()))
                 .andDo(print());
     }
+
+    private ResultActions sendSignUpRequest(String content) throws Exception {
+        return mvc.perform(
+                post(SIGN_UP_CONTROLLER_URL)
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
+    }
+
+
 }
