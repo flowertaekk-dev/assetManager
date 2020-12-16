@@ -48,6 +48,10 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+
+	// test framework
+	testCompile('org.spockframework:spock-core:1.3-groovy-2.5')
+	testCompile('org.spockframework:spock-spring:1.3-groovy-2.5')
 }
 
 test {
