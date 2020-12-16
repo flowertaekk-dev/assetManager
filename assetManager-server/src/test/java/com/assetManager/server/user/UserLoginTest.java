@@ -2,7 +2,6 @@ package com.assetManager.server.user;
 
 import com.assetManager.server.controller.login.dto.LoginRequestDto;
 import com.assetManager.server.controller.login.dto.RequestSaltDto;
-import com.assetManager.server.controller.signup.UserTestUtil;
 import com.assetManager.server.domain.user.UserRepository;
 import com.assetManager.server.utils.BaseTestUtils;
 import com.assetManager.server.utils.dummy.DummyCreator;

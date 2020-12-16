@@ -1,9 +1,6 @@
 package com.assetManager.server.tableinfo;
 
-import com.assetManager.server.controller.setting.business.BusinessTestUtil;
-import com.assetManager.server.controller.setting.table.TableTestUtil;
 import com.assetManager.server.controller.setting.table.dto.UpdateTableCountRequestDto;
-import com.assetManager.server.controller.signup.UserTestUtil;
 import com.assetManager.server.domain.business.Business;
 import com.assetManager.server.domain.tableInfo.TableInfo;
 import com.assetManager.server.domain.tableInfo.TableInfoRepository;
@@ -39,12 +36,11 @@ import static com.assetManager.server.utils.TestDataUtil.*;
 @SpringBootTest
 public class TableInfoTest extends BaseTestUtils {
 
-    @Autowired private DummyCreator dummyCreator;
-
-    @Autowired private TableInfoRepository tableInfoRepository;
-
     @Autowired private WebApplicationContext context;
     @Autowired private ObjectMapper objectMapper;
+    @Autowired private TableInfoRepository tableInfoRepository;
+
+    @Autowired private DummyCreator dummyCreator;
 
     private MockMvc mvc;
 
@@ -53,9 +49,7 @@ public class TableInfoTest extends BaseTestUtils {
     @BeforeEach
     public void setup() {
         this.mvc = MockMvcBuilders.webAppContextSetup(context).build();
-
-        // 유저 정보 생성
-        UserTestUtil.insertUser();
+        dummyCreator.createUser();
     }
 
     @AfterEach

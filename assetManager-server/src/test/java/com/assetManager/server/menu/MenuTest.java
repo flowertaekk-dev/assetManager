@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -227,7 +228,6 @@ public class MenuTest extends BaseTestUtils {
     // case: 메뉴를 삭제한다.
     @Test public void test_can_delete_menu() throws Exception {
         // given
-
         Menu menu = dummyCreator.createMenu(MENU_NAME, PRICE);
 
         // when
@@ -261,7 +261,7 @@ public class MenuTest extends BaseTestUtils {
         Menu menu1 = dummyCreator.createMenu(MENU_NAME, PRICE);
 
         // 두 번째 메뉴
-        Menu menu2 = sndMenuSupplier.get(menu1.getBusinessId(), sndMenuName);
+        Menu menu2 = menuCreator.apply(menu1.getBusinessId(), sndMenuName);
 
         // when
         String content = objectMapper.writeValueAsString(
@@ -289,19 +289,14 @@ public class MenuTest extends BaseTestUtils {
 
     // ----------------------------------------------------------------------------
 
-    private SndMenuSupplier<String, String, Menu> sndMenuSupplier = (businessId, sndMenuName) ->
+    private BiFunction<String, String, Menu> menuCreator = (businessId, menuName) ->
             menuRepository.save(
                     Menu.builder()
-                        .menuId(RandomIdCreator.createMenuId())
-                        .userId(USER_ID)
-                        .businessId(businessId)
-                        .menu(sndMenuName)
-                        .price(2000)
-                        .build());
-
-    @FunctionalInterface
-    private interface SndMenuSupplier<A, B, R> {
-        R get(A a, B b);
-    }
+                            .menuId(RandomIdCreator.createMenuId())
+                            .userId(USER_ID)
+                            .businessId(businessId)
+                            .menu(menuName)
+                            .price(2000)
+                            .build());
 
 }

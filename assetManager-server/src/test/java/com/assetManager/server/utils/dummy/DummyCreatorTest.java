@@ -9,7 +9,6 @@ import com.assetManager.server.domain.tableInfo.TableInfoRepository;
 import com.assetManager.server.domain.user.UserRepository;
 import com.assetManager.server.utils.BaseTestUtils;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
