@@ -8,6 +8,8 @@ import com.assetManager.server.domain.business.Business;
 import com.assetManager.server.domain.business.BusinessRepository;
 import com.assetManager.server.domain.menu.Menu;
 import com.assetManager.server.domain.menu.MenuRepository;
+import com.assetManager.server.domain.user.User;
+import com.assetManager.server.domain.user.UserRepository;
 import com.assetManager.server.utils.BaseTestUtils;
 import com.assetManager.server.utils.RandomIdCreator;
 import com.assetManager.server.utils.TestDataUtil;
@@ -23,13 +25,17 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -39,8 +45,10 @@ import static com.assetManager.server.utils.TestDataUtil.*;
 
 @ActiveProfiles(profiles = "local")
 @SpringBootTest
+@Transactional
 public class MenuTest extends BaseTestUtils {
 
+    @Autowired private UserRepository userRepository;
     @Autowired private BusinessRepository businessRepository;
     @Autowired private MenuRepository menuRepository;
 
@@ -59,6 +67,16 @@ public class MenuTest extends BaseTestUtils {
 
     @AfterEach
     public void tearDown() { deleteAllDataBase(); }
+
+    @Test public void can_rollback_after_test() {
+        Optional<User> user = userRepository.findById(USER_ID);
+        assertTrue(user.isPresent());
+
+        userRepository.delete(user.get());
+        Optional<User> afterUser = userRepository.findById(USER_ID);
+        assertFalse(afterUser.isPresent());
+
+    }
 
     @Test public void can_save_menu() throws Exception {
         // given

@@ -18,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.mail.Session;
@@ -34,6 +35,7 @@ import static com.assetManager.server.utils.TestDataUtil.*;
 
 @ActiveProfiles(profiles = "local")
 @SpringBootTest
+@Transactional
 public class UserLoginTest extends BaseTestUtils {
 
     // @LocalServerPort private int port;
