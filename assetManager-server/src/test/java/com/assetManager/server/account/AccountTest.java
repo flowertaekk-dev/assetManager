@@ -5,6 +5,7 @@ import com.assetManager.server.domain.account.Account;
 import com.assetManager.server.domain.account.AccountRepository;
 import com.assetManager.server.domain.business.Business;
 import com.assetManager.server.domain.business.BusinessRepository;
+import com.assetManager.server.domain.emailAuth.EmailAuth;
 import com.assetManager.server.utils.BaseTestUtils;
 import com.assetManager.server.utils.TestDataUtil;
 import com.assetManager.server.utils.dummy.DummyCreator;
@@ -32,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static com.assetManager.server.utils.TestDataUtil.*;
 
-@ActiveProfiles(profiles = "local")
+//@ActiveProfiles(profiles = "local")
 @SpringBootTest
 @Transactional
 public class AccountTest extends BaseTestUtils {

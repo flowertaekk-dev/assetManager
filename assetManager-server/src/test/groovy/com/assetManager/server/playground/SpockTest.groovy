@@ -17,5 +17,4 @@ class SpockTest extends Specification {
         2 == list.get(0);
     }
 
-
 }
