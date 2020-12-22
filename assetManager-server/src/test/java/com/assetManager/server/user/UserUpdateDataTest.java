@@ -50,13 +50,13 @@ public class UserUpdateDataTest extends BaseTestUtils {
     private MockMvc mvc;
 
     @BeforeEach public void setUp() {
+        deleteAllDataBase();
+
         mvc = MockMvcBuilders.webAppContextSetup(context).build();
         dummyCreator.createUser();
     }
 
-    @AfterEach public void tearDown() {
-        deleteAllDataBase();
-    }
+    @AfterEach public void tearDown() {}
 
     /**
      * Can update password
