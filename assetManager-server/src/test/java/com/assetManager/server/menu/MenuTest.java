@@ -8,7 +8,6 @@ import com.assetManager.server.domain.business.Business;
 import com.assetManager.server.domain.business.BusinessRepository;
 import com.assetManager.server.domain.menu.Menu;
 import com.assetManager.server.domain.menu.MenuRepository;
-import com.assetManager.server.domain.user.User;
 import com.assetManager.server.domain.user.UserRepository;
 import com.assetManager.server.utils.BaseTestUtils;
 import com.assetManager.server.utils.RandomIdCreator;
@@ -29,13 +28,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BiFunction;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -62,21 +58,12 @@ public class MenuTest extends BaseTestUtils {
 
     @BeforeEach
     public void setup() throws Exception {
+        deleteAllDataBase();
         mvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
     @AfterEach
-    public void tearDown() { deleteAllDataBase(); }
-
-    @Test public void can_rollback_after_test() {
-        Optional<User> user = userRepository.findById(USER_ID);
-        assertTrue(user.isPresent());
-
-        userRepository.delete(user.get());
-        Optional<User> afterUser = userRepository.findById(USER_ID);
-        assertFalse(afterUser.isPresent());
-
-    }
+    public void tearDown() {}
 
     @Test public void can_save_menu() throws Exception {
         // given
@@ -307,8 +294,10 @@ public class MenuTest extends BaseTestUtils {
 
     // ----------------------------------------------------------------------------
 
-    private BiFunction<String, String, Menu> menuCreator = (businessId, menuName) ->
-            menuRepository.save(
+    private BiFunction<String, String, Menu> menuCreator = (businessId, menuName) -> {
+        try {
+            Thread.sleep(100);
+            return menuRepository.save(
                     Menu.builder()
                             .menuId(RandomIdCreator.createMenuId())
                             .userId(USER_ID)
@@ -316,5 +305,10 @@ public class MenuTest extends BaseTestUtils {
                             .menu(menuName)
                             .price(2000)
                             .build());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    };
 
 }

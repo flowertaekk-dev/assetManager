@@ -41,6 +41,12 @@ spring.jpa.hibernate.ddl-auto=update
 5. 문제가 없는지 테스트를 돌려본다.
     * 윈도우인 경우 :  `$./gradlew.bat test`
     * 리눅스인 경우 :  `$./gradlew test`
+6. Default profile 설정하기
+    * intellij 를 기준으로 설명
+        1. `Run` -> `Edit Configurations...` -> `Templates` -> `JUnit` -> `VM Options` 에 다음과 같이 설정
+            * `-Dspring.profiles.active=local`
+        2. `Run` -> `Edit Configurations...` -> `Templates` -> `Groovy` -> `VM Options` 에 동일하게 설정
+
 
 
 ### DataBase 환경구축

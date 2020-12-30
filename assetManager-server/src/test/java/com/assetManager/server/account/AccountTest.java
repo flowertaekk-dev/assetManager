@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -32,9 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static com.assetManager.server.utils.TestDataUtil.*;
 
-@ActiveProfiles(profiles = "local")
+//@ActiveProfiles(profiles = "local")
 @SpringBootTest
-@Transactional
+//@Transactional
 public class AccountTest extends BaseTestUtils {
 
     @Autowired private WebApplicationContext context;
@@ -48,13 +47,14 @@ public class AccountTest extends BaseTestUtils {
 
     @BeforeEach
     public void setup() throws Exception {
+        deleteAllDataBase();
         this.mvc = MockMvcBuilders.webAppContextSetup(context).build();
 
         dummyCreator.createMenu("coffee", 2000);
     }
 
     @AfterEach
-    public void tearDown() { deleteAllDataBase(); }
+    public void tearDown() {}
 
     // case: 장부데이터의 JSON 데이터를 받아서 DB에 저장한다.
     @Test public void test_can_save_account_data() throws Exception {

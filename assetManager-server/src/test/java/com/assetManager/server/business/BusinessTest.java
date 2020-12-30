@@ -30,6 +30,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -57,12 +58,14 @@ public class BusinessTest extends BaseTestUtils {
 
     @BeforeEach
     public void setup() {
+        deleteAllDataBase();
+
         mvc = MockMvcBuilders.webAppContextSetup(context).build();
         dummyCreator.createUser();
     }
 
     @AfterEach
-    public void tearDown() { deleteAllDataBase(); }
+    public void tearDown() {}
 
     // case: 상호명(닉네임)을 등록한다.
     @Test public void test_can_save_business_name() throws Exception {
@@ -170,13 +173,16 @@ public class BusinessTest extends BaseTestUtils {
     @Test
     public void test_can_retrieve_all_business_name_by_userId() throws Exception {
         // given
-        String firstBusinessName = "firstBusiness";
+        String firstBusinessName = "firstBusinessName";
         String secondBusinessName = "secondBusinessName";
         String thirdBusinessName = "thirdBusinessName";
 
-        createBusiness(firstBusinessName);
-        createBusiness(secondBusinessName);
-        createBusiness(thirdBusinessName);
+
+        businessCreator.apply(firstBusinessName);
+        businessCreator.apply(secondBusinessName);
+        businessCreator.apply(thirdBusinessName);
+
+        assertThat(businessRepository.findAll().size()).isEqualTo(3);
 
         // when
         String content = objectMapper.writeValueAsString(
@@ -266,14 +272,18 @@ public class BusinessTest extends BaseTestUtils {
 
     // --------------------------------------------------------------------------------------------
 
-    private Business createBusiness(String businessName) {
-        return businessRepository.save(
-                Business.builder()
-                        .userId(USER_ID)
-                        .businessId(RandomIdCreator.createBusinessId())
-                        .businessName(businessName)
-                        .build());
-    }
-
-
+    private Function<String, Business> businessCreator = businessName -> {
+        try {
+            Thread.sleep(100);
+            return businessRepository.save(
+                    Business.builder()
+                            .userId(USER_ID)
+                            .businessId(RandomIdCreator.createBusinessId())
+                            .businessName(businessName)
+                            .build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    };
 }

@@ -57,6 +57,8 @@ public class UserEmailAuthTest extends BaseTestUtils {
 
     @BeforeEach
     public void setup() {
+        deleteAllDataBase();
+
         this.mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         // mock javaMailSender
@@ -64,9 +66,7 @@ public class UserEmailAuthTest extends BaseTestUtils {
     }
 
     @AfterEach
-    public void tearDown() {
-        deleteAllDataBase();
-    }
+    public void tearDown() {}
 
     // case: EmailAuth 테이블에 데이터를 등록할 수 있다.
     @Test public void test_can_save_emailAuth() throws Exception {

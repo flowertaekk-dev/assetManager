@@ -50,12 +50,14 @@ public class TableInfoTest extends BaseTestUtils {
 
     @BeforeEach
     public void setup() {
+        deleteAllDataBase();
+
         this.mvc = MockMvcBuilders.webAppContextSetup(context).build();
         dummyCreator.createUser();
     }
 
     @AfterEach
-    public void clean() { deleteAllDataBase(); }
+    public void clean() {}
 
     // case: 테이블 정보 추가하기
     @Test public void test_can_save_tableInfo() throws Exception {

@@ -56,15 +56,15 @@ public class UserSignUpTest extends BaseTestUtils {
     private MockMvc mvc;
 
     @BeforeEach public void setUp() {
+        deleteAllDataBase();
+
         this.mvc = MockMvcBuilders.webAppContextSetup(context).build();
 
         // mock javaMailSender
         when(mockMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
     }
 
-    @AfterEach public void tearDown() {
-        deleteAllDataBase();
-    }
+    @AfterEach public void tearDown() {}
 
     @Test public void can_signup() throws Exception {
         // given

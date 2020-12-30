@@ -9,6 +9,7 @@ import com.assetManager.server.domain.tableInfo.TableInfoRepository;
 import com.assetManager.server.domain.user.UserRepository;
 import com.assetManager.server.utils.BaseTestUtils;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,9 +33,8 @@ public class DummyCreatorTest extends BaseTestUtils {
     @Autowired private EmailAuthRepository emailAuthRepository;
     @Autowired private AccountRepository accountRepository;
 
-    @AfterEach public void tearDown() {
-        deleteAllDataBase();
-    }
+    @BeforeEach public void setUp() { deleteAllDataBase(); }
+    @AfterEach public void tearDown() {}
 
     @Test public void test_can_create_dummy_user() {
         checkEmpty(userRepository);
